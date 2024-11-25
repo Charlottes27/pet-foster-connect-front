@@ -1,0 +1,45 @@
+header {
+    position: sticky;
+    top: 0;
+}
+
+.headerHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 25px;
+    background: linear-gradient( var(--peche-color), var(--orange-color));
+
+    img {
+        width: 6rem;
+    }
+
+    .burger {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    
+        .line {
+            width: 35px;
+            height: 5px;
+            background-color: var(--black-color);
+            border-radius: 20px;
+        }
+    }
+
+    .headerConnectionLink {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration-line: none;
+        color:var(--black-color);
+        font-weight: 500;
+        padding: 5px 10px;
+        border-radius: 8px;
+        background-color: var(--orange-color);
+    }
+
+    .headerConnectionLink:hover {
+        background-color: var(--primary-color);
+    }
+}

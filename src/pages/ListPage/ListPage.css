@@ -1,0 +1,13 @@
+.titleMain {
+    margin-block: 3%;
+    margin-left: 3%;
+}
+
+.listAnimals {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    gap: 5px;
+    margin-inline: 1px;
+}

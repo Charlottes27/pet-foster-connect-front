@@ -1,0 +1,28 @@
+.card {
+    box-sizing: border-box;
+    min-width: 300px;
+    height: 20rem;
+    border-radius: 10%;
+    margin-bottom: 3%;
+}
+
+.sectionCardImg {
+    height: 70%;
+}
+
+.animalPhoto {
+    display: block;
+    height: 100%;
+    width: 100%;
+    border-radius: 20%;
+    padding: 6%;
+}
+
+.sectionCardText {
+    height: 30%;
+    text-align: center;
+
+    span {
+        font-weight: bold;
+    }
+}

@@ -1,0 +1,17 @@
+@import url("./asset/reset.css");
+
+:root {
+    --green-color: #03A64A;
+    --blue-color: #27B9F2;
+    --yellow-color: #F2C744;
+    --peche-color: #F2DBAE;
+    --orange-color: #eb8022;
+    --black-color: black;
+    --primary-police:  "Dancing Script", cursive;
+    --secondary-police: "Arima", system-ui;
+}
+
+* {
+    box-sizing: border-box;
+    font-family: var(--primary-police);
+}
