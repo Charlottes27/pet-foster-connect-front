@@ -1,7 +1,5 @@
-
 .navMobile {
     background-color: var(--peche-color);
-
     font-size: 1.5em;
 
     position: fixed;
@@ -28,13 +26,12 @@
     }
 }
 
-.active {
+
+.navMobile .active {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
-
-
 
 .nav {
     background-color: var(--orange-color);

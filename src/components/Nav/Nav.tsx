@@ -10,7 +10,7 @@ function Nav () {
     const mobile = useMediaQuery({query: "(max-width: 480px)"});
     
     return (
-        <nav className={mobile ? "navMobile " : "nav"}>
+        <nav className={mobile ? "navMobile" : "nav"}>
             {mobile ? 
                 <button type="button" className="closeButton">
                     <FontAwesomeIcon icon={faXmark} />
