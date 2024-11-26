@@ -1,6 +1,17 @@
+.filterNavMobile {
+    background-color: var(--orange-color);
+    border-top: 1px solid var(--black-color);
+    text-decoration-line: none;
+    color: var(--black-color);
+    font-size: 1.5em;
+}
+
+
+
 .titleMain {
     margin-block: 3%;
     margin-left: 3%;
+    font-size: 2em;
 }
 
 .listAnimals {
@@ -10,4 +21,16 @@
     justify-content: space-around;
     gap: 5px;
     margin-inline: 1px;
+    
+}
+
+@media screen and (min-width: 740px) {
+    .mainDestop {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .listAndTitle {
+        width: 80%;
+    }
 }
