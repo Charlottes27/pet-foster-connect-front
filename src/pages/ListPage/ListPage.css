@@ -4,9 +4,9 @@
     text-decoration-line: none;
     color: var(--black-color);
     font-size: 1.5em;
+    display: block;
+    text-align: center;
 }
-
-
 
 .titleMain {
     margin-block: 3%;
@@ -21,6 +21,10 @@
     justify-content: space-around;
     gap: 5px;
     margin-inline: 1px;
+
+    .errorSearch {
+        font-size: 2em;
+    }
     
 }
 

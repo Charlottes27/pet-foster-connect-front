@@ -14,7 +14,8 @@
         align-self: flex-end;
         padding-right: 6%;
         font-size: 1.5em;
-        margin-block: 3em;
+        margin-block: 1.5em;
+        margin-right: 0.5em;
     }
 
     .containerLink {
@@ -27,7 +28,7 @@
 }
 
 
-.navMobile .active {
+.navMobile.active {
     display: flex;
     flex-direction: column;
     align-items: center;

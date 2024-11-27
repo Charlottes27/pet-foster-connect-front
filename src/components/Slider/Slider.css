@@ -1,0 +1,8 @@
+.carousel {
+    border-radius: 18px;
+}
+  
+.carouselPhoto {
+    object-fit: cover;
+    height: 300px;
+}

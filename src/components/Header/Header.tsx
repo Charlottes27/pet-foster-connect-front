@@ -1,13 +1,16 @@
+import { useMediaQuery } from "react-responsive";
+import { NavLink } from "react-router-dom"
+import { useState } from "react";
+
 import "./Header.css";
 import logo from "../../asset/logo/PetFoster-Logo.png"
 import Nav from '../Nav/Nav.tsx';
 
-import { useMediaQuery } from "react-responsive";
-import { NavLink } from "react-router-dom"
-
 
 function Header () {
     const mobile = useMediaQuery({query : "(max-width: 480px)"});
+
+    const [openMenuBurger, setOpenMenuBurger] = useState(false);
     
     return (
         <>
@@ -15,7 +18,7 @@ function Header () {
                 <section className="headerHeader">
                     <img src={logo} alt="Logo de pet foster connect" />
                     {mobile ? 
-                    <button type="button" onClick={}>
+                    <button type="button" onClick={()=>setOpenMenuBurger(true)}>
                         <div className="burger">
                             <div className="line"></div>
                             <div className="line"></div>
@@ -23,11 +26,11 @@ function Header () {
                         </div>
                     </button>
                     :
-                    <NavLink to={"#"} className="headerConnectionLink">
+                    <NavLink to={"/connexion-inscription"} className="headerConnectionLink">
                         Connexion / Inscription
                     </NavLink>}
                 </section>
-                <Nav />
+                <Nav openMenuBurger={openMenuBurger} setOpenMenuBurger={setOpenMenuBurger}/>
             </header>
         </>
     );

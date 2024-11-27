@@ -1,0 +1,10 @@
+#goToTop {
+    width: 3.5em;
+    height: 3.5em;
+    background-color: var(--peche-color);
+    border-radius: 50%;
+    border: 2px solid var(--orange-color);
+    position: fixed;
+    top: 85vh;
+    right: 1em;
+}

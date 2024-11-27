@@ -4,7 +4,6 @@ form,
     border-radius: 10%;
     margin-inline: auto;
     margin-block: 1.1em;
-    padding: 2em;
 }
 
 legend,
@@ -32,8 +31,8 @@ form {
 
 .mainConnexion,
 .connexionForm,
-.inscriptionFormFa,
-.inscriptionFormAsso {
+.inscriptionFormFa.active,
+.inscriptionFormAsso.active {
     display: flex;
     flex-direction: column;
 }
@@ -41,10 +40,12 @@ form {
 
 .mainConnexion {
     justify-content: space-around;
-    max-height: 82em;
+    max-height: 85em;
 }
 
 .connexionForm  {
+
+    padding: 2em;
     button {
         width: 50%;
     }
@@ -62,7 +63,14 @@ form {
 }
 
 .inscriptionFormFa,
+.inscriptionFormAsso,
+.choseInscription.close {
+    display: none;
+}
+
+.inscriptionFormFa,
 .inscriptionFormAsso {
+    padding: 0 2em 1em 2em;
     #confimPassword{
         margin-bottom: 1em;
     }
@@ -71,11 +79,18 @@ form {
         margin-inline: auto;
         width: 40%;
     }
+
+    .closeButton {
+        background-color: white;
+        margin-right: -0.5em;
+        padding-block: 0 1em;
+        width: fit-content;
+    }
 }
 
 .choseInscription {
     width: 80%;
-    padding-bottom: 0.5em;
+    padding: 2em 2em 0.5em;
 
     li {
         list-style: outside;
@@ -101,235 +116,242 @@ form {
 
 @media screen and (min-width: 690px) {
     .mainConnexion {
-
-    height: 72em;
+        max-height: 72em;
     }
     
-    .inscriptionFormFa {
+    .inscriptionFormFa.active {
         display: grid;
-        grid-template-columns: 2;
-        grid-template-rows: 14;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: repeat(15, auto);
         gap: 0.2em;
     
-        legend{
-            grid-column: 1/3;
+        .closeButton{
+            grid-column: 2/3;
             grid-row: 1;
         }
-    
-        #labelLastname {
-            grid-column: 1/2;
+
+        legend{
+            grid-column: 1/3;
             grid-row: 2;
         }
     
-        #lastname {
+        #labelLastnameFa {
             grid-column: 1/2;
             grid-row: 3;
         }
     
-        #labelFirstname {
-            grid-column: 2/3;
-            grid-row: 2;
-        }
-    
-        #firstname {
-            grid-column: 2/3;
-            grid-row: 3;
-        }
-    
-        #labelAddress{
+        #lastnameFa {
             grid-column: 1/2;
             grid-row: 4;
         }
     
-        #address{
-            grid-column: 1/3;
+        #labelFirstnameFa {
+            grid-column: 2/3;
+            grid-row: 3;
+        }
+    
+        #firstnameFa {
+            grid-column: 2/3;
+            grid-row: 4;
+        }
+    
+        #labelAddressFa{
+            grid-column: 1/2;
             grid-row: 5;
         }
     
-        #labelPostalCode{
-            grid-column: 1/2;
+        #addressFa{
+            grid-column: 1/3;
             grid-row: 6;
         }
     
-        #postalCode{
+        #labelPostalCodeFa{
             grid-column: 1/2;
             grid-row: 7;
         }
     
-        #labelCity{
-            grid-column: 2/3;
-            grid-row: 6;
+        #postalCodeFa{
+            grid-column: 1/2;
+            grid-row: 8;
         }
     
-        #city{
+        #labelCityFa{
             grid-column: 2/3;
             grid-row: 7;
         }
     
-        #labelPhone{
-            grid-column: 1/2;
-            grid-row: 8;
-        }
-    
-        #phone{
-            grid-column: 1/2;
-            grid-row: 9;
-        }
-    
-        #labelEmail{
+        #cityFa{
             grid-column: 2/3;
             grid-row: 8;
         }
     
-        #email{
-            grid-column: 2/3;
+        #labelPhoneFa{
+            grid-column: 1/2;
             grid-row: 9;
         }
     
-        #labelPassword {
+        #phoneFa{
             grid-column: 1/2;
             grid-row: 10;
         }
     
-        #password {
-            grid-column: 1/3;
+        #labelEmailFa{
+            grid-column: 2/3;
+            grid-row: 9;
+        }
+    
+        #emailFa{
+            grid-column: 2/3;
+            grid-row: 10;
+        }
+    
+        #labelPasswordFa {
+            grid-column: 1/2;
             grid-row: 11;
         }
     
-        #labelConfimPassword{
+        #passwordFa {
             grid-column: 1/3;
             grid-row: 12;
         }
     
-        #confimPassword{
+        #labelConfimPasswordFa{
             grid-column: 1/3;
             grid-row: 13;
+        }
+    
+        #confimPasswordFa{
+            grid-column: 1/3;
+            grid-row: 14;
         }
     
         button {
             grid-column: 1/3;
-            grid-row: 14;
+            grid-row: 15;
         }
     }
 
-    .inscriptionFormAsso {
+    .inscriptionFormAsso.active {
         display: grid;
-        grid-template-columns: 2;
-        grid-template-rows: 16;
+        grid-template-columns: 1frf 1fr;
+        grid-template-rows: repeat(17, auto);
         gap: 0.2em;
     
-        legend{
-            grid-column: 1/3;
+        .closeButton{
+            grid-column: 2/3;
             grid-row: 1;
         }
 
-        #labelNameAssociation {
-            grid-column: 1/2;
+        legend{
+            grid-column: 1/3;
             grid-row: 2;
         }
 
-        #nameAssociation {
+        #labelNameAssociationAsso {
             grid-column: 1/2;
             grid-row: 3;
         }
 
-        #labelNameRepresentative {
-            grid-column: 2/3;
-            grid-row: 2;
-        }
-
-        #nameRepresentative {
-            grid-column: 2/3;
-            grid-row: 3;
-        }
-
-        #labelAddress {
+        #nameAssociationAsso {
             grid-column: 1/2;
             grid-row: 4;
         }
 
-        #address {
-            grid-column: 1/3;
+        #labelNameRepresentativeAsso {
+            grid-column: 2/3;
+            grid-row: 3;
+        }
+
+        #nameRepresentativeAsso {
+            grid-column: 2/3;
+            grid-row: 4;
+        }
+
+        #labelAddressAsso {
+            grid-column: 1/2;
             grid-row: 5;
         }
 
-        #labelPostalCode {
-            grid-column: 1/2;
-            grid-row: 6;
-        }
-
-        #postalCode {
-            grid-column: 1/2;
-            grid-row: 7;
-        }
-
-        #labelCity {
-            grid-column: 2/3;
-            grid-row: 6;
-        }
-
-        #city {
-            grid-column: 2/3;
-            grid-row: 7;
-        }
-
-        #labelPhone {
-            grid-column: 1/2;
-            grid-row: 8;
-        }
-
-        #phone {
-            grid-column: 1/2;
-            grid-row: 9;
-        }
-
-        #labelEmail {
-            grid-column: 2/3;
-            grid-row: 8;
-        }
-
-        #email {
-            grid-column: 2/3;
-            grid-row: 9;
-        }
-
-        #labelNumberRna {
+        #addressAsso {
             grid-column: 1/3;
+            grid-row: 6;
+        }
+
+        #labelPostalCodeAsso {
+            grid-column: 1/2;
+            grid-row: 7;
+        }
+
+        #postalCodeAsso {
+            grid-column: 1/2;
+            grid-row: 8;
+        }
+
+        #labelCityAsso {
+            grid-column: 2/3;
+            grid-row: 7;
+        }
+
+        #cityAsso {
+            grid-column: 2/3;
+            grid-row: 8;
+        }
+
+        #labelPhoneAsso {
+            grid-column: 1/2;
+            grid-row: 9;
+        }
+
+        #phoneAsso {
+            grid-column: 1/2;
             grid-row: 10;
         }
 
-        #numberRna {
+        #labelEmailAsso {
+            grid-column: 2/3;
+            grid-row: 9;
+        }
+
+        #emailAsso {
+            grid-column: 2/3;
+            grid-row: 10;
+        }
+
+        #labelNumberRnaAsso {
             grid-column: 1/3;
             grid-row: 11;
         }
 
-        #labelPassword {
+        #numberRnaAsso {
             grid-column: 1/3;
             grid-row: 12;
         }
 
-        #password {
+        #labelPasswordAsso {
             grid-column: 1/3;
             grid-row: 13;
         }
 
-        #labelConfimPassword {
+        #passwordAsso {
             grid-column: 1/3;
             grid-row: 14;
         }
 
-        #confimPassword {
+        #labelConfimPasswordAsso {
             grid-column: 1/3;
             grid-row: 15;
         }
 
-        button {
+        #confimPasswordAsso {
             grid-column: 1/3;
             grid-row: 16;
         }
-    }
 
-   
+        button {
+            grid-column: 1/3;
+            grid-row: 17;
+        }
+    }
 
     .inscriptionFormFa,
     .inscriptionFormAsso {

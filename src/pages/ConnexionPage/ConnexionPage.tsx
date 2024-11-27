@@ -1,8 +1,25 @@
 import { NavLink } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
 import "./ConnexionPage.css";
 
 function ConnexionPage () {
+    const [openFormFa, setOpenFormFa] = useState(false);
+    const [openFormAsso, setOpenFormAsso] = useState(false);
+    const [closeSection, setCloseSection] = useState(false);
+
+    useEffect(()=>{
+        if(openFormAsso || openFormFa) {
+            setCloseSection(true)
+        }
+        if(!openFormAsso && !openFormFa) {
+            setCloseSection(false)
+        }
+    },[openFormAsso, openFormFa])
+    
+
     return (
         <main className="mainConnexion">
                 <form className="connexionForm" action="connexion" method="get">
@@ -17,90 +34,98 @@ function ConnexionPage () {
 
                 <div className="separator"></div>
 
-                <section className="choseInscription">
+                <section className={closeSection ? "choseInscription close" : "choseInscription"}>
                     <h1>Pas encore de compte?</h1>
                     <ul>
                         <li>
                             <p>Vous souhaitez devenir famille d'accueil</p>
                             <p>Clique ici pour vous inscrire : </p>
-                            <button type="button">Inscription Famille</button>
+                            <button type="button" onClick={()=>setOpenFormFa(true)}>Inscription Famille</button>
                         </li>
                         <li>
                             <p>Vous êtes une association protectrice des animaux</p>
                             <p>Clique ici pour vous inscrire : </p>
-                            <button type="button">Inscription Association</button>
+                            <button type="button" onClick={()=>setOpenFormAsso(true)}>Inscription Association</button>
                         </li>
                     </ul>
                 </section>
 
-                {/* <form className="inscriptionFormFa" action="inscription" method="post">
+                <form className={openFormFa ? "inscriptionFormFa active" : "inscriptionFormFa"} action="inscription" method="post">
+                    <button type="button" className="closeButton" onClick={()=>setOpenFormFa(false)}>
+                        <FontAwesomeIcon icon={faXmark} />
+                    </button>
+
                     <legend>Inscription : Famille d'accueil</legend>
 
-                    <label htmlFor="lastname" id="labelLastname">Nom *</label>
-                    <input type="text" name="lastname" id="lastname" />
+                    <label htmlFor="lastnameFa" id="labelLastnameFa">Nom *</label>
+                    <input type="text" name="lastnameFa" id="lastnameFa" />
                     
-                    <label htmlFor="firstname" id="labelFirstname">Prénom *</label>
-                    <input type="text" name="firstname" id="firstname" />
+                    <label htmlFor="firstnameFa" id="labelFirstnameFa">Prénom *</label>
+                    <input type="text" name="firstnameFa" id="firstnameFa" />
 
-                    <label htmlFor="address" id="labelAddress">Adresse *</label>
-                    <input type="text" name="address" id="address" />
+                    <label htmlFor="addressFa" id="labelAddressFa">Adresse *</label>
+                    <input type="text" name="addressFa" id="addressFa" />
 
-                    <label htmlFor="postalCode" id="labelPostalCode">Code Postal *</label>
-                    <input type="number" name="postalCode" id="postalCode" />
+                    <label htmlFor="postalCodeFa" id="labelPostalCodeFa">Code Postal *</label>
+                    <input type="number" name="postalCodeFa" id="postalCodeFa" />
 
-                    <label htmlFor="city" id="labelCity">Ville *</label>
-                    <input type="text" name="city" id="city" />
+                    <label htmlFor="cityFa" id="labelCityFa">Ville *</label>
+                    <input type="text" name="cityFa" id="cityFa" />
 
-                    <label htmlFor="phone" id="labelPhone">Téléphone *</label>
-                    <input type="tel" name="phone" id="phone" />
+                    <label htmlFor="phoneFa" id="labelPhoneFa">Téléphone *</label>
+                    <input type="tel" name="phoneFa" id="phoneFa" />
 
-                    <label htmlFor="email" id="labelEmail">Mail *</label>
-                    <input type="email" name="email" id="email" />
+                    <label htmlFor="emailFa" id="labelEmailFa">Mail *</label>
+                    <input type="email" name="emailFa" id="emailFa" />
 
-                    <label htmlFor="password" id="labelPassword">Mot de Passe *</label>
-                    <input type="password" name="password" id="password" />
+                    <label htmlFor="passwordFa" id="labelPasswordFa">Mot de Passe *</label>
+                    <input type="password" name="passwordFa" id="passwordFa" />
 
-                    <label htmlFor="confimPassword" id="labelConfimPassword">Confirmation du mot de passe *</label>
-                    <input type="password" name="confimPassword" id="confimPassword" />
+                    <label htmlFor="confimPasswordFa" id="labelConfimPasswordFa">Confirmation du mot de passe *</label>
+                    <input type="password" name="confimPasswordFa" id="confimPasswordFa" />
 
                     <button type="submit">S'inscrire</button>
-                </form> */}
+                </form>
 
-                {/* <form className="inscriptionFormAsso" action="inscription" method="post">
+                <form className={openFormAsso ? "inscriptionFormAsso active" : "inscriptionFormAsso"} action="inscription" method="post">
+                    <button type="button" className="closeButton" onClick={()=>setOpenFormAsso(false)}>
+                        <FontAwesomeIcon icon={faXmark} />
+                    </button>
+                    
                     <legend>Inscription : Association</legend>
 
-                    <label htmlFor="nameAssociation" id="labelNameAssociation">Association *</label>
-                    <input type="text" name="nameAssociation" id="nameAssociation" />
+                    <label htmlFor="nameAssociationAsso" id="labelNameAssociationAsso">Association *</label>
+                    <input type="text" name="nameAssociationAsso" id="nameAssociationAsso" />
 
-                    <label htmlFor="nameRepresentative" id="labelNameRepresentative">Représentant *</label>
-                    <input type="text" name="nameRepresentative" id="nameRepresentative" />
+                    <label htmlFor="nameRepresentativeAsso" id="labelNameRepresentativeAsso">Représentant *</label>
+                    <input type="text" name="nameRepresentativeAsso" id="nameRepresentativeAsso" />
 
-                    <label htmlFor="address" id="labelAddress">Adresse *</label>
-                    <input type="text" name="address" id="address" />
+                    <label htmlFor="addressAsso" id="labelAddressAsso">Adresse *</label>
+                    <input type="text" name="addressAsso" id="addressAsso" />
 
-                    <label htmlFor="postalCode" id="labelPostalCode">Code Postal *</label>
-                    <input type="number" name="postalCode" id="postalCode" />
+                    <label htmlFor="postalCodeAsso" id="labelPostalCodeAsso">Code Postal *</label>
+                    <input type="number" name="postalCodeAsso" id="postalCodeAsso" />
 
-                    <label htmlFor="city" id="labelCity">Ville *</label>
-                    <input type="text" name="city" id="city" />
+                    <label htmlFor="cityAsso" id="labelCityAsso">Ville *</label>
+                    <input type="text" name="cityAsso" id="cityAsso" />
 
-                    <label htmlFor="phone" id="labelPhone">Téléphone *</label>
-                    <input type="tel" name="phone" id="phone" />
+                    <label htmlFor="phoneAsso" id="labelPhoneAsso">Téléphone *</label>
+                    <input type="tel" name="phoneAsso" id="phoneAsso" />
 
-                    <label htmlFor="email" id="labelEmail">Mail *</label>
-                    <input type="email" name="email" id="email" />
+                    <label htmlFor="emailAsso" id="labelEmailAsso">Mail *</label>
+                    <input type="email" name="emailAsso" id="emailAsso" />
 
-                    <label htmlFor="numberRna" id="labelNumberRna">Numéro RNA *</label>
-                    <input type="text" name="numberRna" id="numberRna" />
+                    <label htmlFor="numberRnaAsso" id="labelNumberRnaAsso">Numéro RNA *</label>
+                    <input type="text" name="numberRnaAsso" id="numberRnaAsso" />
 
-                    <label htmlFor="password" id="labelPassword">Mot de Passe *</label>
-                    <input type="password" name="password" id="password" />
+                    <label htmlFor="passwordAsso" id="labelPasswordAsso">Mot de Passe *</label>
+                    <input type="password" name="passwordAsso" id="passwordAsso" />
 
-                    <label htmlFor="confimPassword" id="labelConfimPassword">Confirmation du mot de passe *</label>
-                    <input type="password" name="confimPassword" id="confimPassword" />
+                    <label htmlFor="confimPasswordAsso" id="labelConfimPasswordAsso">Confirmation du mot de passe *</label>
+                    <input type="password" name="confimPasswordAsso" id="confimPasswordAsso" />
 
                     <button type="submit">S'inscrire</button>
-                </form> */}
+                </form>
 
         </main>
     )

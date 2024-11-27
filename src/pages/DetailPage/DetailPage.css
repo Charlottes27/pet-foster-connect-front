@@ -1,0 +1,92 @@
+.entityDetails {
+    border: 3px solid var(--orange-color);
+    border-radius: 18px;
+    padding: 2em;
+    margin: 3em auto;
+
+    width: 70%;
+    height: 54vh;
+
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    grid-template-rows: repeat(6, 1fr);
+
+    p {
+        text-align: center;
+        margin-block: auto;
+
+        span {
+            font-weight: bold;
+        }
+    }
+}
+
+.headerArticle {
+    grid-column: 1/2;
+    grid-row: 1/6;
+
+    height: 100%;
+    width: 100%;
+}
+
+#titleArticle {
+    grid-column: 2/4;
+    grid-row: 1;
+
+    text-align: center;
+    font-weight: bold;
+    margin: auto;
+
+    font-size: 1.5em;
+}
+
+#speciesArticle {
+    grid-column: 2/3;
+    grid-row: 2;
+}
+
+#breedArticle {
+    grid-column: 3/4;
+    grid-row: 2;
+}
+
+#ageArticle {
+    grid-column: 2/3;
+    grid-row: 3;
+}
+
+#genderArticle {
+    grid-column: 3/4;
+    grid-row: 3;
+}
+
+#sizeArticle {
+    grid-column: 2/3;
+    grid-row: 4;
+}
+
+#localisationArticle {
+    grid-column: 3/4;
+    grid-row: 4;
+}
+
+#descriptionArticle {
+    grid-column: 2/4;
+    grid-row: 5;
+}
+
+.ctaAnimalPage {
+    grid-column: 1/4;
+    grid-row: 6;
+    display: flex;
+    justify-content: center;
+    margin-top: 1.5em;
+
+    button {
+        background-color: var(--orange-color);
+        border-radius: 10px;
+        width: fit-content;
+        padding: 0.3em;
+        margin-inline: 3em;
+    }
+}
