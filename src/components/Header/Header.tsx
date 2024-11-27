@@ -15,7 +15,7 @@ function Header () {
                 <section className="headerHeader">
                     <img src={logo} alt="Logo de pet foster connect" />
                     {mobile ? 
-                    <button type="button" >
+                    <button type="button" onClick={}>
                         <div className="burger">
                             <div className="line"></div>
                             <div className="line"></div>

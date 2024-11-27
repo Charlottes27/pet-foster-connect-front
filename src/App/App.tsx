@@ -1,4 +1,5 @@
 import { Routes, Route } from "react-router-dom"
+import { useState } from "react";
 
 import './App.css';
 
@@ -9,11 +10,12 @@ import ListPage from "../pages/ListPage/ListPage.tsx";
 import ConnexionPage from "../pages/ConnexionPage/ConnexionPage.tsx"
 
 function App() {
+    const [openMenuBurger, setOpenMenuBurger] = useState(false);
   
 
     return (
         <>
-            <Header />
+            <Header openMenuBurger={openMenuBurger} setOpenMenuBurger={setOpenMenuBurger}/>
             <Routes>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/animaux" element={<ListPage />} />
