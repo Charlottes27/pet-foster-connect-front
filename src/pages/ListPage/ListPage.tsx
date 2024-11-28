@@ -10,31 +10,17 @@ import Filter from "../../components/Filter/Filter.tsx"
 import ScrollToTopButton from "../../components/ScrollToTopButton/ScrollToTopButton.tsx";
 import { IAnimal } from "../../@types/animal.ts";
 import { IAssociation } from '../../@types/association.ts'
+import { IFilterAnimal } from "../../@types/filter";
+import { IFilterAssociation } from "../../@types/filter";
 import APIAssociation from "../../services/api/associations.ts";
 
 interface IListPageProps {
     entityFilter: IAnimal[] | IAssociation[]
     setEntityFilter: React.Dispatch<React.SetStateAction<IAnimal[] | IAssociation[]>>
-    filterAnimal: {
-        species: string;
-        gender: string;
-        ageRange: string;
-        size: string;
-    }
-    setFilterAnimal: React.Dispatch<React.SetStateAction<{
-        species: string;
-        gender: string;
-        ageRange: string;
-        size: string;
-    }>>
-    filterAssociation: {
-        nameAssociation: string;
-        city: string;
-    }
-    setFilterAssociation: React.Dispatch<React.SetStateAction<{
-        nameAssociation: string;
-        city: string;
-    }>>
+    filterAnimal: IFilterAnimal
+    setFilterAnimal: React.Dispatch<React.SetStateAction<IFilterAnimal>>
+    filterAssociation: IFilterAssociation
+    setFilterAssociation: React.Dispatch<React.SetStateAction<IFilterAssociation>>
 }
 
 function ListPage ({entityFilter, setEntityFilter, filterAnimal, setFilterAnimal, filterAssociation, setFilterAssociation}: IListPageProps) {
@@ -73,10 +59,6 @@ function ListPage ({entityFilter, setEntityFilter, filterAnimal, setFilterAnimal
             Associations();
         }
     },[title]);
-
-// , queryParams.size === 0
-// setFilterAnimal({species: "", gender:"", ageRange: "all", size: "",});
-// setFilterAssociation({nameAssociation: "", city: ""});
                     
     return (
         <main className={mobile ? "mainMobile" : "mainDestop"}>

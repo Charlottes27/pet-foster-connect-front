@@ -7,19 +7,13 @@ import logo from "../../asset/logo/PetFoster-Logo.png"
 import Nav from '../Nav/Nav.tsx';
 import { IAnimal } from "../../@types/animal";
 import { IAssociation } from "../../@types/association";
+import { IFilterAnimal } from "../../@types/filter";
+import { IFilterAssociation } from "../../@types/filter";
 
 interface IHeaderProps {
     setEntityFilter: React.Dispatch<React.SetStateAction<IAnimal[] | IAssociation[]>>
-    setFilterAnimal: React.Dispatch<React.SetStateAction<{
-        species: string;
-        gender: string;
-        ageRange: string;
-        size: string;
-    }>>
-  setFilterAssociation: React.Dispatch<React.SetStateAction<{
-        nameAssociation: string;
-        city: string;
-    }>>
+    setFilterAnimal: React.Dispatch<React.SetStateAction<IFilterAnimal>>
+    setFilterAssociation: React.Dispatch<React.SetStateAction<IFilterAssociation>>
 }
 
 function Header ({setEntityFilter, setFilterAnimal, setFilterAssociation}:IHeaderProps) {
@@ -45,7 +39,11 @@ function Header ({setEntityFilter, setFilterAnimal, setFilterAssociation}:IHeade
                         Connexion / Inscription
                     </NavLink>}
                 </section>
-                <Nav openMenuBurger={openMenuBurger} setOpenMenuBurger={setOpenMenuBurger} setEntityFilter={setEntityFilter} setFilterAnimal={setFilterAnimal} setFilterAssociation={setFilterAssociation}/>
+                <Nav openMenuBurger={openMenuBurger}
+                    setOpenMenuBurger={setOpenMenuBurger}
+                    setEntityFilter={setEntityFilter}
+                    setFilterAnimal={setFilterAnimal}
+                    setFilterAssociation={setFilterAssociation}/>
             </header>
         </>
     );

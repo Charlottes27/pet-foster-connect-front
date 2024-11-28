@@ -23,30 +23,21 @@ function DetailPage () {
     
 
     useEffect(()=>{
-        
-        if (titleUrl === "animal") {
-            const animal = async () => {
-                try {
+        const entity = async () => {
+            try {
+                if (titleUrl === "animal") {
                     const response = await APIAnimal.getAnimal(idEntity);
                     setAnimal(response.data)
-                } catch (error) {
-                    console.log(error)
-                }
-            };
-            animal();
-        }
-
-        if(titleUrl === "association") {
-            const association = async () => {
-                try {
+                };
+                if(titleUrl === "association") {
                     const response = await APIAssociation.getAssociation(idEntity);
                     setAssociation(response.data)
-                } catch (error) {
-                    console.log(error)
                 }
-            };
-            association();
+            } catch (error) {
+                console.log(error)
+            }
         }
+        entity();
     }, [titleUrl, idEntity]);
 
     return (

@@ -7,21 +7,15 @@ import "./Nav.css";
 import { useAuth } from "../../components/AuthContext/AuthContext";
 import { IAnimal } from "../../@types/animal";
 import { IAssociation } from "../../@types/association";
+import { IFilterAnimal } from "../../@types/filter";
+import { IFilterAssociation } from "../../@types/filter";
 
 interface INavProps {
     openMenuBurger: boolean
     setOpenMenuBurger: React.Dispatch<React.SetStateAction<boolean>>
     setEntityFilter: React.Dispatch<React.SetStateAction<IAnimal[] | IAssociation[]>>
-    setFilterAnimal: React.Dispatch<React.SetStateAction<{
-        species: string;
-        gender: string;
-        ageRange: string;
-        size: string;
-    }>>
-  setFilterAssociation: React.Dispatch<React.SetStateAction<{
-        nameAssociation: string;
-        city: string;
-    }>>
+    setFilterAnimal: React.Dispatch<React.SetStateAction<IFilterAnimal>>
+    setFilterAssociation: React.Dispatch<React.SetStateAction<IFilterAssociation>>
 }
 
 function Nav ({openMenuBurger, setOpenMenuBurger, setEntityFilter, setFilterAnimal, setFilterAssociation}: INavProps) {
@@ -36,27 +30,39 @@ function Nav ({openMenuBurger, setOpenMenuBurger, setEntityFilter, setFilterAnim
                 </button>
             :
             ""}
+            
             <div className="containerLink">
                 <NavLink to={"/"} className="navLink" onClick={()=>setOpenMenuBurger(false)}>
                     <FontAwesomeIcon icon={faHouse} />
                     Accueil
                 </NavLink>
-                <NavLink to={"/animaux"} className="navLink" onClick={()=>{setOpenMenuBurger(false); setEntityFilter([]); setFilterAnimal({
-                    species: "",
-                    gender: "",
-                    ageRange: "all",
-                    size: "",
+
+                <NavLink to={"/animaux"}
+                    className="navLink"
+                    onClick={()=>{setOpenMenuBurger(false);
+                        setEntityFilter([]);
+                        setFilterAnimal({
+                            species: "",
+                            gender: "",
+                            ageRange: "all",
+                            size: "",
                 })}}>
                     <FontAwesomeIcon icon={faPaw} />
                     Animaux
                 </NavLink>
-                <NavLink to={"/associations"} className="navLink" onClick={()=>{setOpenMenuBurger(false); setEntityFilter([]); setFilterAssociation({
-                    nameAssociation: "",
-                    city: "",
+
+                <NavLink to={"/associations"}
+                    className="navLink"
+                    onClick={()=>{setOpenMenuBurger(false);
+                        setEntityFilter([]);
+                        setFilterAssociation({
+                            nameAssociation: "",
+                            city: "",
                 })}}>
                     <FontAwesomeIcon icon={faFont} />
                     Associations
                 </NavLink>
+
                 {mobile ? 
                 <NavLink to={"/connexion-inscription"} className="navLink" onClick={()=>setOpenMenuBurger(false)}>
                     Connexion / Inscription

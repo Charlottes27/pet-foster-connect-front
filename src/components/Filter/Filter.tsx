@@ -7,8 +7,10 @@ import { useNavigate } from "react-router-dom"
 import "./Filter.css"
 import { IAnimal } from "../../@types/animal";
 import { IAssociation } from "../../@types/association";
-import APIAnimal from "../../services/api/animal.ts"
-import APIAssociation from "../../services/api/associations.ts";
+import { IFilterAnimal } from "../../@types/filter";
+import { IFilterAssociation } from "../../@types/filter";
+import InputFa from "./Input/InputFa/InputFa";
+import InputAsso from "./Input/InputAsso/InputAsso";
 
 interface IFilterProps {
     openFilter: boolean
@@ -16,26 +18,10 @@ interface IFilterProps {
     entityData: IAnimal[] | IAssociation[]
     setEntityFilter: React.Dispatch<React.SetStateAction<IAnimal[] | IAssociation[]>>
     title: string
-    filterAnimal: {
-        species: string;
-        gender: string;
-        ageRange: string;
-        size: string;
-    }
-    setFilterAnimal: React.Dispatch<React.SetStateAction<{
-        species: string;
-        gender: string;
-        ageRange: string;
-        size: string;
-    }>>
-    filterAssociation: {
-        nameAssociation: string;
-        city: string;
-    }
-    setFilterAssociation: React.Dispatch<React.SetStateAction<{
-        nameAssociation: string;
-        city: string;
-    }>>
+    filterAnimal: IFilterAnimal
+    setFilterAnimal: React.Dispatch<React.SetStateAction<IFilterAnimal>>
+    filterAssociation: IFilterAssociation
+    setFilterAssociation: React.Dispatch<React.SetStateAction<IFilterAssociation>>
 }
 
 function Filter ({openFilter, setOpenFilter, entityData, setEntityFilter, title, filterAnimal, setFilterAnimal, filterAssociation, setFilterAssociation}: IFilterProps) {
@@ -48,59 +34,42 @@ function Filter ({openFilter, setOpenFilter, entityData, setEntityFilter, title,
     const [cities, setCities] = useState<string[]>([]);
 
     useEffect(()=>{
-        if (title === "animaux") {
-            const loadAnimals = () => {
-                try {
-                    setIsLoading(true);
+        const loadEntities = () => {
+            try {
+                setIsLoading(true);
 
-                    if (isAnimal(entityData)) {
-                        const uniqueSpecies = Array.from(
-                        new Set(entityData.map((animal: IAnimal) => animal.species))
-                        ).filter((species): species is string => typeof species === "string");
+                if (title === "animaux" && isAnimal(entityData)) {
+                    const uniqueSpecies = Array.from(
+                    new Set(entityData.map((animal: IAnimal) => animal.species))
+                    ).filter((species): species is string => typeof species === "string");
+            
+                    const uniqueSizes = Array.from(
+                    new Set(entityData.map((animal: IAnimal) => animal.size))
+                    ).filter((size): size is string => typeof size === "string");
                 
-                        const uniqueSizes = Array.from(
-                        new Set(entityData.map((animal: IAnimal) => animal.size))
-                        ).filter((size): size is string => typeof size === "string");
-                    
-                        setSpecies(uniqueSpecies);
-                        setSizes(uniqueSizes);
-                    }
-                } catch (err) {
-                    console.error(err);
-                } finally {
-                    setIsLoading(false);
+                    setSpecies(uniqueSpecies);
+                    setSizes(uniqueSizes);
                 }
-            };
-            loadAnimals();
-        }
 
-        if (title === "associations") {
-            const loadAssociations = () => {
-                try {
-                    setIsLoading(true);
-                    
-                    if (isAssociation(entityData)) {
-                        const uniqueAssociations = Array.from(
-                        new Set(entityData.map((association: IAssociation) => association.representative))
-                        ).filter((representative): representative is string => typeof representative === "string");
+                if (title === "associations" && isAssociation(entityData)) {
+                    const uniqueAssociations = Array.from(
+                    new Set(entityData.map((association: IAssociation) => association.representative))
+                    ).filter((representative): representative is string => typeof representative === "string");
 
-                        const uniqueCities = Array.from(
-                        new Set(entityData.map((association: IAssociation) => association.city))
-                        ).filter((city): city is string => typeof city === "string");
+                    const uniqueCities = Array.from(
+                    new Set(entityData.map((association: IAssociation) => association.city))
+                    ).filter((city): city is string => typeof city === "string");
 
-                        setNameAssociations(uniqueAssociations);
-                        setCities(uniqueCities);
-                    }
-                } catch (error) {
-                    
-                    console.error(error);
-                } finally {
-                    setIsLoading(false);
+                    setNameAssociations(uniqueAssociations);
+                    setCities(uniqueCities);
                 }
-            };
-            loadAssociations();
+            } catch (error) {
+                console.error(error);
+            } finally {
+                setIsLoading(false);
+            }
         }
-
+        loadEntities();
     },[entityData]);
 
     const navigate = useNavigate();
@@ -249,62 +218,20 @@ function Filter ({openFilter, setOpenFilter, entityData, setEntityFilter, title,
                 }
                 <h2>Filtres</h2>
 
-                {title === "animaux" &&
-
-                <>
-                    <select name="species" value={filterAnimal.species} onChange={handleFilterChange}>
-                        <option value="">Filtrer par espèce</option>
-                        {species.map((species)=>(
-                            <option key={species} value={species}>{species}</option>
-                        ))}                   
-                    </select>
-
-                    <select name="gender" value={filterAnimal.gender} onChange={handleFilterChange}> 
-                        <option value="all">Filtrer par genre</option>
-                        <option value="M">Mâle</option>
-                        <option value="F">Femelle</option>
-                    </select>
-
-
-                    <select name="ageRange" value={filterAnimal.ageRange} onChange={handleFilterChange}>
-                        <option value="all">Filtrer par âge</option>
-                        <option value="under-2">Moins de 2 ans</option>
-                        <option value="2-7">Entre 2 et 7 ans</option>
-                        <option value="over-7">Plus de 7 ans</option>
-                    </select>
-
-                    <select name="size" value={filterAnimal.size} onChange={handleFilterChange}>
-                        <option value="">Filtrer par taille</option>
-                        {sizes.map((size)=>(
-                            <option key={size} value={size}>{size}</option>
-                        ))}
-                    </select>
-
-                    {/* <select name="localisation" value="" onChange={handleFilterChange}>
-                        <option value="">Filtrer par localisation</option>
-                        <option key="1" value="small">Paris</option>
-                        <option key="2" value="medium">Lyon</option>
-                        <option key="3" value="tall">Vexin sur Epte</option>
-                        <option key="4" value="veryTall">Brest</option>
-                    </select> */}
-                </>}
-
-                {title === "associations" &&
-                <>
-                    <select name="nameAssociation" value={filterAssociation.nameAssociation} onChange={handleFilterChange}>
-                        <option value="">Filtrer par Nom</option>
-                        {nameAssociations.map((association)=>(
-                            <option key={association} value={association}>{association}</option>
-                        ))}                   
-                    </select>
-
-                    <select name="city" value={filterAssociation.city} onChange={handleFilterChange}>
-                        <option value="">Filtrer par Ville</option>
-                        {cities.map((city)=>(
-                            <option key={city} value={city}>{city}</option>
-                        ))}                   
-                    </select>
-                </>}
+                {title === "animaux" && 
+                    <InputFa filterAnimal={filterAnimal}
+                        species={species}
+                        sizes={sizes}
+                        handleFilterChange={handleFilterChange}
+                    />
+                }
+                {title === "associations" && 
+                    <InputAsso filterAssociation={filterAssociation}
+                        nameAssociations={nameAssociations}
+                        cities={cities}
+                        handleFilterChange={handleFilterChange}
+                    />
+                }
                 
                 <div className="buttonFilter">
                 {mobile ? 
@@ -312,9 +239,8 @@ function Filter ({openFilter, setOpenFilter, entityData, setEntityFilter, title,
                         <FontAwesomeIcon icon={faRotateRight} />
                     </button>
                 : "" }
-        
                     <button id="apply-filters-btn" onClick={applyFilters}>
-                    <FontAwesomeIcon icon={faCheck} />{!mobile && "Appliquer les filtres"}
+                        <FontAwesomeIcon icon={faCheck} />{!mobile && "Appliquer les filtres"}
                     </button>
                 </div>
             </div>
