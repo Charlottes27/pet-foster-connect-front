@@ -1,0 +1,14 @@
+.carousel {
+    border-radius: 18px;
+}
+  
+.carouselPhoto {
+    object-fit: cover;
+    height: 350px;
+}
+
+@media screen and (min-width: 950px) {
+    .carouselPhoto {
+        height: 250px;
+    }
+}

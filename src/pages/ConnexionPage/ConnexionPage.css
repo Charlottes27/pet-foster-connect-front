@@ -4,7 +4,6 @@ form,
     border-radius: 10%;
     margin-inline: auto;
     margin-block: 1.1em;
-    padding: 2em;
 }
 
 legend,
@@ -30,30 +29,13 @@ form {
 }
 
 
-.mainConnexion,
-.connexionForm,
-.inscriptionFormFa,
-.inscriptionFormAsso {
+.mainConnexion {
     display: flex;
     flex-direction: column;
-}
-
-
-.mainConnexion {
     justify-content: space-around;
-    max-height: 82em;
+    max-height: 85em;
 }
 
-.connexionForm  {
-    button {
-        width: 50%;
-    }
-
-    .changePassword {
-        margin-bottom: 1em;
-        align-self: self-start;
-    }
-}
 
 .separator {
     border: 1px solid var(--orange-color);
@@ -61,21 +43,13 @@ form {
     width: 80%;
 }
 
-.inscriptionFormFa,
-.inscriptionFormAsso {
-    #confimPassword{
-        margin-bottom: 1em;
-    }
-
-    button {
-        margin-inline: auto;
-        width: 40%;
-    }
+.choseInscription.close {
+    display: none;
 }
 
 .choseInscription {
     width: 80%;
-    padding-bottom: 0.5em;
+    padding: 2em 2em 0.5em;
 
     li {
         list-style: outside;
@@ -92,248 +66,9 @@ form {
     }
 }
 
-@media screen and (min-width: 326px) {
-    .inscriptionFormFa,
-    .inscriptionFormAsso {
-        width: 80%;
-    }
-}
-
 @media screen and (min-width: 690px) {
     .mainConnexion {
-
-    height: 72em;
-    }
-    
-    .inscriptionFormFa {
-        display: grid;
-        grid-template-columns: 2;
-        grid-template-rows: 14;
-        gap: 0.2em;
-    
-        legend{
-            grid-column: 1/3;
-            grid-row: 1;
-        }
-    
-        #labelLastname {
-            grid-column: 1/2;
-            grid-row: 2;
-        }
-    
-        #lastname {
-            grid-column: 1/2;
-            grid-row: 3;
-        }
-    
-        #labelFirstname {
-            grid-column: 2/3;
-            grid-row: 2;
-        }
-    
-        #firstname {
-            grid-column: 2/3;
-            grid-row: 3;
-        }
-    
-        #labelAddress{
-            grid-column: 1/2;
-            grid-row: 4;
-        }
-    
-        #address{
-            grid-column: 1/3;
-            grid-row: 5;
-        }
-    
-        #labelPostalCode{
-            grid-column: 1/2;
-            grid-row: 6;
-        }
-    
-        #postalCode{
-            grid-column: 1/2;
-            grid-row: 7;
-        }
-    
-        #labelCity{
-            grid-column: 2/3;
-            grid-row: 6;
-        }
-    
-        #city{
-            grid-column: 2/3;
-            grid-row: 7;
-        }
-    
-        #labelPhone{
-            grid-column: 1/2;
-            grid-row: 8;
-        }
-    
-        #phone{
-            grid-column: 1/2;
-            grid-row: 9;
-        }
-    
-        #labelEmail{
-            grid-column: 2/3;
-            grid-row: 8;
-        }
-    
-        #email{
-            grid-column: 2/3;
-            grid-row: 9;
-        }
-    
-        #labelPassword {
-            grid-column: 1/2;
-            grid-row: 10;
-        }
-    
-        #password {
-            grid-column: 1/3;
-            grid-row: 11;
-        }
-    
-        #labelConfimPassword{
-            grid-column: 1/3;
-            grid-row: 12;
-        }
-    
-        #confimPassword{
-            grid-column: 1/3;
-            grid-row: 13;
-        }
-    
-        button {
-            grid-column: 1/3;
-            grid-row: 14;
-        }
-    }
-
-    .inscriptionFormAsso {
-        display: grid;
-        grid-template-columns: 2;
-        grid-template-rows: 16;
-        gap: 0.2em;
-    
-        legend{
-            grid-column: 1/3;
-            grid-row: 1;
-        }
-
-        #labelNameAssociation {
-            grid-column: 1/2;
-            grid-row: 2;
-        }
-
-        #nameAssociation {
-            grid-column: 1/2;
-            grid-row: 3;
-        }
-
-        #labelNameRepresentative {
-            grid-column: 2/3;
-            grid-row: 2;
-        }
-
-        #nameRepresentative {
-            grid-column: 2/3;
-            grid-row: 3;
-        }
-
-        #labelAddress {
-            grid-column: 1/2;
-            grid-row: 4;
-        }
-
-        #address {
-            grid-column: 1/3;
-            grid-row: 5;
-        }
-
-        #labelPostalCode {
-            grid-column: 1/2;
-            grid-row: 6;
-        }
-
-        #postalCode {
-            grid-column: 1/2;
-            grid-row: 7;
-        }
-
-        #labelCity {
-            grid-column: 2/3;
-            grid-row: 6;
-        }
-
-        #city {
-            grid-column: 2/3;
-            grid-row: 7;
-        }
-
-        #labelPhone {
-            grid-column: 1/2;
-            grid-row: 8;
-        }
-
-        #phone {
-            grid-column: 1/2;
-            grid-row: 9;
-        }
-
-        #labelEmail {
-            grid-column: 2/3;
-            grid-row: 8;
-        }
-
-        #email {
-            grid-column: 2/3;
-            grid-row: 9;
-        }
-
-        #labelNumberRna {
-            grid-column: 1/3;
-            grid-row: 10;
-        }
-
-        #numberRna {
-            grid-column: 1/3;
-            grid-row: 11;
-        }
-
-        #labelPassword {
-            grid-column: 1/3;
-            grid-row: 12;
-        }
-
-        #password {
-            grid-column: 1/3;
-            grid-row: 13;
-        }
-
-        #labelConfimPassword {
-            grid-column: 1/3;
-            grid-row: 14;
-        }
-
-        #confimPassword {
-            grid-column: 1/3;
-            grid-row: 15;
-        }
-
-        button {
-            grid-column: 1/3;
-            grid-row: 16;
-        }
-    }
-
-   
-
-    .inscriptionFormFa,
-    .inscriptionFormAsso {
-        width: auto;
+        max-height: 72em;
     }
 }
 

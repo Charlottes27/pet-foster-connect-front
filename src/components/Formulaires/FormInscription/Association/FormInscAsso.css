@@ -1,0 +1,159 @@
+.inscriptionFormAsso {
+    display: none;
+    padding: 0 2em 1em 2em;
+
+    #confimPassword{
+        margin-bottom: 1em;
+    }
+
+    button {
+        margin-inline: auto;
+        width: 40%;
+    }
+
+    .closeButton {
+        background-color: white;
+        margin-right: -0.5em;
+        padding-block: 0 1em;
+        width: fit-content;
+    }
+}
+
+.inscriptionFormAsso.active {
+    display: flex;
+    flex-direction: column;
+}
+
+@media screen and (min-width: 326px) {
+    .inscriptionFormAsso {
+        width: 80%;
+    }
+}
+
+@media screen and (min-width: 690px) {
+    .inscriptionFormAsso.active {
+        display: grid;
+        grid-template-columns: 1frf 1fr;
+        grid-template-rows: repeat(17, auto);
+        gap: 0.2em;
+    
+        .closeButton{
+            grid-column: 2/3;
+            grid-row: 1;
+        }
+
+        legend{
+            grid-column: 1/3;
+            grid-row: 2;
+        }
+
+        #labelNameAssociationAsso {
+            grid-column: 1/2;
+            grid-row: 3;
+        }
+
+        #nameAssociationAsso {
+            grid-column: 1/2;
+            grid-row: 4;
+        }
+
+        #labelNameRepresentativeAsso {
+            grid-column: 2/3;
+            grid-row: 3;
+        }
+
+        #nameRepresentativeAsso {
+            grid-column: 2/3;
+            grid-row: 4;
+        }
+
+        #labelAddressAsso {
+            grid-column: 1/2;
+            grid-row: 5;
+        }
+
+        #addressAsso {
+            grid-column: 1/3;
+            grid-row: 6;
+        }
+
+        #labelPostalCodeAsso {
+            grid-column: 1/2;
+            grid-row: 7;
+        }
+
+        #postalCodeAsso {
+            grid-column: 1/2;
+            grid-row: 8;
+        }
+
+        #labelCityAsso {
+            grid-column: 2/3;
+            grid-row: 7;
+        }
+
+        #cityAsso {
+            grid-column: 2/3;
+            grid-row: 8;
+        }
+
+        #labelPhoneAsso {
+            grid-column: 1/2;
+            grid-row: 9;
+        }
+
+        #phoneAsso {
+            grid-column: 1/2;
+            grid-row: 10;
+        }
+
+        #labelEmailAsso {
+            grid-column: 2/3;
+            grid-row: 9;
+        }
+
+        #emailAsso {
+            grid-column: 2/3;
+            grid-row: 10;
+        }
+
+        #labelNumberRnaAsso {
+            grid-column: 1/3;
+            grid-row: 11;
+        }
+
+        #numberRnaAsso {
+            grid-column: 1/3;
+            grid-row: 12;
+        }
+
+        #labelPasswordAsso {
+            grid-column: 1/3;
+            grid-row: 13;
+        }
+
+        #passwordAsso {
+            grid-column: 1/3;
+            grid-row: 14;
+        }
+
+        #labelConfimPasswordAsso {
+            grid-column: 1/3;
+            grid-row: 15;
+        }
+
+        #confimPasswordAsso {
+            grid-column: 1/3;
+            grid-row: 16;
+        }
+
+        button {
+            grid-column: 1/3;
+            grid-row: 17;
+        }
+    }
+
+    .inscriptionFormAsso {
+        width: auto;
+    }
+}

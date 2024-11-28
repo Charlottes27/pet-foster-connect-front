@@ -1,6 +1,6 @@
 
 import React, { createContext, useContext, useState, useCallback, ReactNode, useEffect } from "react";
-import axiosInstance from "../../axios/axios"; // Si vous l'utilisez pour la gestion des API
+import axiosInstance from "../../services/axios/axios"; // Si vous l'utilisez pour la gestion des API
 
 // Interface pour le contexte d'authentification
 interface AuthContextType {

@@ -6,9 +6,7 @@ import logo from "../../asset/logo/PetFoster-Logo.png"
 import { useMediaQuery } from "react-responsive";
 
 function HomePage () {
-    const smallDestop = useMediaQuery({query: "(min-width: 1024px)"});
-    console.log(smallDestop);
-    
+    const smallDestop = useMediaQuery({query: "(min-width: 1024px)"});    
 
     return (
         <main>

@@ -1,0 +1,250 @@
+.entityDetails {
+    border: 3px solid var(--orange-color);
+    border-radius: 18px;
+    margin: 3em;
+
+    p {
+        margin-bottom: 0.2em;
+        padding-left: 0.5em;
+        span {
+            font-weight: bold;
+        }
+    }
+}
+
+.headerArticle {
+    z-index: -1;
+
+    height: 100%;
+    width: 100%;
+    padding: 1em;
+}
+
+#titleArticle {
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.5em;
+    margin-block: 0.5em;
+    padding-left: 0;
+}
+
+.ctaAnimalPage {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 0.5em;
+
+    button {
+        background-color: var(--orange-color);
+        border-radius: 10px;
+        width: 60%;
+        padding: 0.3em;
+        margin: 0.5em auto;
+    }
+}   
+
+@media screen and (min-width: 550px) {
+    .entityDetails {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 5fr repeat(6, 1fr);
+
+        text-align: center;
+    }
+
+    .headerArticle {
+        grid-column: 1/3;
+        grid-row: 1;
+    }
+
+    #titleArticle {
+        grid-column: 1/3;
+        grid-row: 2;
+    }
+
+    #speciesArticle {
+        grid-column: 1/2;
+        grid-row: 3;
+    }
+
+    #breedArticle {
+        grid-column: 2/3;
+        grid-row: 3;
+    }
+
+    #ageArticle {
+        grid-column: 1/2;
+        grid-row: 4;
+    }
+
+    #genderArticle {
+        grid-column: 2/3;
+        grid-row: 4;
+    }
+
+    #sizeArticle {
+        grid-column: 1/2;
+        grid-row: 5;
+    }
+
+    #localisationArticle {
+        grid-column: 2/3;
+        grid-row: 5;
+    }
+
+    #descriptionArticle {
+        grid-column: 1/3;
+        grid-row: 6;
+    }
+
+    #representativeArticle {
+        grid-column: 1/2;
+        grid-row: 3;
+    }
+
+    #rnaNumberArticle {
+        grid-column: 2/3;
+        grid-row: 3;
+    }
+
+    #phoneArticle {
+        grid-column: 1/2;
+        grid-row: 4;
+    }
+
+    #emailArticle {
+        grid-column: 2/3;
+        grid-row: 4;
+    }
+
+    #addressArticle {
+        grid-column: 1/3;
+        grid-row: 5;
+    }
+
+    .ctaAnimalPage {
+        grid-column: 1/3;
+        grid-row: 7;
+
+        flex-direction: row;
+
+        button{
+            margin-inline: 0.5em;
+        }
+    }
+}
+
+
+@media screen and (min-width:950px) {
+    .entityDetails {
+        padding: 1em;
+        margin: 3em auto;
+
+        width: 70%;
+        height: 54vh;
+
+        grid-template-columns: 2fr 1fr 1fr;
+        grid-template-rows: repeat(6, 1fr);
+
+        p {
+            text-align: center;
+            margin-block: auto;
+
+        }
+    }
+
+    .headerArticle {
+        grid-column: 1/2;
+        grid-row: 1/6;
+    }
+
+    #titleArticle {
+        grid-column: 2/4;
+        grid-row: 1;
+
+        margin: auto;
+
+        font-size: 1.5em;
+    }
+
+    #speciesArticle {
+        grid-column: 2/3;
+        grid-row: 2;
+    }
+
+    #breedArticle {
+        grid-column: 3/4;
+        grid-row: 2;
+    }
+
+    #ageArticle {
+        grid-column: 2/3;
+        grid-row: 3;
+    }
+
+    #genderArticle {
+        grid-column: 3/4;
+        grid-row: 3;
+    }
+
+    #sizeArticle {
+        grid-column: 2/3;
+        grid-row: 4;
+    }
+
+    #localisationArticle {
+        grid-column: 3/4;
+        grid-row: 4;
+    }
+
+    #descriptionArticle {
+        grid-column: 2/4;
+        grid-row: 5;
+    }
+
+    .pAssociationDetail {
+        display: flex;
+        flex-direction: column;
+    }
+
+    #representativeArticle {
+        grid-column: 2/3;
+        grid-row: 2;
+    }
+
+    #rnaNumberArticle {
+        grid-column: 3/4;
+        grid-row: 2;
+    }
+
+    #phoneArticle {
+        grid-column: 2/3;
+        grid-row: 3;
+    }
+
+    #emailArticle {
+        grid-column: 3/4;
+        grid-row: 3;
+    }
+
+
+    #addressArticle {
+        grid-column: 2/4;
+        grid-row: 4;
+    }
+
+    .ctaAnimalPage {
+        grid-column: 1/4;
+        grid-row: 6;
+        display: flex;
+        justify-content: center;
+
+        button {
+            background-color: var(--orange-color);
+            border-radius: 10px;
+            width: fit-content;
+            padding: 0.3em;
+            margin-inline: 3em;
+        }
+    }   
+}

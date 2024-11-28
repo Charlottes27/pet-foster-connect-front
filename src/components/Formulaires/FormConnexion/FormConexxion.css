@@ -1,0 +1,14 @@
+.connexionForm {
+    display: flex;
+    flex-direction: column;
+    padding: 2em;
+    
+    button {
+        width: 50%;
+    }
+
+    .changePassword {
+        margin-bottom: 1em;
+        align-self: self-start;
+    }
+}
