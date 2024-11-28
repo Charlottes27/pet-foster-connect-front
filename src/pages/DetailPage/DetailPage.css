@@ -75,6 +75,37 @@
     grid-row: 5;
 }
 
+.pAssociationDetail {
+    display: flex;
+    flex-direction: column;
+}
+
+#representativeArticle {
+    grid-column: 2/3;
+    grid-row: 2;
+}
+
+#rnaNumberArticle {
+    grid-column: 3/4;
+    grid-row: 2;
+}
+
+#phoneArticle {
+    grid-column: 2/3;
+    grid-row: 3;
+}
+
+#emailArticle {
+    grid-column: 3/4;
+    grid-row: 3;
+}
+
+
+#addressArticle {
+    grid-column: 2/4;
+    grid-row: 4;
+}
+
 .ctaAnimalPage {
     grid-column: 1/4;
     grid-row: 6;

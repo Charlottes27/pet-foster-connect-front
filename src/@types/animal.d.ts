@@ -17,4 +17,4 @@ export interface IAnimal {
     id_family: null | number;
     created_at: string;
     updated_at: string;
-  }
+}

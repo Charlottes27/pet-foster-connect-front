@@ -5,9 +5,24 @@ import { useState } from "react";
 import "./Header.css";
 import logo from "../../asset/logo/PetFoster-Logo.png"
 import Nav from '../Nav/Nav.tsx';
+import { IAnimal } from "../../@types/animal";
+import { IAssociation } from "../../@types/association";
 
+interface IHeaderProps {
+    setEntityFilter: React.Dispatch<React.SetStateAction<IAnimal[] | IAssociation[]>>
+    setFilterAnimal: React.Dispatch<React.SetStateAction<{
+        species: string;
+        gender: string;
+        ageRange: string;
+        size: string;
+    }>>
+  setFilterAssociation: React.Dispatch<React.SetStateAction<{
+        nameAssociation: string;
+        city: string;
+    }>>
+}
 
-function Header () {
+function Header ({setEntityFilter, setFilterAnimal, setFilterAssociation}:IHeaderProps) {
     const mobile = useMediaQuery({query : "(max-width: 480px)"});
 
     const [openMenuBurger, setOpenMenuBurger] = useState(false);
@@ -30,7 +45,7 @@ function Header () {
                         Connexion / Inscription
                     </NavLink>}
                 </section>
-                <Nav openMenuBurger={openMenuBurger} setOpenMenuBurger={setOpenMenuBurger}/>
+                <Nav openMenuBurger={openMenuBurger} setOpenMenuBurger={setOpenMenuBurger} setEntityFilter={setEntityFilter} setFilterAnimal={setFilterAnimal} setFilterAssociation={setFilterAssociation}/>
             </header>
         </>
     );

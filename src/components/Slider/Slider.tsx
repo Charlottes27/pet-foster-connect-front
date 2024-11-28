@@ -5,36 +5,42 @@ import { useEffect, useState } from "react";
 
 import "./Slider.css";
 import { IAnimal } from "../../@types/animal";
+import { IAssociation } from "../../@types/association";
 import axiosInstance from "../../services/axios/axios";
 
 interface ISliderProps {
-    entity: IAnimal
+    entity: IAnimal | IAssociation 
     idEntity: number
 }
 
 function Slider({entity, idEntity}: ISliderProps) {
     const [validImages, setValidImages] = useState<string[]>([]);
 
+    const isAnimal = (entity: IAnimal | IAssociation): entity is IAnimal => {
+        return 'species' in entity;
+    };
+
     useEffect(() => {
         const validateImages = async () => {
         if (entity) {
-            const imageUrls = [
-            entity.profile_photo,
-            entity.photo1,
-            entity.photo2,
-            entity.photo3,
-            ]
-            .filter((photo) => photo)
+            let imageUrls: string[] = [entity?.profile_photo as string];
+            
+            if(isAnimal(entity)) {
+                imageUrls.push(
+                    entity.photo1 as string,
+                    entity.photo2 as string,
+                    entity.photo3 as string,
+                )
+            }
+            
+            imageUrls = imageUrls.filter((photo) => photo)
             .map((photo) => `${import.meta.env.VITE_BASE_URL_PUBLIC}/${photo}`);
-console.log(imageUrls);
 
             const validUrls = await Promise.all(
             imageUrls.map(async (url) =>
                 (await checkImageExists(url)) ? url : null
             )
             );
-console.log(validUrls);
-
 
             setValidImages(validUrls.filter((url) => url !== null) as string[]);
         }
