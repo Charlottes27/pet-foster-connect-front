@@ -10,7 +10,7 @@ function ScrollToTopButton () {
     useEffect(()=>{
         const handleScroll = () => {
             // Vérifiez si l'utilisateur a défilé plus que 100vh
-            if(window.scrollY > window.innerHeight * 7) {
+            if(window.scrollY > window.innerHeight * 4) {
                 setShowTopBtn(true);
             } else {
                 setShowTopBtn(false);

@@ -52,7 +52,6 @@ function Slider({entity, idEntity}: ISliderProps) {
     const checkImageExists = async (url: string) => {
         try {
         const res = await axiosInstance.head(url);
-        console.log(res);
         
         return res.status === 200;
         } catch (error) {

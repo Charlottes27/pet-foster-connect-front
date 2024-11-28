@@ -6,3 +6,9 @@
     object-fit: cover;
     height: 300px;
 }
+
+@media screen and (min-width: 950px) {
+    .carouselPhoto {
+        height: 220px;
+    }
+}

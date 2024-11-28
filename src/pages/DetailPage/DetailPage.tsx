@@ -82,6 +82,7 @@ function DetailPage () {
                 <div className="ctaAnimalPage">
                     {animal && <button >Je me propose famille d'accueil</button>}
                     <button >Contacter l'association</button>
+                    {association && <button >Les animaux de l'association</button>}
                 </div>
             </article>
         </main>
