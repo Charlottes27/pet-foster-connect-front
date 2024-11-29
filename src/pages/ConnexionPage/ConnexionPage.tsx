@@ -4,8 +4,15 @@ import "./ConnexionPage.css";
 import FormConnexion from "../../components/Formulaires/FormConnexion/FormConnexion";
 import FormInscrFa from "../../components/Formulaires/FormInscription/Famille/FormInscFa";
 import FormInscAsso from "../../components/Formulaires/FormInscription/Association/FormInscAsso";
+import { IUser } from "../../@types/user";
 
-function ConnexionPage () {
+
+interface IConnexionPageProps {
+    setUser: React.Dispatch<React.SetStateAction<IUser | null>>
+
+}
+
+function ConnexionPage ({setUser}: IConnexionPageProps) {
     const [openFormFa, setOpenFormFa] = useState(false);
     const [openFormAsso, setOpenFormAsso] = useState(false);
     const [closeSection, setCloseSection] = useState(false);
@@ -22,7 +29,7 @@ function ConnexionPage () {
 
     return (
         <main className="mainConnexion">
-                <FormConnexion />
+                <FormConnexion setUser={setUser}/>
 
                 <div className="separator"></div>
 

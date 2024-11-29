@@ -9,6 +9,7 @@ import { IAnimal } from "../../@types/animal";
 import { IAssociation } from "../../@types/association";
 import { IFilterAnimal } from "../../@types/filter";
 import { IFilterAssociation } from "../../@types/filter";
+import { useAuth } from "../AuthContext/AuthContext.tsx";
 
 interface IHeaderProps {
     setEntityFilter: React.Dispatch<React.SetStateAction<IAnimal[] | IAssociation[]>>
@@ -17,10 +18,11 @@ interface IHeaderProps {
 }
 
 function Header ({setEntityFilter, setFilterAnimal, setFilterAssociation}:IHeaderProps) {
-    const mobile = useMediaQuery({query : "(max-width: 480px)"});
-
     const [openMenuBurger, setOpenMenuBurger] = useState(false);
     
+    const mobile = useMediaQuery({query : "(max-width: 480px)"});
+    const { isAuthenticated, logout } = useAuth();
+
     return (
         <>
             <header>
@@ -34,9 +36,9 @@ function Header ({setEntityFilter, setFilterAnimal, setFilterAssociation}:IHeade
                             <div className="line"></div>
                         </div>
                     </button>
-                    :
-                    <NavLink to={"/connexion-inscription"} className="headerConnectionLink">
-                        Connexion / Inscription
+                    : 
+                    <NavLink to={isAuthenticated ? "#" : "/connexion-inscription"} className="headerConnectionLink" onClick={isAuthenticated ? logout : undefined}>
+                        {isAuthenticated ? "Deconnexion" : "Connexion / Inscription"}
                     </NavLink>}
                 </section>
                 <Nav openMenuBurger={openMenuBurger}

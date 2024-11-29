@@ -1,7 +1,9 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import { useState } from "react";
 
 import "./FormInscAsso.css";
+import { IFormDataAssociation } from "../../../../@types/association";
 
 interface IFormInscrAssoProps {
     openFormAsso: boolean
@@ -9,6 +11,22 @@ interface IFormInscrAssoProps {
 }
 
 function FormInscAsso ({openFormAsso, setOpenFormAsso}: IFormInscrAssoProps) {
+    const [formData, setFormData] = useState<IFormDataAssociation>({
+        firstname: "",
+        lastname: "",
+        email: "",
+        password: "",
+        passwordConfirmation: "",
+        association: {
+          representative: "",
+          rna_number: "",
+          postal_code: "",
+          city: "",
+          address: "",
+          phone: "",
+        },
+    });
+
     return (
         <form className={openFormAsso ? "inscriptionFormAsso active" : "inscriptionFormAsso"} action="inscription" method="post">
             <button type="button" className="closeButton" onClick={()=>setOpenFormAsso(false)}>

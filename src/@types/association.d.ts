@@ -19,3 +19,19 @@ export interface IAssociation {
     user: IUser;
     animals: IAnimal[];
 }
+
+export interface IFormDataAssociation {
+    firstname: string;
+    lastname: string;
+    email: string;
+    password: string;
+    passwordConfirmation: string;
+    association: {
+        representative: string;
+        rna_number: string;
+        postal_code: string;
+        city: string;
+        address: string;
+        phone: string;
+    };
+}

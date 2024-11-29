@@ -6,6 +6,7 @@ import { IAnimal } from "../@types/animal";
 import { IAssociation } from "../@types/association";
 import { IFilterAnimal } from "../@types/filter";
 import { IFilterAssociation } from "../@types/filter";
+import { IUser } from "../@types/user";
 
 import Header from "../components/Header/Header.tsx";
 import Footer from '../components/Footer/Footer.tsx';
@@ -13,12 +14,14 @@ import HomePage from "../pages/HomePage/HomePage.tsx";
 import ListPage from "../pages/ListPage/ListPage.tsx";
 import DetailPage from "../pages/DetailPage/DetailPage.tsx"
 import ConnexionPage from "../pages/ConnexionPage/ConnexionPage.tsx"
+import MySpacePage from "../pages/MySpacePage/MySpacePage.tsx";
+import Profil from "../components/Profil/Profil.tsx";
 
 function App() {
     const [entityFilter, setEntityFilter] =useState<IAnimal[] | IAssociation[]>([]);
     const [filterAnimal, setFilterAnimal] = useState<IFilterAnimal>({species: "", gender: "", ageRange: "", size: "" });
     const [filterAssociation, setFilterAssociation] = useState<IFilterAssociation>({ nameAssociation: "",  city: "" });
-
+    const [user, setUser] = useState<IUser | null>(null);
 
     return (
         <>
@@ -45,7 +48,16 @@ function App() {
                 />
                 <Route path="/association/:id" element={<DetailPage />}
                 />
-                <Route path="/connexion-inscription" element={<ConnexionPage />} />
+                <Route path="/connexion-inscription" element={<ConnexionPage setUser={setUser}/>} />
+
+
+
+
+
+
+                <Route path="/mon-espace" element={<MySpacePage />}>
+                    <Route path="mon-profil" element={<Profil />}/>
+                </Route>
             </Routes>
             <Footer />
         </>

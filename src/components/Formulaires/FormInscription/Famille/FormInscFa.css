@@ -2,7 +2,7 @@
     display: none;
     padding: 0 2em 1em 2em;
 
-    #confimPassword{
+    #confirmPassword{
         margin-bottom: 1em;
     }
 
@@ -127,12 +127,12 @@
             grid-row: 12;
         }
 
-        #labelConfimPasswordFa{
+        #labelConfirmPasswordFa{
             grid-column: 1/3;
             grid-row: 13;
         }
 
-        #confimPasswordFa{
+        #confirmPasswordFa{
             grid-column: 1/3;
             grid-row: 14;
         }
