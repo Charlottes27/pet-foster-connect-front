@@ -26,7 +26,7 @@ function Toast({ setToast, message, type }: IToastProps) {
     <div className="toastContainer">
       <div className={`toast ${type}`}>
         <p>{message}</p>
-        <button onClick={() => setToast(null)}>
+        <button className="btnToast" onClick={() => setToast(null)}>
           <FontAwesomeIcon icon={faXmark} />
         </button>
       </div>

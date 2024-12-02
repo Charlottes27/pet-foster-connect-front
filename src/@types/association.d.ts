@@ -25,7 +25,7 @@ export interface IFormDataAssociation {
     lastname: string;
     email: string;
     password: string;
-    passwordConfirmation: string;
+    confirmPassword: string;
     association: {
         representative: string;
         rna_number: string;

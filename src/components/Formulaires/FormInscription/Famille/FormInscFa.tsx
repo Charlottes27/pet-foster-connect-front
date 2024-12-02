@@ -2,11 +2,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { useState, ChangeEvent, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 import "./FormInscFa.css";
 import { IFormDataFamily } from "../../../../@types/family";
 import APIUser from "../../../../services/api/user";
 import Toast from "../../../Toast/Toast";
+import validForm from "../../../../utils/validForm";
+import { useAuth } from "../../../AuthContext/AuthContext";
 
 interface IFormInscrFaProps {
     openFormFa: boolean
@@ -14,6 +17,7 @@ interface IFormInscrFaProps {
 }
 
 function FormInscrFa ({openFormFa, setOpenFormFa}: IFormInscrFaProps) {
+    const [errorFields, setErrorFields] = useState<string[]>([])
     const [succesMessage, setSuccesMessage] = useState<string | null>(null);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [formData, setFormData] = useState<IFormDataFamily>({
@@ -30,12 +34,11 @@ function FormInscrFa ({openFormFa, setOpenFormFa}: IFormInscrFaProps) {
         },
     });
 
-console.log(formData);
-
     const navigate = useNavigate();
+    const {login} = useAuth();
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-        const {name, value} = event.target
+        const {name, value} = event.target;
         if (["address", "postal_code", "city", "phone"].includes(name)) {
             setFormData((prevData) => ({
                 ...prevData,
@@ -50,39 +53,76 @@ console.log(formData);
                 [name]: value,
             }))
         }
+        setErrorFields((prevFields) => prevFields.filter(field => field !== name && field !== `family.${name}`));
     };
 
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        if (formData.password !== formData.confirmPassword) {
-            setErrorMessage("la confimation du mot de passe doit être identique au mot de passe");
+        const missingRequiredFields = validForm.validateRequiredFields(formData, "family");
+        if (missingRequiredFields) {
+            setErrorMessage(missingRequiredFields.message);
+            setErrorFields(missingRequiredFields.fields);
             return;
         }
 
-        const {confirmPassword, ...dataToSubmit} = formData
-    
+        const fieldFormatsError = validForm.validateFieldFormats(formData);
+        if (fieldFormatsError) {
+            setErrorMessage(fieldFormatsError.message);
+            setErrorFields(fieldFormatsError.fileds)
+            return;
+        }
+
+        const passwordMatchError = validForm.validatePasswordMatch(formData);
+        console.log(passwordMatchError);
+        
+        if (passwordMatchError) {
+            setErrorMessage(passwordMatchError);
+            return;
+        }
+
+        const dataToSubmit = validForm.prepareDataForSubmission(formData);
+
         try {
-            const response = await APIUser.createUser(dataToSubmit)
+            const response = await APIUser.createUser(dataToSubmit!);
            
             if (response.data.token) {
-                localStorage.setItem("token", response.data.token);
+                login(response.data.token)
                 localStorage.setItem("user_id", response.data.user_id)
                 setSuccesMessage("Votre inscription a été effectuée avec succès !");
                 setErrorMessage("");
+                setErrorFields([]);
+                setFormData({
+                    firstname: "",
+                    lastname: "",
+                    email: "",
+                    password: "",
+                    confirmPassword: "",
+                    family: {
+                        address: "",
+                        postal_code: "",
+                        city: "",
+                        phone: "",
+                    },
+                })
                 setTimeout(() => {
                     navigate("/");
                 }, 1000);
             }
         } catch (error) {
-            
+            if(axios.isAxiosError(error)) {
+                if(error?.response?.data?.message) {
+                   return setErrorMessage(error.response.data.message)
+                }
+            }
+            setErrorMessage("Une erreur est survenue lors de l'inscription.");
         }
     };
 
     return (
-        <form className={openFormFa ? "inscriptionFormFa active" : "inscriptionFormFa"} action="inscription" method="post" onSubmit={handleSubmit}>
+        <form className={openFormFa ? "inscriptionFormFa active" : "inscriptionFormFa"} method="post" onSubmit={handleSubmit}>
             <button type="button" className="closeButton"
-                onClick={()=>{setOpenFormFa(false); setFormData({firstname: "",
+                onClick={()=>{setOpenFormFa(false); setErrorFields([]); setFormData({firstname: "",
                     lastname: "",
                     email: "",
                     password: "",
@@ -98,32 +138,32 @@ console.log(formData);
 
             <legend>Inscription : Famille d'accueil</legend>
 
-            <label htmlFor="lastname" id="labelLastnameFa">Nom *</label>
-            <input type="text" name="lastname" id="lastnameFa" value={formData.lastname} onChange={handleChange}/>
+            <label className={errorFields.includes("lastname")? "errorFields" : ""} htmlFor="lastnameFa" id="labelLastnameFa">Nom *</label>
+            <input className={errorFields.includes("lastname")? "errorFields" : ""} type="text" name="lastname" id="lastnameFa" autoComplete="family-name" value={formData.lastname} onChange={handleChange}/>
             
-            <label htmlFor="firstname" id="labelFirstnameFa">Prénom *</label>
-            <input type="text" name="firstname" id="firstnameFa" value={formData.firstname} onChange={handleChange}/>
+            <label className={errorFields.includes("firstname")? "errorFields" : ""} htmlFor="firstnameFa" id="labelFirstnameFa">Prénom *</label>
+            <input className={errorFields.includes("firstname")? "errorFields" : ""} type="text" name="firstname" id="firstnameFa" autoComplete="given-name" value={formData.firstname} onChange={handleChange}/>
 
-            <label htmlFor="address" id="labelAddressFa">Adresse *</label>
-            <input type="text" name="address" id="addressFa" value={formData.family.address} onChange={handleChange}/>
+            <label className={errorFields.includes("family.address")? "errorFields" : ""} htmlFor="addressFa" id="labelAddressFa">Adresse *</label>
+            <input className={errorFields.includes("family.address")? "errorFields" : ""} type="text" name="address" id="addressFa" autoComplete="off" value={formData.family.address} onChange={handleChange}/>
 
-            <label htmlFor="postal_Code" id="labelPostalCodeFa">Code Postal *</label>
-            <input type="number" name="postal_code" id="postalCodeFa" value={formData.family.postal_code} onChange={handleChange}/>
+            <label className={errorFields.includes("family.postal_code")? "errorFields" : ""} htmlFor="postalCodeFa" id="labelPostalCodeFa">Code Postal *</label>
+            <input className={errorFields.includes("family.postal_code")? "errorFields" : ""} type="number" name="postal_code" autoComplete="off" id="postalCodeFa" value={formData.family.postal_code} onChange={handleChange}/>
 
-            <label htmlFor="city" id="labelCityFa">Ville *</label>
-            <input type="text" name="city" id="cityFa" value={formData.family.city} onChange={handleChange}/>
+            <label className={errorFields.includes("family.city")? "errorFields" : ""} htmlFor="cityFa" id="labelCityFa">Ville *</label>
+            <input className={errorFields.includes("family.city")? "errorFields" : ""} type="text" name="city" id="cityFa" autoComplete="off" value={formData.family.city} onChange={handleChange}/>
 
-            <label htmlFor="phone" id="labelPhoneFa">Téléphone *</label>
-            <input type="tel" name="phone" id="phoneFa" value={formData.family.phone} onChange={handleChange}/>
+            <label className={errorFields.includes("family.phone")? "errorFields" : ""} htmlFor="phoneFa" id="labelPhoneFa">Téléphone *</label>
+            <input className={errorFields.includes("family.phone")? "errorFields" : ""} type="tel" name="phone" id="phoneFa" autoComplete="tel-national" value={formData.family.phone} onChange={handleChange}/>
 
-            <label htmlFor="email" id="labelEmailFa">Mail *</label>
-            <input type="email" name="email" id="emailFa" value={formData.email} onChange={handleChange}/>
+            <label className={errorFields.includes("email")? "errorFields" : ""} htmlFor="emailFa" id="labelEmailFa">Mail *</label>
+            <input className={errorFields.includes("email")? "errorFields" : ""} type="email" name="email" id="emailFa"  autoComplete="email" value={formData.email} onChange={handleChange}/>
 
-            <label htmlFor="password" id="labelPasswordFa">Mot de Passe *</label>
-            <input type="password" name="password" id="passwordFa" value={formData.password} onChange={handleChange}/>
+            <label className={errorFields.includes("password")? "errorFields" : ""} htmlFor="passwordFa" id="labelPasswordFa">Mot de Passe *</label>
+            <input className={errorFields.includes("password")? "errorFields" : ""} type="password" name="password" id="passwordFa" autoComplete="off" value={formData.password} onChange={handleChange}/>
 
-            <label htmlFor="confirmPassword" id="labelConfirmPasswordFa">Confirmation du mot de passe *</label>
-            <input type="password" name="confirmPassword" id="confirmPasswordFa" value={formData.confirmPassword} onChange={handleChange}/>
+            <label className={errorFields.includes("confirmPassword")? "errorFields" : ""} htmlFor="confirmPasswordFa" id="labelConfirmPasswordFa">Confirmation du mot de passe *</label>
+            <input className={errorFields.includes("confirmPassword")? "errorFields" : ""} type="password" name="confirmPassword" id="confirmPasswordFa" autoComplete="off" value={formData.confirmPassword} onChange={handleChange}/>
 
             {succesMessage && <Toast setToast={setSuccesMessage} message={succesMessage} type="success"/>}
             {errorMessage && <Toast setToast={setErrorMessage} message={errorMessage} type="error"/>}

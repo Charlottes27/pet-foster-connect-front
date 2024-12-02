@@ -38,7 +38,7 @@ function Header ({setEntityFilter, setFilterAnimal, setFilterAssociation}:IHeade
                     </button>
                     : 
                     <NavLink to={isAuthenticated ? "#" : "/connexion-inscription"} className="headerConnectionLink" onClick={isAuthenticated ? logout : undefined}>
-                        {isAuthenticated ? "Deconnexion" : "Connexion / Inscription"}
+                        {isAuthenticated ? "Déconnexion" : "Connexion / Inscription"}
                     </NavLink>}
                 </section>
                 <Nav openMenuBurger={openMenuBurger}

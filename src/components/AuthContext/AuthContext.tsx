@@ -68,6 +68,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     localStorage.removeItem("token"); // Supprime le token du localStorage
     localStorage.removeItem("refreshToken"); // Supprime le refresh token
     localStorage.removeItem("tokenExpiration"); // Supprime la date d'expiration du token
+    localStorage.removeItem("user_id");
   }, []);
 
   // Effet pour gérer le rafraîchissement automatique du token

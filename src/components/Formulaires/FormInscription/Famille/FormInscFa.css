@@ -17,6 +17,13 @@
         padding-block: 0 1em;
         width: fit-content;
     }
+
+    .errorFields {
+        color: red;
+        font-weight: bold;
+        border-color: red;
+
+    }
 }
 
 .inscriptionFormFa.active {

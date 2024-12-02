@@ -6,14 +6,22 @@ const APIUser = {
         lastname: string;
         email: string;
         password: string;
-        family: {
+        family?: {
             address: string;
             postal_code: string;
             city: string;
             phone: string;
         };
+        association?: {
+            representative: string;
+            rna_number: string;
+            postal_code: string;
+            city: string;
+            address: string;
+            phone: string;
+        };
     }) {
-        return await axiosInstance.post("/user", data)
+        return await axiosInstance.post("/user", data);
     }
 };
 
