@@ -10,18 +10,22 @@ import { IAssociation } from "../../@types/association";
 import { IFilterAnimal } from "../../@types/filter";
 import { IFilterAssociation } from "../../@types/filter";
 import { useAuth } from "../AuthContext/AuthContext.tsx";
+import { useDeconnexion } from "../../utils/deconnexion.ts";
+import { IUser } from "../../@types/user";
 
 interface IHeaderProps {
     setEntityFilter: React.Dispatch<React.SetStateAction<IAnimal[] | IAssociation[]>>
     setFilterAnimal: React.Dispatch<React.SetStateAction<IFilterAnimal>>
     setFilterAssociation: React.Dispatch<React.SetStateAction<IFilterAssociation>>
+    setUser: React.Dispatch<React.SetStateAction<IUser | null>>
 }
 
-function Header ({setEntityFilter, setFilterAnimal, setFilterAssociation}:IHeaderProps) {
+function Header ({setEntityFilter, setFilterAnimal, setFilterAssociation, setUser}:IHeaderProps) {
     const [openMenuBurger, setOpenMenuBurger] = useState(false);
     
     const mobile = useMediaQuery({query : "(max-width: 480px)"});
-    const { isAuthenticated, logout } = useAuth();
+    const { isAuthenticated } = useAuth();
+    const deconnexion = useDeconnexion();
 
     return (
         <>
@@ -37,7 +41,7 @@ function Header ({setEntityFilter, setFilterAnimal, setFilterAssociation}:IHeade
                         </div>
                     </button>
                     : 
-                    <NavLink to={isAuthenticated ? "#" : "/connexion-inscription"} className="headerConnectionLink" onClick={isAuthenticated ? logout : undefined}>
+                    <NavLink to={isAuthenticated ? "#" : "/connexion-inscription"} className="headerConnectionLink" onClick={isAuthenticated ? deconnexion(setUser) : undefined}>
                         {isAuthenticated ? "Déconnexion" : "Connexion / Inscription"}
                     </NavLink>}
                 </section>
@@ -45,7 +49,8 @@ function Header ({setEntityFilter, setFilterAnimal, setFilterAssociation}:IHeade
                     setOpenMenuBurger={setOpenMenuBurger}
                     setEntityFilter={setEntityFilter}
                     setFilterAnimal={setFilterAnimal}
-                    setFilterAssociation={setFilterAssociation}/>
+                    setFilterAssociation={setFilterAssociation}
+                    setUser={setUser}/>
             </header>
         </>
     );

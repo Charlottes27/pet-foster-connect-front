@@ -32,6 +32,10 @@ const APIAssociation = {
     async deleteAssociations(id: number) {
        return await axiosInstance.delete(`/association/${id}`)
     },
+
+    async getAnimalsOfAsso(id: number) {
+        return await axiosInstance.get(`/association/${id}/animal`)
+    },
 };
 
 export default APIAssociation;

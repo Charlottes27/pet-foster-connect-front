@@ -35,8 +35,6 @@ function FormInscAsso ({openFormAsso, setOpenFormAsso}: IFormInscrAssoProps) {
           phone: "",
         },
     });
-console.log(formData);
-
 
     const navigate = useNavigate();
     const {login} = useAuth();
@@ -112,7 +110,7 @@ console.log(formData);
                     },
                 })
                 setTimeout(() => {
-                    navigate("/");
+                    navigate("/mon-espace/mon-profil");
                 }, 1000);
             }
         } catch (error: unknown) {

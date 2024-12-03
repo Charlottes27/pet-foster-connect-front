@@ -9,7 +9,7 @@ import { IAnimal } from "../../@types/animal";
 import { IAssociation } from "../../@types/association";
 import { IFilterAnimal } from "../../@types/filter";
 import { IFilterAssociation } from "../../@types/filter";
-import InputFa from "./Input/InputFa/InputFa";
+import InputAn from "./Input/InputAn/InputAn";
 import InputAsso from "./Input/InputAsso/InputAsso";
 
 interface IFilterProps {
@@ -219,7 +219,7 @@ function Filter ({openFilter, setOpenFilter, entityData, setEntityFilter, title,
                 <h2>Filtres</h2>
 
                 {title === "animaux" && 
-                    <InputFa filterAnimal={filterAnimal}
+                    <InputAn filterAnimal={filterAnimal}
                         species={species}
                         sizes={sizes}
                         handleFilterChange={handleFilterChange}

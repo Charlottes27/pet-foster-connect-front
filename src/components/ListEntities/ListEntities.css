@@ -1,0 +1,13 @@
+.listEntities {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    gap: 5px;
+    margin: 1em;
+
+    .errorSearch {
+        font-size: 2em;
+    }
+    
+}

@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import './App.css';
 import { IAnimal } from "../@types/animal";
@@ -16,47 +16,88 @@ import DetailPage from "../pages/DetailPage/DetailPage.tsx"
 import ConnexionPage from "../pages/ConnexionPage/ConnexionPage.tsx"
 import MySpacePage from "../pages/MySpacePage/MySpacePage.tsx";
 import Profil from "../components/Profil/Profil.tsx";
+import APIUser from "../services/api/user.ts";
+import ListEntities from "../components/ListEntities/ListEntities.tsx";
 
 function App() {
+    const [entityData, setEntityData] =useState<IAnimal[] | IAssociation[]>([]);
+        // Détermine qui est affiché dans la liste, liste de animaux ou des asso?
     const [entityFilter, setEntityFilter] =useState<IAnimal[] | IAssociation[]>([]);
+        // Détermine la liste à afficher avec l'application des filtres
     const [filterAnimal, setFilterAnimal] = useState<IFilterAnimal>({species: "", gender: "", ageRange: "", size: "" });
     const [filterAssociation, setFilterAssociation] = useState<IFilterAssociation>({ nameAssociation: "",  city: "" });
     const [user, setUser] = useState<IUser | null>(null);
+        // Donne, avant le useEffect, les premières infos de qui est connecté (si connexion il y a) (email, id, role, id_family, id_asso)
+        //Ensuite les infos complètes
+console.log(user);
+console.log(entityData);
+
+
+    useEffect(() => {
+        const userId = localStorage.getItem("user_id");
+        if (userId) {
+            if (userId) {
+                const fetchUserData = async () => {
+                    const id = parseInt(userId, 10);
+                    try {
+                        const response = await APIUser.getUser(id);
+                        setUser(response.data);
+                    } catch (error) {
+                        console.log(error);
+                    }
+                };
+                fetchUserData();
+            }
+        }
+      }, [user?.id]);
+    
 
     return (
         <>
-            <Header setEntityFilter={setEntityFilter} setFilterAnimal={setFilterAnimal} setFilterAssociation={setFilterAssociation}/>
+            <Header setEntityFilter={setEntityFilter} setFilterAnimal={setFilterAnimal} setFilterAssociation={setFilterAssociation} setUser={setUser}/>
             <Routes>
                 <Route path="/" element={<HomePage />} />
-                <Route path="/animaux" element={<ListPage 
+
+                <Route path="/animaux" element={<ListPage
+                    entityData={entityData}
+                    setEntityData={setEntityData}
                     entityFilter={entityFilter}
                     setEntityFilter={setEntityFilter}
                     filterAnimal={filterAnimal}
                     setFilterAnimal={setFilterAnimal}
-                    filterAssociation={filterAssociation}
-                    setFilterAssociation={setFilterAssociation}/>} 
+                    user={user}/>} 
                 />
                 <Route path="/animal/:id" element={<DetailPage />} />
                 
                 <Route path="/associations" element={<ListPage
+                    entityData={entityData}
+                    setEntityData={setEntityData}
                     entityFilter={entityFilter}
                     setEntityFilter={setEntityFilter}
-                    filterAnimal={filterAnimal}
-                    setFilterAnimal={setFilterAnimal}
                     filterAssociation={filterAssociation}
-                    setFilterAssociation={setFilterAssociation}/>} 
+                    setFilterAssociation={setFilterAssociation}
+                    user={user}/>} 
                 />
-                <Route path="/association/:id" element={<DetailPage />}
-                />
+                <Route path="/association/:id" element={<DetailPage />} />
+
                 <Route path="/connexion-inscription" element={<ConnexionPage setUser={setUser}/>} />
 
+                <Route path="/mon-espace" element={<MySpacePage user={user!} />}>
 
-
-
-
-
-                <Route path="/mon-espace" element={<MySpacePage />}>
-                    <Route path="mon-profil" element={<Profil />}/>
+                    {user?.role === "family" &&
+                    <>
+                        <Route path="mon-profil" element={<Profil />} />
+                        <Route path="mes-animaux" element={<ListEntities entityData={entityData} setEntityData={setEntityData} user={user}/>}
+                        />
+                    </>
+                    }
+                    { user?.role === "association" &&
+                        <>
+                            <Route path="mon-profil" element={<Profil />} />
+                            <Route path="mes-animaux" element={<ListEntities entityData={entityData} setEntityData={setEntityData} user={user}/>}
+                            />
+                        </>
+                    }
                 </Route>
             </Routes>
             <Footer />

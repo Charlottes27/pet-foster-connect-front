@@ -9,6 +9,8 @@ import { IAnimal } from "../../@types/animal";
 import { IAssociation } from "../../@types/association";
 import { IFilterAnimal } from "../../@types/filter";
 import { IFilterAssociation } from "../../@types/filter";
+import { IUser } from "../../@types/user";
+import { useDeconnexion } from "../../utils/deconnexion";
 
 interface INavProps {
     openMenuBurger: boolean
@@ -16,11 +18,14 @@ interface INavProps {
     setEntityFilter: React.Dispatch<React.SetStateAction<IAnimal[] | IAssociation[]>>
     setFilterAnimal: React.Dispatch<React.SetStateAction<IFilterAnimal>>
     setFilterAssociation: React.Dispatch<React.SetStateAction<IFilterAssociation>>
+    setUser: React.Dispatch<React.SetStateAction<IUser | null>>
 }
 
-function Nav ({openMenuBurger, setOpenMenuBurger, setEntityFilter, setFilterAnimal, setFilterAssociation}: INavProps) {
+function Nav ({openMenuBurger, setOpenMenuBurger, setEntityFilter, setFilterAnimal, setFilterAssociation, setUser}: INavProps) {
     const { isAuthenticated } = useAuth();
     const mobile = useMediaQuery({query: "(max-width: 480px)"});
+
+    const deconnexion = useDeconnexion();
     
     return (
         <nav className={mobile ? (openMenuBurger ? "navMobile active" : "navMobile"): "nav"}>
@@ -64,8 +69,8 @@ function Nav ({openMenuBurger, setOpenMenuBurger, setEntityFilter, setFilterAnim
                 </NavLink>
 
                 {mobile ? 
-                <NavLink to={"/connexion-inscription"} className="navLink" onClick={()=>setOpenMenuBurger(false)}>
-                    Connexion / Inscription
+                <NavLink to={isAuthenticated ? "#" : "/connexion-inscription"} className="navLink" onClick={isAuthenticated ? deconnexion(setUser, setOpenMenuBurger) : (()=>setOpenMenuBurger(false))}>
+                    {isAuthenticated ? "Déconnexion" : "Connexion / Inscription"}
                 </NavLink>
                 :
                 ""}

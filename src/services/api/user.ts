@@ -1,7 +1,7 @@
 import axiosInstance from "../axios/axios"
 
 const APIUser = {
-    async createUser (data: {
+    async createUser(data: {
         firstname: string;
         lastname: string;
         email: string;
@@ -22,6 +22,10 @@ const APIUser = {
         };
     }) {
         return await axiosInstance.post("/user", data);
+    },
+
+    async getUser(id: number) {
+        return await axiosInstance.get(`/user/${id}`)
     }
 };
 

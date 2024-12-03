@@ -31,15 +31,14 @@ function FormConnexion ({setUser}: IFormConnexionProps) {
 
         try {
             const response = await APISignin.signin({email, password});
-            setUser(response.data.user)
+            setUser(response.data.user) // C'est ici que l'on renvoie les premières infos du user (email, id, role, id_family, id_asso)
 
             if (response.data.token) {
-                localStorage.setItem("user_id", response.data.user_id);
-
+                localStorage.setItem("user_id", response.data.user.id);
                 login(response.data.token)
             }
 
-            navigate("/")
+            navigate("/mon-espace/mes-animaux")
         } catch (error) {
             setErrorMessage("Erreur lors de la connexion. Vérifiez vos identifiants.");
             console.error("Erreur lors de la connexion :", error);

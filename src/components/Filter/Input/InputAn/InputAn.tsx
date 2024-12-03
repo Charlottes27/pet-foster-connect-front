@@ -1,14 +1,14 @@
-import "./InputFa.css";
+import "./InputAn.css";
 import { IFilterAnimal } from "../../../../@types/filter";
 
-interface IInputFaProps {
+interface IInputAnProps {
     filterAnimal: IFilterAnimal
     species: string[]
     sizes: string[]
     handleFilterChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void
 }
 
-function InputFa ({filterAnimal, species, sizes, handleFilterChange}: IInputFaProps) {
+function InputAn ({filterAnimal, species, sizes, handleFilterChange}: IInputAnProps) {
     return (
         <>
             <select name="species" value={filterAnimal.species} onChange={handleFilterChange}>
@@ -50,4 +50,4 @@ function InputFa ({filterAnimal, species, sizes, handleFilterChange}: IInputFaPr
     );
 };
 
-export default InputFa;
+export default InputAn;

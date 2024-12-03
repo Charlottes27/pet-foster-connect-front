@@ -106,7 +106,7 @@ function FormInscrFa ({openFormFa, setOpenFormFa}: IFormInscrFaProps) {
                     },
                 })
                 setTimeout(() => {
-                    navigate("/");
+                    navigate("/mon-espace/mon-profil");
                 }, 1000);
             }
         } catch (error) {
