@@ -13,6 +13,52 @@
 .profilImgWrap {
     width: 50%;
     margin-inline: auto;
+
+    img {
+        border-radius: 50%;
+    }
+}
+
+.editProfilImgWrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    input[type="file"] {
+        /* input masqué */
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        border: 0;
+    }
+
+    label,
+    button {
+        margin-top: 0.3em;
+    }
+
+    label,
+    .deleteProfilImg {
+        display: inline-block;
+        padding: 5px 15px;
+        border-radius: 10px;
+        font-size: 0.9rem;
+        font-weight: 500;
+        cursor: pointer;
+    }
+
+    label {
+        background-color: var(--blue-color);
+    }
+
+    .deleteProfilImg {
+        background-color: rgba(207, 103, 69, 0.854);
+    }
 }
 
 .fieldsWrap {

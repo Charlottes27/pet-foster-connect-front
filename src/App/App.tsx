@@ -8,6 +8,7 @@ import { IFilterAnimal } from "../@types/filter";
 import { IFilterAssociation } from "../@types/filter";
 import { IUser } from "../@types/user";
 
+import inactivityUserForLogout from "../components/inactivityUserForLogout/inactivityUserForLogout.tsx";
 import Header from "../components/Header/Header.tsx";
 import Footer from '../components/Footer/Footer.tsx';
 import HomePage from "../pages/HomePage/HomePage.tsx";
@@ -20,6 +21,8 @@ import APIUser from "../services/api/user.ts";
 import ListEntities from "../components/ListEntities/ListEntities.tsx";
 
 function App() {
+    inactivityUserForLogout();
+
     const [entityData, setEntityData] =useState<IAnimal[] | IAssociation[]>([]);
         // Détermine qui est affiché dans la liste, liste de animaux ou des asso?
     const [entityFilter, setEntityFilter] =useState<IAnimal[] | IAssociation[]>([]);
@@ -29,9 +32,6 @@ function App() {
     const [user, setUser] = useState<IUser | null>(null);
         // Donne, avant le useEffect, les premières infos de qui est connecté (si connexion il y a) (email, id, role, id_family, id_asso)
         //Ensuite les infos complètes
-console.log(user);
-console.log(entityData);
-
 
     useEffect(() => {
         const userId = localStorage.getItem("user_id");
@@ -50,7 +50,9 @@ console.log(entityData);
             }
         }
       }, [user?.id]);
-    
+
+console.log(user);
+console.log(entityData);
 
     return (
         <>

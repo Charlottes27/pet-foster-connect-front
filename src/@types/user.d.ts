@@ -7,10 +7,10 @@ export interface IUser {
     role?: string;
     id_family?: number;
     id_association?: number;
-    created_at: string;
-    updated_at: string;
+    created_at?: string;
+    updated_at?: string;
     family?: {
-        id: number;
+        id?: number;
         address: string;
         postal_code: string;
         city: string;
@@ -18,11 +18,12 @@ export interface IUser {
         description: string;
         garden: boolean;
         number_of_animals: number;
-        number_of_children: boolean;
-        profile_photo: string; 
-        id_user: number;
-        created_at: string;
-        updated_at:  string;
+        number_of_children: number;
+        profile_photo: string;
+        profile_file?: File | null;
+        id_user?: number;
+        created_at?: string;
+        updated_at?:  string;
     };
     association?: {
         id: number;
@@ -35,6 +36,7 @@ export interface IUser {
         phone: string;
         description: string;
         profile_photo: string;
+        profile_file?: File | null;
         id_user: number;
         created_at: string;
         updated_at: string;
