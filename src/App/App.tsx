@@ -84,7 +84,7 @@ console.log(entityData);
 
                 <Route path="/connexion-inscription" element={<ConnexionPage setUser={setUser}/>} />
 
-                <Route path="/mon-espace" element={<MySpacePage user={user!} />}>
+                <Route path="/mon-espace" element={<MySpacePage user={user!} setUser={setUser}/>}>
 
                     {user?.role === "family" &&
                     <>

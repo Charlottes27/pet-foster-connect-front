@@ -1,25 +1,25 @@
-import { useState, useEffect, useCallback } from "react";
+import { useRef, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 
 const inactivityUserForLogout = (inactivityTime = 3600000) => {
         //inactivityTime est une valeur pas défaut qui pourrait être changé lors de son appelle dans App
         // dans se cas penser à le rajouter dans les dépendances de checkInactivity
-    const [lastActivity, setLastActivity] = useState(Date.now());
+    const lastActivity = useRef(Date.now());
 
     const navigate = useNavigate();
 
-    const resetTimerOfLastActivity = useCallback(() => {
-        setLastActivity(Date.now());
-    }, []);
+    const resetTimerOfLastActivity = () => {
+        lastActivity.current = Date.now();
+    };
 
-    const checkInactivity = useCallback(() => {
+    const checkInactivity = () => {
         const currentTime = Date.now();
-        if (currentTime - lastActivity > inactivityTime) {
+        if (currentTime - lastActivity.current > inactivityTime) {
             localStorage.removeItem("token");
             localStorage.removeItem("user_id");
             navigate("/");
         }
-    }, [lastActivity]);
+    };
 
     useEffect(() => {
         const events =["mousedown", "keypress", "scroll", "touchstart"];
@@ -36,7 +36,7 @@ const inactivityUserForLogout = (inactivityTime = 3600000) => {
             // Cette fonction n'est appelée qu'avant que :
                 // le composant ne soit démonté
                 // l'effet ne soit réexécuté
-    }, [resetTimerOfLastActivity, checkInactivity])
+    }, [])
 
     // return resetTimerOfLastActivity;
         // Ce return pourrait me servir si dans mon appli j'ai besoin de réinitialisé manuellement lastActivity

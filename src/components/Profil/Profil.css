@@ -5,7 +5,7 @@
 }
 
 .formProfilUser {
-    margin: 0 0.8em 0.8em;
+    margin: 0 0.8em 1em;
     border: none;
     border-radius: 0;
 }
@@ -16,6 +16,7 @@
 
     img {
         border-radius: 50%;
+        border: 5px solid var(--blue-color);
     }
 }
 
@@ -91,9 +92,17 @@
     }
 }
 
-.btnModifProfile {
-    width: 100%;
-    background-color: var(--blue-color);
+.buttonsWrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+    .btnModifProfile {
+        width: 70%;
+        background-color: var(--blue-color);
+        border-radius: 18px;
+        margin-bottom: 1em;
+    }
 }
 
 
@@ -112,13 +121,15 @@
     }
 
     .profilImgWrap {
+        width: 70%;
         grid-column: 1/2;
         grid-row: 1/3;
         text-align: center;
-        margin-block: 1em;
+        margin-top: 1.5em;
     }
 
     h1 {
+        font-size: 3em;
         grid-column: 2/3;
         grid-row: 1/3;
         margin: auto;

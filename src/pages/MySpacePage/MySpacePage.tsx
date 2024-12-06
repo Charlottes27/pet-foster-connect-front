@@ -8,9 +8,10 @@ import { IUser } from "../../@types/user";
 
 interface IMySpacePageProps {
     user: IUser
+    setUser: React.Dispatch<React.SetStateAction<IUser | null>>
 }
 
-function MySpacePage ({user}:IMySpacePageProps) {
+function MySpacePage ({user, setUser}:IMySpacePageProps) {
     const [openNavProfil, setOpenNavProfil] = useState(false);
 
     const mobile = useMediaQuery({query: "(max-width: 740px)"});
@@ -20,7 +21,7 @@ function MySpacePage ({user}:IMySpacePageProps) {
             {mobile && <NavLink to={"#"} className="btnNavProfilMobile" onClick={()=>setOpenNavProfil(true)}>Menu de mon profil</NavLink>}
             <NavAsideProfil openNavProfil={openNavProfil} setOpenNavProfil={setOpenNavProfil} />
             <div className="sectionMainSpacePage">
-                <Outlet context={user}/>
+                <Outlet context={{user, setUser}}/>
             </div>
         </main>
     );
