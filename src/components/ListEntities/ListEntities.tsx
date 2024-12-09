@@ -20,9 +20,6 @@ interface IListEntitiesProps {
 function ListEntities ({entityFilter, entityData, setEntityData, user}:IListEntitiesProps) {
     const location = useLocation()!;
     const title = location.pathname.slice(1);
-   
-    console.log(entityData);
-    console.log(title);
 
     useEffect(()=>{
         if(title === "animaux") {
@@ -63,8 +60,6 @@ function ListEntities ({entityFilter, entityData, setEntityData, user}:IListEnti
         }
 
         const associationId = user?.id_association || user?.association?.id;
-    console.log(associationId);
-    
     
         if ((title === "mon-espace/mes-animaux") && (user?.role === "association") && associationId) {
             const Animals = async () => {

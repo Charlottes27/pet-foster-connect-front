@@ -1,7 +1,5 @@
 import _ from 'lodash';
 import valideInput from "./isValidInput";
-import { IFormDataFamily } from '../@types/family';
-import { IFormDataAssociation } from '../@types/association';
 
 interface IFormData {
     firstname: string,

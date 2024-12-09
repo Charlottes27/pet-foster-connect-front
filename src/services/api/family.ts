@@ -10,9 +10,19 @@ const APIFamily = {
         return await axiosInstance.patch(`/family/${id}`, data)
     },
 
+    async pathFamilyPhoto(id: number, data: FormData) {
+        return await axiosInstance.patch(`/family/${id}`, data, {
+            headers : {"Content-Type": "miltipart/form-data"}
+        })
+    },
+
     async getAnimalsOfFamily(id:number) {
         return await axiosInstance.get(`/family/${id}/animal`)
-    }
+    },
+
+    // async uploadPhoto () {
+    //     return await axiosInstance.patch();
+    // },
 };
 
 export default APIFamily;

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useParams, useNavigate } from "react-router-dom";
 
 import "./DetailPage.css";
 import Slider from "../../components/Slider/Slider.tsx";
@@ -20,7 +20,8 @@ function DetailPage () {
 
     const [animal, setAnimal] = useState<IAnimal | null>(null);
     const [association, setAssociation] = useState<IAssociation | null>(null);
-    
+
+    const navigate = useNavigate();
 
     useEffect(()=>{
         const entity = async () => {
@@ -39,6 +40,19 @@ function DetailPage () {
         }
         entity();
     }, [titleUrl, idEntity]);
+
+
+    const associationId = animal?.id_association;
+
+    const navigateDetailAsso = () => {
+        setAnimal(null);
+        navigate(`/association/${associationId}`);
+    };
+
+    const navigateOnAnimalsListAsso = () => {
+        setAssociation(null);
+        navigate(`/association/${associationId}/animaux`);
+    };
 
     return (
         <main>
@@ -72,8 +86,8 @@ function DetailPage () {
 
                 <div className="ctaAnimalPage">
                     {animal && <button >Je me propose famille d'accueil</button>}
-                    <button >Contacter l'association</button>
-                    {association && <button >Les animaux de l'association</button>}
+                    <button onClick={navigateDetailAsso}>Contacter l'association</button>
+                    {association && <button onClick={navigateOnAnimalsListAsso}>Les animaux de l'association</button>}
                 </div>
             </article>
         </main>

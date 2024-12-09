@@ -32,6 +32,7 @@ function App() {
     const [user, setUser] = useState<IUser | null>(null);
         // Donne, avant le useEffect, les premières infos de qui est connecté (si connexion il y a) (email, id, role, id_family, id_asso)
         //Ensuite les infos complètes
+console.log(user);
 
     useEffect(() => {
         const userId = localStorage.getItem("user_id");
@@ -51,8 +52,6 @@ function App() {
         }
       }, [user?.id]);
 
-console.log(user);
-console.log(entityData);
 
     return (
         <>
@@ -81,6 +80,7 @@ console.log(entityData);
                     user={user}/>} 
                 />
                 <Route path="/association/:id" element={<DetailPage />} />
+                <Route path="/association/:id/animaux" element={<ListPage entityData={entityData} setEntityData={setEntityData} />} />
 
                 <Route path="/connexion-inscription" element={<ConnexionPage setUser={setUser}/>} />
 

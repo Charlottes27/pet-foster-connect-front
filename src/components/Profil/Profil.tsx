@@ -55,21 +55,21 @@ function Profil () {
     const [profilePhoto, setProfilePhoto] =useState<string | undefined>(undefined)
 
     const {user, setUser} = useOutletContext<{ user: IUser; setUser: React.Dispatch<React.SetStateAction<IUser>>}>();
-console.log(user);
-console.log(formDataUser.family?.profile_photo);
-console.log(typeof formDataUser.family?.profile_photo);
 console.log(profilePhoto);
-
-
+console.log(user);
+console.log(user.family?.profile_photo);
+console.log(typeof user.family?.profile_photo);
+console.log(user.family?.profile_file);
+console.log(profilePhoto);
 
     useEffect(() => {
         if (user) {
             let profileFile: File | null;
+            const photo = user.family?.profile_photo;
 
-            if (user.family?.profile_photo) {
-                const dataPhoto = user.family.profile_photo;
-                profileFile = new File([dataPhoto], `serverProfilFile-${user.family.id}.jpg`, { type : "image/jpeg"})
-                user.family.profile_file = profileFile
+            if (photo) {
+                profileFile = new File([photo], `serverProfilFile-${user.family!.id}.jpg`, { type : "image/jpeg"})
+                user.family!.profile_file = profileFile
             } else {
                 profileFile = null;
             }
@@ -82,7 +82,8 @@ console.log(profilePhoto);
                 ...prevData,
                 ...user,
             }));
-            setProfilePhoto(profileFile ? `${import.meta.env.VITE_BASE_URL_PUBLIC}/${user.family?.profile_photo}` : profilePhoto)
+            setProfilePhoto( photo )
+                //? photo!.startsWith("htpp") ? photo :  `${import.meta.env.VITE_BASE_URL_PUBLIC}/${photo}` : undefined
         }
 
     }, [user])
@@ -100,32 +101,44 @@ console.log(profilePhoto);
 
     const handleChangeInput = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const {name, value, type} = event.target
-        const files = "files" in event.target ? event.target.files : undefined;
 
         if (type === "file") {
-            const file = files?.[0];
+            const file = "files" in event.target ? event.target?.files?.[0] : undefined;
+console.log(file);
 
             if (file) {
-                const reader = new FileReader();
-                console.log(reader);
+                const previewUrl = URL.createObjectURL(file);
+console.log(previewUrl);
+console.log(typeof previewUrl);
 
-                reader.onloadend = () => {
-                    setProfilePhoto(reader.result as string);
-                    setFormDataUser((prevData)=> ({
-                        ...prevData,
-                        family:{
-                            ...prevData.family!,
-                            profile_photo: reader.result as string,
-                            profile_file: file,
-                        },
-                    }));
-                }
-                reader.readAsDataURL(file); 
+
+                setProfilePhoto(previewUrl);
+
+                setFormDataUser((prevData)=> ({
+                    ...prevData,
+                    family:{
+                        ...prevData.family!,
+                        profile_photo: previewUrl,
+                        profile_file:file,
+                    },
+                }))
+
+
+                // const reader = new FileReader();
+
+                // reader.onloadend = () => {
+                    //setProfilePhoto(reader.result as string);
+                    // setFormDataUser((prevData)=> ({
+                    //     ...prevData,
+                    //     family:{
+                    //         ...prevData.family!,
+                    //         profile_photo: reader.result as string,
+                    //         profile_file: file,
+                    //     },
+                    // }));
+                // }
+                // reader.readAsDataURL(file); 
             }
-console.log(profilePhoto);
-console.log(formDataUser);
-
-
         } else {
             setFormDataUser((prevData)=>{
                 const isFamilyField = ['address', 'postal_code', 'city', 'phone', 'description', 'number_of_children', 'number_of_animals'].includes(name);
@@ -167,7 +180,7 @@ console.log(formDataUser);
 
         const formSubmit = new FormData(event.target as HTMLFormElement);
         const modifiedFields: Partial<IFamilyUser> = {};
-
+        
         if (formSubmit.get("lastname") !== originalDataUser.lastname) {
            if (!modifiedFields.user) {
                 modifiedFields.user = {};
@@ -190,14 +203,6 @@ console.log(formDataUser);
         }
 
         if (originalDataUser.family) {
-console.log(formSubmit.get("profile_photo"));
-console.log(originalDataUser.family?.profile_photo);
-
-
-            if (formSubmit.get("profile_photo") !== originalDataUser.family?.profile_photo) {
-                modifiedFields.profile_photo = profilePhoto;
-            }
-    
             if (formSubmit.get("address") !== originalDataUser.family?.address) {
                 modifiedFields.address = formSubmit.get("address") as string;
             }
@@ -238,26 +243,57 @@ console.log(originalDataUser.family?.profile_photo);
                 }
             }
         }
-console.log(modifiedFields);
+
+        const sendTextData = async () => {
+            if (modifiedFields) {
+                try {
+                    const response = originalDataUser.family ? await APIFamily.pathFamily(user?.family?.id!, modifiedFields) : await APIFamily.pathFamily(user?.family?.id!, modifiedFields)
+                   return response.data;
+                } catch (err: unknown) {
+                    console.log(err)
+                    console.error(
+                        "Erreur lors de la modification des informations de l'association :",
+                        (err as Error).message
+                    );
+                    throw new Error("Une erreur est survenue lors de la modification.");
+                }
+            }
+        };
+console.log(profilePhoto);
+console.log(user.family?.profile_file!);
+
+
+        const sendPhoto = async () => {
+            if (profilePhoto && profilePhoto !== originalDataUser.family?.profile_photo) {
+                const photoFormData = new FormData();
+                photoFormData.append("profile_photo", user.family?.profile_file!);
+console.log(photoFormData.entries());
+
+                try {
+                    const response = await APIFamily.pathFamilyPhoto(user?.family?.id!, photoFormData);
+                    return response.data;
+                } catch (error) {
+                    console.log(error);
+                    throw new Error("Une erreur est survenue lors de l'envoi de la photo.");
+                }
+            }
+        };
 
         try {
-            const response = originalDataUser.family ? await APIFamily.pathFamily(user?.family?.id!, modifiedFields) : await APIFamily.pathFamily(user?.family?.id!, modifiedFields)
-            if(response.data) {
+            const [textResponse, photoResponse] = await Promise.all([sendTextData(), sendPhoto()]);
+            if(textResponse || photoResponse) {
                 setIsInfoEditMode(false);
                 setUser(formDataUser);
                 setSuccessMessage("Modifications enregistrées avec succès !");
             } else {
                 setErrorMessage("Aucune réponse du serveur.");
             }
-        } catch (err: unknown) {
-            console.log(err)
-            console.error(
-                "Erreur lors de la modification des informations de l'association :",
-                (err as Error).message
-            );
+        } catch (error) {
             setErrorMessage("Une erreur est survenue lors de la modification.");
             setSuccessMessage("");
         }
+        console.log(formDataUser);
+        
     };
 
 
