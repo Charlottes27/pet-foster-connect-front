@@ -5,6 +5,7 @@ const regexPatterns = {
     presenceLetters: /^(?=(?:.*[a-zA-Z]){2}).*$/,
     validEmail: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
     rnaNumber: /^W\d{9}$/,
+    strongPassword: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+[\]{};':"\\|,.<>?]).{8,}$/,
 };
 type RegexKey = keyof typeof regexPatterns;
 

@@ -24,6 +24,22 @@
         border-color: red;
 
     }
+
+    .divInputPassword {
+        -webkit-text-security: disc !important;
+        padding-block: 1px;
+        padding-inline: 2px;
+        border: 1px solid var(--black-color);
+        border-radius: 5px;
+
+        .infoInput {
+            -webkit-text-security: none;
+            padding-block: 0;
+            padding-inline: 0;
+            border: none;
+            width: 90%;
+        }
+    }
 }
 
 .inscriptionFormFa.active {

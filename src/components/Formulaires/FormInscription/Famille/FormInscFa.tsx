@@ -1,11 +1,12 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faXmark, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { useState, ChangeEvent, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import "./FormInscFa.css";
 import { IFormDataFamily } from "../../../../@types/family";
+import { IUser } from "../../../../@types/user";
 import APIUser from "../../../../services/api/user";
 import Toast from "../../../Toast/Toast";
 import validForm from "../../../../utils/validForm";
@@ -14,12 +15,15 @@ import { useAuth } from "../../../AuthContext/AuthContext";
 interface IFormInscrFaProps {
     openFormFa: boolean
     setOpenFormFa: React.Dispatch<React.SetStateAction<boolean>>
+    setUser: React.Dispatch<React.SetStateAction<IUser | null>>
 }
 
-function FormInscrFa ({openFormFa, setOpenFormFa}: IFormInscrFaProps) {
+function FormInscrFa ({openFormFa, setOpenFormFa, setUser}: IFormInscrFaProps) {
     const [errorFields, setErrorFields] = useState<string[]>([])
     const [succesMessage, setSuccesMessage] = useState<string | null>(null);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [formData, setFormData] = useState<IFormDataFamily>({
         firstname: "",
         lastname: "",
@@ -85,10 +89,12 @@ function FormInscrFa ({openFormFa, setOpenFormFa}: IFormInscrFaProps) {
 
         try {
             const response = await APIUser.createUser(dataToSubmit!);
+           console.log(response);
            
             if (response.data.token) {
                 login(response.data.token)
-                localStorage.setItem("user_id", response.data.user_id)
+                localStorage.setItem("user_id", response.data.userFamily.id);
+                setUser(response.data.userFamily);
                 setSuccesMessage("Votre inscription a été effectuée avec succès !");
                 setErrorMessage("");
                 setErrorFields([]);
@@ -145,13 +151,13 @@ function FormInscrFa ({openFormFa, setOpenFormFa}: IFormInscrFaProps) {
             <input className={errorFields.includes("firstname")? "errorFields" : ""} type="text" name="firstname" id="firstnameFa" autoComplete="given-name" value={formData.firstname} onChange={handleChange}/>
 
             <label className={errorFields.includes("family.address")? "errorFields" : ""} htmlFor="addressFa" id="labelAddressFa">Adresse *</label>
-            <input className={errorFields.includes("family.address")? "errorFields" : ""} type="text" name="address" id="addressFa" autoComplete="off" value={formData.family.address} onChange={handleChange}/>
+            <input className={errorFields.includes("family.address")? "errorFields" : ""} type="text" name="address" id="addressFa" autoComplete="on" value={formData.family.address} onChange={handleChange}/>
 
             <label className={errorFields.includes("family.postal_code")? "errorFields" : ""} htmlFor="postalCodeFa" id="labelPostalCodeFa">Code Postal *</label>
-            <input className={errorFields.includes("family.postal_code")? "errorFields" : ""} type="number" name="postal_code" autoComplete="off" id="postalCodeFa" value={formData.family.postal_code} onChange={handleChange}/>
+            <input className={errorFields.includes("family.postal_code")? "errorFields" : ""} type="number" name="postal_code" autoComplete="on" id="postalCodeFa" value={formData.family.postal_code} onChange={handleChange}/>
 
             <label className={errorFields.includes("family.city")? "errorFields" : ""} htmlFor="cityFa" id="labelCityFa">Ville *</label>
-            <input className={errorFields.includes("family.city")? "errorFields" : ""} type="text" name="city" id="cityFa" autoComplete="off" value={formData.family.city} onChange={handleChange}/>
+            <input className={errorFields.includes("family.city")? "errorFields" : ""} type="text" name="city" id="cityFa" autoComplete="on" value={formData.family.city} onChange={handleChange}/>
 
             <label className={errorFields.includes("family.phone")? "errorFields" : ""} htmlFor="phoneFa" id="labelPhoneFa">Téléphone *</label>
             <input className={errorFields.includes("family.phone")? "errorFields" : ""} type="tel" name="phone" id="phoneFa" autoComplete="tel-national" value={formData.family.phone} onChange={handleChange}/>
@@ -160,10 +166,17 @@ function FormInscrFa ({openFormFa, setOpenFormFa}: IFormInscrFaProps) {
             <input className={errorFields.includes("email")? "errorFields" : ""} type="email" name="email" id="emailFa"  autoComplete="email" value={formData.email} onChange={handleChange}/>
 
             <label className={errorFields.includes("password")? "errorFields" : ""} htmlFor="passwordFa" id="labelPasswordFa">Mot de Passe *</label>
-            <input className={errorFields.includes("password")? "errorFields" : ""} type="password" name="password" id="passwordFa" autoComplete="off" value={formData.password} onChange={handleChange}/>
+            <div className="divInputPassword">
+                <input className={errorFields.includes("password")? "errorFields infoInput" : "infoInput"} type={showPassword ? "text" : "password"} name="password" id="passwordFa" autoComplete="off" value={formData.password} onChange={handleChange}/>
+                <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} onClick={()=>{showPassword ? setShowPassword(false) : setShowPassword(true)}} />
+            </div>
 
             <label className={errorFields.includes("confirmPassword")? "errorFields" : ""} htmlFor="confirmPasswordFa" id="labelConfirmPasswordFa">Confirmation du mot de passe *</label>
-            <input className={errorFields.includes("confirmPassword")? "errorFields" : ""} type="password" name="confirmPassword" id="confirmPasswordFa" autoComplete="off" value={formData.confirmPassword} onChange={handleChange}/>
+            <div className="divInputPassword">
+                <input className={errorFields.includes("confirmPassword")? "errorFields infoInput" : "infoInput"} type={showConfirmPassword ? "text" : "password"} name="confirmPassword" id="confirmPasswordFa" autoComplete="off" value={formData.confirmPassword} onChange={handleChange}/>
+                <FontAwesomeIcon icon={showConfirmPassword ? faEyeSlash : faEye} onClick={()=>{showConfirmPassword ? setShowConfirmPassword(false) : setShowConfirmPassword(true)}} />
+            </div>
+
 
             {succesMessage && <Toast setToast={setSuccesMessage} message={succesMessage} type="success"/>}
             {errorMessage && <Toast setToast={setErrorMessage} message={errorMessage} type="error"/>}

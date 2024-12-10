@@ -1,3 +1,5 @@
+import { IUserOnly } from "./user";
+
 export interface IFormDataFamily {
     firstname: string;
     lastname: string;
@@ -42,12 +44,7 @@ export interface IFamilyUser {
     profile_photo?: string;
     profile_file?: File;
     id_user?: number;
-    user?: {
-        firstname?: string;
-        lastname?: string;
-        email?: string;
-        password?: string;
-    };
+    user?: IUserOnly;
     created_at?: string;
     updated_at?:  string;
 }

@@ -29,3 +29,16 @@ export interface IUser {
         updated_at: string;
     }
 }
+
+export interface IUserOnly {
+    id?: number;
+    firstname?: string;
+    lastname?: string;
+    email?: string;
+    password?: string;
+    currentPassword?: string;
+    newPassword?: string;
+    confirmPassword?: string;
+    created_at?: string;
+    updated_at?: string;
+}

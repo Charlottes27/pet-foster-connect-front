@@ -1,11 +1,12 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faXmark, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { useState, ChangeEvent, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import "./FormInscAsso.css";
 import { IFormDataAssociation } from "../../../../@types/association";
+import { IUser } from "../../../../@types/user";
 import APIUser from "../../../../services/api/user";
 import Toast from "../../../Toast/Toast";
 import validForm from "../../../../utils/validForm";
@@ -14,12 +15,15 @@ import { useAuth } from "../../../AuthContext/AuthContext";
 interface IFormInscrAssoProps {
     openFormAsso: boolean
     setOpenFormAsso: React.Dispatch<React.SetStateAction<boolean>>
+    setUser: React.Dispatch<React.SetStateAction<IUser | null>>
 }
 
-function FormInscAsso ({openFormAsso, setOpenFormAsso}: IFormInscrAssoProps) {
+function FormInscAsso ({openFormAsso, setOpenFormAsso, setUser}: IFormInscrAssoProps) {
     const [errorFields, setErrorFields] = useState<string[]>([])
     const [succesMessage, setSuccesMessage] = useState<string | null>(null);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [formData, setFormData] = useState<IFormDataAssociation>({
         firstname: "",
         lastname: "",
@@ -87,10 +91,12 @@ function FormInscAsso ({openFormAsso, setOpenFormAsso}: IFormInscrAssoProps) {
 
         try {
             const response = await APIUser.createUser(dataToSubmit)
+console.log(response.data);
 
             if (response.data.token) {
-                login(response.data.token)
-                localStorage.setItem("user_id", response.data.user_id)
+                login(response.data.token);
+                localStorage.setItem("user_id", response.data.userAssociation.id);
+                setUser(response.data.userAssociation);
                 setSuccesMessage("Votre inscription a été effectuée avec succès !");
                 setErrorMessage("");
                 setErrorFields([]);
@@ -175,10 +181,16 @@ function FormInscAsso ({openFormAsso, setOpenFormAsso}: IFormInscrAssoProps) {
             <input className={errorFields.includes("email")? "errorFields" : ""} type="email" name="email" id="emailAsso" autoComplete="email" value={formData.email} onChange={handleChange}/>
 
             <label className={errorFields.includes("password")? "errorFields" : ""} htmlFor="passwordAsso" id="labelPasswordAsso">Mot de Passe *</label>
-            <input className={errorFields.includes("password")? "errorFields" : ""} type="password" name="password" id="passwordAsso" autoComplete="off" value={formData.password} onChange={handleChange}/>
+            <div className="divInputPassword">
+                <input className={errorFields.includes("password")? "errorFields infoInput" : "infoInput"} type={showPassword ? "text" : "password"} name="password" id="passwordAsso" autoComplete="off" value={formData.password} onChange={handleChange}/>
+                <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} onClick={()=>{showPassword ? setShowPassword(false) : setShowPassword(true)}} />
+            </div>
 
             <label className={errorFields.includes("confirmPassword")? "errorFields" : ""} htmlFor="confimPasswordAsso" id="labelConfimPasswordAsso">Confirmation du mot de passe *</label>
-            <input className={errorFields.includes("confirmPassword")? "errorFields" : ""} type="password" name="confirmPassword" id="confimPasswordAsso" autoComplete="off" value={formData.confirmPassword} onChange={handleChange}/>
+            <div className="divInputPassword">
+                <input className={errorFields.includes("confirmPassword")? "errorFields infoInput" : "infoInput"} type={showConfirmPassword ? "text" : "password"} name="confirmPassword" id="confimPasswordAsso" autoComplete="off" value={formData.confirmPassword} onChange={handleChange}/>
+                <FontAwesomeIcon icon={showConfirmPassword ? faEyeSlash : faEye} onClick={()=>{showConfirmPassword ? setShowConfirmPassword(false) : setShowConfirmPassword(true)}} />
+            </div>
 
             {succesMessage && <Toast setToast={setSuccesMessage} message={succesMessage} type="success"/>}
             {errorMessage && <Toast setToast={setErrorMessage} message={errorMessage} type="error"/>}

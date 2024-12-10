@@ -4,6 +4,7 @@ import { useState } from "react";
 
 import "./Header.css";
 import logo from "../../asset/logo/PetFoster-Logo.png"
+import logoUser from "../../asset/logo/user.svg"
 import Nav from '../Nav/Nav.tsx';
 import { IAnimal } from "../../@types/animal";
 import { IAssociation } from "../../@types/association";
@@ -17,10 +18,11 @@ interface IHeaderProps {
     setEntityFilter: React.Dispatch<React.SetStateAction<IAnimal[] | IAssociation[]>>
     setFilterAnimal: React.Dispatch<React.SetStateAction<IFilterAnimal>>
     setFilterAssociation: React.Dispatch<React.SetStateAction<IFilterAssociation>>
+    user: IUser | null
     setUser: React.Dispatch<React.SetStateAction<IUser | null>>
 }
 
-function Header ({setEntityFilter, setFilterAnimal, setFilterAssociation, setUser}:IHeaderProps) {
+function Header ({setEntityFilter, setFilterAnimal, setFilterAssociation, user, setUser}:IHeaderProps) {
     const [openMenuBurger, setOpenMenuBurger] = useState(false);
     
     const mobile = useMediaQuery({query : "(max-width: 480px)"});
@@ -41,15 +43,19 @@ function Header ({setEntityFilter, setFilterAnimal, setFilterAssociation, setUse
                         </div>
                     </button>
                     : 
-                    <NavLink to={isAuthenticated ? "#" : "/connexion-inscription"} className="headerConnectionLink" onClick={isAuthenticated ? deconnexion(setUser) : undefined}>
-                        {isAuthenticated ? "Déconnexion" : "Connexion / Inscription"}
-                    </NavLink>}
+                    <div className="buttonsHeaderApp">
+                        {isAuthenticated && <NavLink to={"/mon-espace/mon-profil"} className="headerConnectionLink"><img src={user?.family?.profile_photo ?? logoUser} alt="photo de profil" /><p>Bonjour {user?.firstname} / Profil</p></NavLink>}
+                        <NavLink to={isAuthenticated ? "#" : "/connexion-inscription"} className="headerConnectionLink" onClick={isAuthenticated ? deconnexion(setUser) : undefined}>
+                            {isAuthenticated ? "Déconnexion" : "Connexion / Inscription"}
+                        </NavLink>
+                    </div>}
                 </section>
                 <Nav openMenuBurger={openMenuBurger}
                     setOpenMenuBurger={setOpenMenuBurger}
                     setEntityFilter={setEntityFilter}
                     setFilterAnimal={setFilterAnimal}
                     setFilterAssociation={setFilterAssociation}
+                    user={user}
                     setUser={setUser}/>
             </header>
         </>

@@ -9,7 +9,6 @@ import { IUser } from "../../@types/user";
 
 interface IConnexionPageProps {
     setUser: React.Dispatch<React.SetStateAction<IUser | null>>
-
 }
 
 function ConnexionPage ({setUser}: IConnexionPageProps) {
@@ -49,9 +48,9 @@ function ConnexionPage ({setUser}: IConnexionPageProps) {
                     </ul>
                 </section>
 
-                <FormInscrFa openFormFa={openFormFa} setOpenFormFa={setOpenFormFa}/>
+                <FormInscrFa openFormFa={openFormFa} setOpenFormFa={setOpenFormFa} setUser={setUser} />
 
-                <FormInscAsso openFormAsso={openFormAsso} setOpenFormAsso={setOpenFormAsso}/>
+                <FormInscAsso openFormAsso={openFormAsso} setOpenFormAsso={setOpenFormAsso} setUser={setUser} />
 
         </main>
     )

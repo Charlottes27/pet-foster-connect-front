@@ -6,10 +6,12 @@ import { useOutletContext } from "react-router-dom";
 import "./Profil.css";
 import userIcon from "../../asset/logo/user.svg";
 import ConfirmModal from "../ConfirmModal/ConfirmModal";
+import FormEditPassword from "../Formulaires/FormEditPassword/FormEditPassword";
 import { IUser } from "../../@types/user";
 import { IFamilyUser } from "../../@types/family";
 import APIFamily from "../../services/api/family";
 
+type UserFields = "lastname" | "firstname" | "email";
 
 function Profil () {
     const [isInfoEditMode, setIsInfoEditMode] = useState(false);
@@ -55,12 +57,6 @@ function Profil () {
     const [profilePhoto, setProfilePhoto] =useState<string | undefined>(undefined)
 
     const {user, setUser} = useOutletContext<{ user: IUser; setUser: React.Dispatch<React.SetStateAction<IUser>>}>();
-console.log(profilePhoto);
-console.log(user);
-console.log(user.family?.profile_photo);
-console.log(typeof user.family?.profile_photo);
-console.log(user.family?.profile_file);
-console.log(profilePhoto);
 
     useEffect(() => {
         if (user) {
@@ -86,7 +82,11 @@ console.log(profilePhoto);
                 //? photo!.startsWith("htpp") ? photo :  `${import.meta.env.VITE_BASE_URL_PUBLIC}/${photo}` : undefined
         }
 
-    }, [user])
+    }, [user]);
+
+    // useEffect(() => {
+
+    // }, [profilePhoto])
 
     const handleClickDeletePhoto = () => {
         setProfilePhoto(undefined);
@@ -104,14 +104,9 @@ console.log(profilePhoto);
 
         if (type === "file") {
             const file = "files" in event.target ? event.target?.files?.[0] : undefined;
-console.log(file);
 
             if (file) {
                 const previewUrl = URL.createObjectURL(file);
-console.log(previewUrl);
-console.log(typeof previewUrl);
-
-
                 setProfilePhoto(previewUrl);
 
                 setFormDataUser((prevData)=> ({
@@ -121,23 +116,7 @@ console.log(typeof previewUrl);
                         profile_photo: previewUrl,
                         profile_file:file,
                     },
-                }))
-
-
-                // const reader = new FileReader();
-
-                // reader.onloadend = () => {
-                    //setProfilePhoto(reader.result as string);
-                    // setFormDataUser((prevData)=> ({
-                    //     ...prevData,
-                    //     family:{
-                    //         ...prevData.family!,
-                    //         profile_photo: reader.result as string,
-                    //         profile_file: file,
-                    //     },
-                    // }));
-                // }
-                // reader.readAsDataURL(file); 
+                }));
             }
         } else {
             setFormDataUser((prevData)=>{
@@ -177,31 +156,20 @@ console.log(typeof previewUrl);
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-
         const formSubmit = new FormData(event.target as HTMLFormElement);
         const modifiedFields: Partial<IFamilyUser> = {};
+
+        const fieldsUser:UserFields[] = ["lastname", "firstname", "email"];
+        fieldsUser.forEach(field => {
+            if (formDataUser[field] !== originalDataUser[field]) {
+                if (!modifiedFields.user && field) {
+                    modifiedFields.user = {};
+                }
+                modifiedFields.user![field] = formDataUser[field];
+            }
+        });
+
         
-        if (formSubmit.get("lastname") !== originalDataUser.lastname) {
-           if (!modifiedFields.user) {
-                modifiedFields.user = {};
-                modifiedFields.user!.lastname = formSubmit.get("lastname") as string;
-           }
-        }
-
-        if (formSubmit.get("firstname") !== originalDataUser.firstname) {
-            if (!modifiedFields.user) {
-                modifiedFields.user = {};
-                modifiedFields.user!.firstname = formSubmit.get("firstname") as string;
-            }
-        }
-
-        if (formSubmit.get("email") !== originalDataUser.email) {
-            if (!modifiedFields.user) {
-                modifiedFields.user = {};
-                modifiedFields.user!.email = formSubmit.get("email") as string;
-            }
-        }
-
         if (originalDataUser.family) {
             if (formSubmit.get("address") !== originalDataUser.family?.address) {
                 modifiedFields.address = formSubmit.get("address") as string;
@@ -259,15 +227,11 @@ console.log(typeof previewUrl);
                 }
             }
         };
-console.log(profilePhoto);
-console.log(user.family?.profile_file!);
-
 
         const sendPhoto = async () => {
             if (profilePhoto && profilePhoto !== originalDataUser.family?.profile_photo) {
                 const photoFormData = new FormData();
-                photoFormData.append("profile_photo", user.family?.profile_file!);
-console.log(photoFormData.entries());
+                photoFormData.append("profile_photo", formDataUser.family?.profile_file!);
 
                 try {
                     const response = await APIFamily.pathFamilyPhoto(user?.family?.id!, photoFormData);
@@ -283,6 +247,14 @@ console.log(photoFormData.entries());
             const [textResponse, photoResponse] = await Promise.all([sendTextData(), sendPhoto()]);
             if(textResponse || photoResponse) {
                 setIsInfoEditMode(false);
+                setProfilePhoto(photoResponse.profile_photo);
+                setFormDataUser((prevData) => ({
+                    ...prevData,
+                    family: {
+                        ...prevData.family,
+                        profile_photo: photoResponse.profile_photo,
+                    },
+                }));
                 setUser(formDataUser);
                 setSuccessMessage("Modifications enregistrées avec succès !");
             } else {
@@ -292,15 +264,12 @@ console.log(photoFormData.entries());
             setErrorMessage("Une erreur est survenue lors de la modification.");
             setSuccessMessage("");
         }
-        console.log(formDataUser);
         
     };
 
 
     return (
         <section className="ProfilUser">
-            
-            
             <form action="" className="formProfilUser" onSubmit={handleSubmit}>
             <h1 className="headerProfilUser">Mes informations</h1>
                 <div className="profilImgWrap">
@@ -365,7 +334,7 @@ console.log(photoFormData.entries());
                     </div>
 
                     <label htmlFor="description" className="infoLabel" id="labelDescription">Description</label>
-                    <textarea name="description" id="description" className="infoInput" value={formDataUser?.family?.description} onChange={handleChangeInput} disabled={!isInfoEditMode} />
+                    <textarea name="description" id="description" className="infoInput" value={formDataUser?.family?.description ?? ""} onChange={handleChangeInput} disabled={!isInfoEditMode} />
                 </div>
                 {isInfoEditMode &&
                     <div className="buttonsWrap">
@@ -381,12 +350,17 @@ console.log(photoFormData.entries());
                     </div>
                 }
             </form>
+
+            {isPasswordEditMode &&
+                <FormEditPassword isPasswordEditMode={isPasswordEditMode} setIsPasswordEditMode={setIsPasswordEditMode} userData={user} setUser={setUser} />
+            }
+
             {!isInfoEditMode &&
                 <div className="buttonsWrap">
                     <button type="button" className="btnModifProfile first" onClick={() => {setIsInfoEditMode(true)}}>
                         <FontAwesomeIcon icon={faPenToSquare} /> Modifier les informations
                     </button>
-                    <button type="button" className="btnModifProfile second" onClick={() => setIsPasswordEditMode(!isPasswordEditMode)} >
+                    <button type="button" className="btnModifProfile second" onClick={() => setIsPasswordEditMode(true)} >
                         <FontAwesomeIcon icon={faPenToSquare} /> Modifier le mot de passe
                     </button>
                     <button type="button"className="btnModifProfile last web" onClick={() => setIsConfirmModalOpen(true)} >

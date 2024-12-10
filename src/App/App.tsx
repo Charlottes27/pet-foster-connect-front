@@ -55,7 +55,7 @@ console.log(user);
 
     return (
         <>
-            <Header setEntityFilter={setEntityFilter} setFilterAnimal={setFilterAnimal} setFilterAssociation={setFilterAssociation} setUser={setUser}/>
+            <Header setEntityFilter={setEntityFilter} setFilterAnimal={setFilterAnimal} setFilterAssociation={setFilterAssociation} user={user} setUser={setUser}/>
             <Routes>
                 <Route path="/" element={<HomePage />} />
 

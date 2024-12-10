@@ -1,5 +1,7 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 import "./FormConexxion.css";
 import APISignin from "../../../services/api/signin";
@@ -15,6 +17,7 @@ function FormConnexion ({setUser}: IFormConnexionProps) {
     const [emailForm, setEmailForm] = useState("");
     const [password, setPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const [showPassword, setShowPassword] = useState(false);
 
     const navigate = useNavigate();
     const {login} = useAuth();
@@ -38,7 +41,7 @@ function FormConnexion ({setUser}: IFormConnexionProps) {
                 login(response.data.token)
             }
 
-            navigate("/mon-espace/mes-animaux")
+            navigate("/mon-espace/mon-profil")
         } catch (error) {
             setErrorMessage("Erreur lors de la connexion. Vérifiez vos identifiants.");
             console.error("Erreur lors de la connexion :", error);
@@ -52,8 +55,11 @@ function FormConnexion ({setUser}: IFormConnexionProps) {
             <input type="email" name="email" id="email" autoComplete="email" required value={emailForm} 
                 placeholder="Email" onChange={(e)=>setEmailForm(e.target.value)}/>
             <label htmlFor="password">Mot de passe</label>
-            <input type="password" name="password" id="password" 
-                placeholder="Mot de passe" autoComplete="off" required value={password} onChange={(e)=>setPassword(e.target.value)}/>
+            <div className="divInputPassword">
+                <input className="infoInput" type={showPassword ? "text" : "password"} name="password" id="password" 
+                    placeholder="Mot de passe" autoComplete="off" required value={password} onChange={(e)=>setPassword(e.target.value)}/>
+                <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} onClick={()=>{showPassword ? setShowPassword(false) : setShowPassword(true)}} />
+            </div>
             <NavLink to={"#"} className="changePassword">Mot de passe oublié?</NavLink>
             {errorMessage && (
                 <Toast

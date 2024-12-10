@@ -32,6 +32,7 @@ function ListPage ({entityData, setEntityData, entityFilter, setEntityFilter, fi
     const location = useLocation()!;
     const title = location.pathname.slice(1);
     const upperTitle = title?.charAt(0).toUpperCase() + title?.slice(1);
+console.log(title);
 
     const mobile = useMediaQuery({query: "(max-width: 740px)"});
 
@@ -51,7 +52,7 @@ function ListPage ({entityData, setEntityData, entityFilter, setEntityFilter, fi
             />
         
             <div className="listAndTitle">
-                <h1 className="titleMain">{(user?.role) ? "Liste de mes animaux" : `Liste des ${upperTitle}`}</h1>
+                <h1 className="titleMain">{`Liste des ${upperTitle}`}</h1>
                 <ScrollToTopButton />
                <ListEntities entityFilter={entityFilter} entityData={entityData} setEntityData={setEntityData}/>
             </div>

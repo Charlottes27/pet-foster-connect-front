@@ -1,6 +1,11 @@
 .mainSpacePage {
-
     min-height: 70vh;
+
+    h2 {
+        text-align: center;
+        font-size: 2em;
+        margin-top: 0.5em;
+    }
 
     .btnNavProfilMobile{
         background-color: var(--orange-color);
