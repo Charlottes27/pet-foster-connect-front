@@ -32,7 +32,6 @@ function ListPage ({entityData, setEntityData, entityFilter, setEntityFilter, fi
     const location = useLocation()!;
     const title = location.pathname.slice(1);
     const upperTitle = title?.charAt(0).toUpperCase() + title?.slice(1);
-console.log(title);
 
     const mobile = useMediaQuery({query: "(max-width: 740px)"});
 

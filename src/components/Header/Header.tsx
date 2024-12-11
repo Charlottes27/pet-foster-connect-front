@@ -44,7 +44,7 @@ function Header ({setEntityFilter, setFilterAnimal, setFilterAssociation, user, 
                     </button>
                     : 
                     <div className="buttonsHeaderApp">
-                        {isAuthenticated && <NavLink to={"/mon-espace/mon-profil"} className="headerConnectionLink"><img src={user?.family?.profile_photo ?? logoUser} alt="photo de profil" /><p>Bonjour {user?.firstname} / Profil</p></NavLink>}
+                        {isAuthenticated && <NavLink to={"/mon-espace/mon-profil"} className="headerConnectionLink"><img src={user?.family?.profile_photo || logoUser} alt="photo de profil" /><p>Bonjour {user?.firstname} / Profil</p></NavLink>}
                         <NavLink to={isAuthenticated ? "#" : "/connexion-inscription"} className="headerConnectionLink" onClick={isAuthenticated ? deconnexion(setUser) : undefined}>
                             {isAuthenticated ? "Déconnexion" : "Connexion / Inscription"}
                         </NavLink>

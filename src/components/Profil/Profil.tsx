@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark, faCheck, faPenToSquare, faTrashCan } from "@fortawesome/free-solid-svg-icons";
-import { useOutletContext } from "react-router-dom";
+import { useOutletContext, useNavigate } from "react-router-dom";
 
 import "./Profil.css";
 import userIcon from "../../asset/logo/user.svg";
@@ -10,6 +10,7 @@ import FormEditPassword from "../Formulaires/FormEditPassword/FormEditPassword";
 import { IUser } from "../../@types/user";
 import { IFamilyUser } from "../../@types/family";
 import APIFamily from "../../services/api/family";
+import { useAuth } from "../AuthContext/AuthContext";
 
 type UserFields = "lastname" | "firstname" | "email";
 
@@ -54,16 +55,15 @@ function Profil () {
             profile_file: undefined,
         },
     });
-    const [profilePhoto, setProfilePhoto] =useState<string | undefined>(undefined)
 
-    const {user, setUser} = useOutletContext<{ user: IUser; setUser: React.Dispatch<React.SetStateAction<IUser>>}>();
+    const {user, setUser} = useOutletContext<{ user: IUser; setUser: React.Dispatch<React.SetStateAction<IUser | null>>}>();
 
     useEffect(() => {
         if (user) {
             let profileFile: File | null;
             const photo = user.family?.profile_photo;
 
-            if (photo) {
+            if (photo && photo !== "delete") {
                 profileFile = new File([photo], `serverProfilFile-${user.family!.id}.jpg`, { type : "image/jpeg"})
                 user.family!.profile_file = profileFile
             } else {
@@ -78,22 +78,27 @@ function Profil () {
                 ...prevData,
                 ...user,
             }));
-            setProfilePhoto( photo )
-                //? photo!.startsWith("htpp") ? photo :  `${import.meta.env.VITE_BASE_URL_PUBLIC}/${photo}` : undefined
         }
 
     }, [user]);
 
-    // useEffect(() => {
+    useEffect(() => {
+        return () => {
+          if (formDataUser.family?.profile_photo?.startsWith('blob:')) {
+            URL.revokeObjectURL(formDataUser.family.profile_photo);
+          }
+        };
+    }, []);
 
-    // }, [profilePhoto])
+    const navigate = useNavigate();
+    const { logout } = useAuth();
 
     const handleClickDeletePhoto = () => {
-        setProfilePhoto(undefined);
         setFormDataUser((prevData)=> ({
             ...prevData,
             family:{
                 ...prevData.family!,
+                profile_photo: "delete",
                 profile_file: undefined,
             },
         }));
@@ -106,9 +111,11 @@ function Profil () {
             const file = "files" in event.target ? event.target?.files?.[0] : undefined;
 
             if (file) {
-                const previewUrl = URL.createObjectURL(file);
-                setProfilePhoto(previewUrl);
+                if (formDataUser.family?.profile_photo?.startsWith("blob:")) {
+                    URL.revokeObjectURL(formDataUser.family.profile_photo)
+                }
 
+                const previewUrl = URL.createObjectURL(file);
                 setFormDataUser((prevData)=> ({
                     ...prevData,
                     family:{
@@ -229,12 +236,33 @@ function Profil () {
         };
 
         const sendPhoto = async () => {
-            if (profilePhoto && profilePhoto !== originalDataUser.family?.profile_photo) {
+            console.log(formDataUser.family?.profile_photo);
+            console.log(typeof formDataUser.family?.profile_photo);
+            console.log(originalDataUser.family?.profile_photo)
+
+            if (formDataUser.family?.profile_photo !== "delete" && formDataUser.family?.profile_photo !== originalDataUser.family?.profile_photo) {
                 const photoFormData = new FormData();
                 photoFormData.append("profile_photo", formDataUser.family?.profile_file!);
+console.log("je suis passé dans send");
 
                 try {
                     const response = await APIFamily.pathFamilyPhoto(user?.family?.id!, photoFormData);
+                    console.log(response.data);
+                    
+                    return response.data;
+                } catch (error) {
+                    console.log(error);
+                    throw new Error("Une erreur est survenue lors de l'envoi de la photo.");
+                }
+            }
+
+            if (formDataUser.family?.profile_photo === "delete" && formDataUser.family?.profile_photo !== originalDataUser.family?.profile_photo) {
+                const photoFormData = new FormData();
+                photoFormData.append("profile_photo", formDataUser.family?.profile_photo!);
+                try {
+                    const response = await APIFamily.pathFamilyPhoto(user?.family?.id!, photoFormData);
+                    console.log(response.data);
+                    
                     return response.data;
                 } catch (error) {
                     console.log(error);
@@ -247,15 +275,19 @@ function Profil () {
             const [textResponse, photoResponse] = await Promise.all([sendTextData(), sendPhoto()]);
             if(textResponse || photoResponse) {
                 setIsInfoEditMode(false);
-                setProfilePhoto(photoResponse.profile_photo);
-                setFormDataUser((prevData) => ({
-                    ...prevData,
+                if (formDataUser.family?.profile_photo?.startsWith('blob:')) {
+                    URL.revokeObjectURL(formDataUser.family?.profile_photo);
+                }
+                const updatedUser = {
+                    ...formDataUser,
                     family: {
-                        ...prevData.family,
-                        profile_photo: photoResponse.profile_photo,
+                        ...formDataUser.family,
+                        profile_photo: photoResponse?.profile_photo,
+                        profile_file: undefined,
                     },
-                }));
-                setUser(formDataUser);
+                };
+                setFormDataUser(updatedUser);
+                setUser(updatedUser);
                 setSuccessMessage("Modifications enregistrées avec succès !");
             } else {
                 setErrorMessage("Aucune réponse du serveur.");
@@ -267,13 +299,24 @@ function Profil () {
         
     };
 
+    const handleDele = async () => {
+        try {
+            await APIFamily.deleteFamily(user?.family?.id!);
+            logout();
+            setUser(null);
+            navigate("/");
+        } catch (error) {
+            console.log(error);
+            
+        }
+    };
 
     return (
         <section className="ProfilUser">
             <form action="" className="formProfilUser" onSubmit={handleSubmit}>
             <h1 className="headerProfilUser">Mes informations</h1>
                 <div className="profilImgWrap">
-                    <img src={profilePhoto || userIcon} alt="Photo de profil" onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+                    <img src={formDataUser.family?.profile_photo || userIcon} alt="Photo de profil" onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
                         const target = e.target as HTMLImageElement;
                         target.onerror = null;
                         target.src = userIcon;
@@ -352,7 +395,7 @@ function Profil () {
             </form>
 
             {isPasswordEditMode &&
-                <FormEditPassword isPasswordEditMode={isPasswordEditMode} setIsPasswordEditMode={setIsPasswordEditMode} userData={user} setUser={setUser} />
+                <FormEditPassword isPasswordEditMode={isPasswordEditMode} setIsPasswordEditMode={setIsPasswordEditMode} userData={user} />
             }
 
             {!isInfoEditMode &&
@@ -369,7 +412,7 @@ function Profil () {
                 </div>
             }
 
-            <ConfirmModal text="Êtes-vous sûr de vouloir supprimer votre profil ?" opened={isConfirmModalOpen} onConfirm={()=> {}} onCancel={()=>setIsConfirmModalOpen(false)} />
+            <ConfirmModal text="Êtes-vous sûr de vouloir supprimer votre profil ?" opened={isConfirmModalOpen} onConfirm={handleDele} onCancel={()=>setIsConfirmModalOpen(false)} />
 
         </section>
     );

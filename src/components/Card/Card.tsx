@@ -13,6 +13,7 @@ function Card ({entity, title}: ICardProps) {
     const pathMap = {
         "animaux" : "animal",
         "associations" : "association",
+        "mon-espace/mes-animaux" : "animal"
     }
 
     const isAnimal = (entity: IAnimal | IAssociation): entity is IAnimal => {

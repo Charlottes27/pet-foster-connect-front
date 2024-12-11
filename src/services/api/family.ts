@@ -20,9 +20,9 @@ const APIFamily = {
         return await axiosInstance.get(`/family/${id}/animal`)
     },
 
-    // async uploadPhoto () {
-    //     return await axiosInstance.patch();
-    // },
+    async deleteFamily (id: number) {
+        return await axiosInstance.delete(`/family/${id}`)
+    }
 };
 
 export default APIFamily;

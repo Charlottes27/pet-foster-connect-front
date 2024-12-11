@@ -14,10 +14,9 @@ interface IFormEditPasswordProps {
     isPasswordEditMode: boolean
     setIsPasswordEditMode: React.Dispatch<React.SetStateAction<boolean>>
     userData: IUser
-    setUser: React.Dispatch<React.SetStateAction<IUser>>
 }
 
-function FormEditPassword ({isPasswordEditMode, setIsPasswordEditMode, userData, setUser}: IFormEditPasswordProps) {
+function FormEditPassword ({isPasswordEditMode, setIsPasswordEditMode, userData}: IFormEditPasswordProps) {
     const [formDataPassword, setFormDataPassword] = useState( {currentPassword:"", newPassword: "", confirmPassword: ""} );
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
