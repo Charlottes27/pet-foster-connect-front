@@ -138,13 +138,13 @@ function Filter ({openFilter, setOpenFilter, entityData, setEntityFilter, title,
 
             if (filterAssociation.nameAssociation) {
                 associations = associations.filter((association) =>
-                association.representative.toLowerCase().includes(filterAssociation.nameAssociation.toLowerCase())
+                association.representative?.toLowerCase().includes(filterAssociation.nameAssociation.toLowerCase())
                 );
             }
 
             if (filterAssociation.city) {
                 associations = associations.filter((association) =>
-                association.city.toLowerCase().includes(filterAssociation.city.toLowerCase())
+                association.city?.toLowerCase().includes(filterAssociation.city.toLowerCase())
                 );
             }
 

@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 
 import './App.css';
 import { IAnimal } from "../@types/animal";
-import { IAssociation } from "../@types/association";
+import { IAssociationUser } from "../@types/association";
 import { IFilterAnimal } from "../@types/filter";
 import { IFilterAssociation } from "../@types/filter";
 import { IUser } from "../@types/user";
@@ -23,9 +23,9 @@ import ListEntities from "../components/ListEntities/ListEntities.tsx";
 function App() {
     inactivityUserForLogout();
 
-    const [entityData, setEntityData] =useState<IAnimal[] | IAssociation[]>([]);
+    const [entityData, setEntityData] =useState<IAnimal[] | IAssociationUser[]>([]);
         // Détermine qui est affiché dans la liste, liste de animaux ou des asso?
-    const [entityFilter, setEntityFilter] =useState<IAnimal[] | IAssociation[]>([]);
+    const [entityFilter, setEntityFilter] =useState<IAnimal[] | IAssociationUser[]>([]);
         // Détermine la liste à afficher avec l'application des filtres
     const [filterAnimal, setFilterAnimal] = useState<IFilterAnimal>({species: "", gender: "", ageRange: "", size: "" });
     const [filterAssociation, setFilterAssociation] = useState<IFilterAssociation>({ nameAssociation: "",  city: "" });

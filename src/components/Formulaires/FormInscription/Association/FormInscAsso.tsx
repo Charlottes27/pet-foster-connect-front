@@ -181,13 +181,13 @@ console.log(response.data);
             <input className={errorFields.includes("email")? "errorFields" : ""} type="email" name="email" id="emailAsso" autoComplete="email" value={formData.email} onChange={handleChange}/>
 
             <label className={errorFields.includes("password")? "errorFields" : ""} htmlFor="passwordAsso" id="labelPasswordAsso">Mot de Passe *</label>
-            <div className="divInputPassword">
+            <div className="divInputPassword" id="divInputPasswordAsso">
                 <input className={errorFields.includes("password")? "errorFields infoInput" : "infoInput"} type={showPassword ? "text" : "password"} name="password" id="passwordAsso" autoComplete="off" value={formData.password} onChange={handleChange}/>
                 <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} onClick={()=>{showPassword ? setShowPassword(false) : setShowPassword(true)}} />
             </div>
 
             <label className={errorFields.includes("confirmPassword")? "errorFields" : ""} htmlFor="confimPasswordAsso" id="labelConfimPasswordAsso">Confirmation du mot de passe *</label>
-            <div className="divInputPassword">
+            <div className="divInputPassword" id="divInputConfirmPasswordAsso">
                 <input className={errorFields.includes("confirmPassword")? "errorFields infoInput" : "infoInput"} type={showConfirmPassword ? "text" : "password"} name="confirmPassword" id="confimPasswordAsso" autoComplete="off" value={formData.confirmPassword} onChange={handleChange}/>
                 <FontAwesomeIcon icon={showConfirmPassword ? faEyeSlash : faEye} onClick={()=>{showConfirmPassword ? setShowConfirmPassword(false) : setShowConfirmPassword(true)}} />
             </div>

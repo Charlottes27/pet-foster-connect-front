@@ -47,7 +47,7 @@ function Card ({entity, title}: ICardProps) {
                     (<>
                         <p><span>Association : </span>{entity.representative}</p>
                         <p><span>Ville : </span>{entity.city}</p>
-                        <p><span>Animaux disponibles : </span>{numberAnimalsAssoDispo(entity.animals)}</p>
+                        <p><span>Animaux disponibles : </span>{numberAnimalsAssoDispo(entity.animals!)}</p>
                     </>)}
                 </div>
             </article>

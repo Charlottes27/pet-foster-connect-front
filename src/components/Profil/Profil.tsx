@@ -2,14 +2,19 @@ import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark, faCheck, faPenToSquare, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { useOutletContext, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 import "./Profil.css";
 import userIcon from "../../asset/logo/user.svg";
 import ConfirmModal from "../ConfirmModal/ConfirmModal";
+import InputsProfilesFa from "./InputsProfile/InputsProfileFa";
+import InputsProfilesAsso from "./InputsProfile/InputsProfileAss";
 import FormEditPassword from "../Formulaires/FormEditPassword/FormEditPassword";
 import { IUser } from "../../@types/user";
 import { IFamilyUser } from "../../@types/family";
+import { IAssociationUser } from "../../@types/association";
 import APIFamily from "../../services/api/family";
+import APIAssociation from "../../services/api/associations";
 import { useAuth } from "../AuthContext/AuthContext";
 
 type UserFields = "lastname" | "firstname" | "email";
@@ -19,8 +24,7 @@ function Profil () {
     const [isPasswordEditMode, setIsPasswordEditMode] = useState(false);
     const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
     const [successMessage, setSuccessMessage] = useState<string>();
-    const [errorMessage, setErrorMessage] = useState<string>()
-    
+    const [errorMessage, setErrorMessage] = useState<string>();
     const [originalDataUser, setOriginalDataUser] =useState< IUser>({
         lastname: '',
         firstname: '',
@@ -33,6 +37,17 @@ function Profil () {
             garden: false,
             number_of_children: 0,
             number_of_animals: 0,
+            description: '',
+            profile_photo: '',
+            profile_file: undefined,
+        },
+        association: {
+            representative: '',
+            rna_number: '',
+            address: '',
+            postal_code: '',
+            city: '',
+            phone: '',
             description: '',
             profile_photo: '',
             profile_file: undefined,
@@ -54,50 +69,70 @@ function Profil () {
             profile_photo: '',
             profile_file: undefined,
         },
+        association: {
+            representative: '',
+            rna_number: '',
+            address: '',
+            postal_code: '',
+            city: '',
+            phone: '',
+            description: '',
+            profile_photo: '',
+            profile_file: undefined,
+        },
     });
 
     const {user, setUser} = useOutletContext<{ user: IUser; setUser: React.Dispatch<React.SetStateAction<IUser | null>>}>();
+    const id = user.family?.id || user.association?.id;
+    const userType = user.role === "family" ? "family" : "association";
+
+console.log(user);
+console.log(originalDataUser);
+console.log(formDataUser);
+console.log(id);
+console.log(userType);
 
     useEffect(() => {
         if (user) {
             let profileFile: File | null;
-            const photo = user.family?.profile_photo;
+            const updatedUser = {...user};
+            const photo = user[userType]?.profile_photo;
+console.log(photo);
+
 
             if (photo && photo !== "delete") {
-                profileFile = new File([photo], `serverProfilFile-${user.family!.id}.jpg`, { type : "image/jpeg"})
-                user.family!.profile_file = profileFile
+                const urlPhoto = ((photo?.startsWith("http") || photo?.startsWith("blob")) ? photo : `${import.meta.env.VITE_BASE_URL_PUBLIC}/${photo}`);
+                profileFile = new File([photo], `serverProfilFile-${id}.jpg`, { type : "image/jpeg"})
+                
+                updatedUser[userType]!.profile_file = profileFile;
+                updatedUser[userType]!.profile_photo = urlPhoto;
             } else {
                 profileFile = null;
             }
 
-            setOriginalDataUser((prevData)=> ({
-                ...prevData,
-                ...user,
-            }));
-            setFormDataUser((prevData)=> ({
-                ...prevData,
-                ...user,
-            }));
+            setOriginalDataUser(updatedUser);
+            setFormDataUser(updatedUser);
         }
 
     }, [user]);
 
+
     useEffect(() => {
         return () => {
-          if (formDataUser.family?.profile_photo?.startsWith('blob:')) {
-            URL.revokeObjectURL(formDataUser.family.profile_photo);
-          }
+            if (formDataUser[userType]?.profile_photo?.startsWith('blob:')) {
+                URL.revokeObjectURL(formDataUser[userType]!.profile_photo!);
+            }
         };
     }, []);
 
     const navigate = useNavigate();
     const { logout } = useAuth();
-
+        
     const handleClickDeletePhoto = () => {
         setFormDataUser((prevData)=> ({
             ...prevData,
-            family:{
-                ...prevData.family!,
+            [userType]:{
+                ...prevData[userType]!,
                 profile_photo: "delete",
                 profile_file: undefined,
             },
@@ -105,21 +140,24 @@ function Profil () {
     };
 
     const handleChangeInput = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        const {name, value, type} = event.target
+        const {name, value, type} = event.target;
 
         if (type === "file") {
             const file = "files" in event.target ? event.target?.files?.[0] : undefined;
 
             if (file) {
-                if (formDataUser.family?.profile_photo?.startsWith("blob:")) {
-                    URL.revokeObjectURL(formDataUser.family.profile_photo)
+                if (formDataUser[userType]!.profile_photo?.startsWith("blob:")) {
+                    URL.revokeObjectURL(formDataUser[userType]!.profile_photo!);
                 }
+console.log(formDataUser[userType]!.profile_photo!);
 
                 const previewUrl = URL.createObjectURL(file);
+console.log(previewUrl);
+
                 setFormDataUser((prevData)=> ({
                     ...prevData,
-                    family:{
-                        ...prevData.family!,
+                    [userType]:{
+                        ...prevData[userType]!,
                         profile_photo: previewUrl,
                         profile_file:file,
                     },
@@ -127,44 +165,58 @@ function Profil () {
             }
         } else {
             setFormDataUser((prevData)=>{
-                const isFamilyField = ['address', 'postal_code', 'city', 'phone', 'description', 'number_of_children', 'number_of_animals'].includes(name);
-                const garden = ["garden"].includes(name)
-
-                if(garden) {
-                    if (value === "true") {
-                        return {
-                            ...prevData,
-                            family:{
-                                ...prevData.family!,
-                                ...{[name]: true},
+                if (userType === "family") {
+                    const isFamilyField = ['address', 'postal_code', 'city', 'phone', 'description', 'number_of_children', 'number_of_animals'].includes(name);
+                    const garden = ["garden"].includes(name)
+                    
+                    if(garden) {
+                        if (value === "true") {
+                            return {
+                                ...prevData,
+                                family:{
+                                    ...prevData.family!,
+                                    ...{[name]: true},
+                                }
                             }
-                        }
-                    } else {
-                        return {
-                            ...prevData,
-                            family:{
-                                ...prevData.family!,
-                                ...{[name]: false},
+                        } else {
+                            return {
+                                ...prevData,
+                                family:{
+                                    ...prevData.family!,
+                                    ...{[name]: false},
+                                }
                             }
                         }
                     }
-                }
 
-                return {
-                ...prevData,
-                ...(isFamilyField ? {} : { [name]: value }),
-                family:{
-                    ...prevData.family!,
-                    ...(isFamilyField ? { [name]: value } : {}),
-                }}
+                    return {
+                        ...prevData,
+                        ...(isFamilyField ? {} : { [name]: value }),
+                        family:{
+                            ...prevData.family!,
+                            ...(isFamilyField ? { [name]: value } : {}),
+                        }
+                    }
+                } else {
+                    const isAssociationField = ['representative', 'rna_number', 'address', 'postal_code', 'city', 'phone', 'description'].includes(name);
+                    return {
+                        ...prevData,
+                        ...(isAssociationField ? {} : { [name]: value }),
+                        association:{
+                            ...prevData.association!,
+                            ...(isAssociationField ? { [name]: value } : {}),
+                        }
+                    }
+                }
             });
         }
     };
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+
         const formSubmit = new FormData(event.target as HTMLFormElement);
-        const modifiedFields: Partial<IFamilyUser> = {};
+        const modifiedFields: Partial<IFamilyUser & IAssociationUser> = {};
 
         const fieldsUser:UserFields[] = ["lastname", "firstname", "email"];
         fieldsUser.forEach(field => {
@@ -177,7 +229,7 @@ function Profil () {
         });
 
         
-        if (originalDataUser.family) {
+        if (originalDataUser.family?.id) {
             if (formSubmit.get("address") !== originalDataUser.family?.address) {
                 modifiedFields.address = formSubmit.get("address") as string;
             }
@@ -200,7 +252,7 @@ function Profil () {
     
             if (formSubmit.get("garden") !== originalDataUser.family?.garden!.toString()) {
                 const gardenValue = formSubmit.get("garden");
-                modifiedFields.garden = gardenValue === "true";
+                modifiedFields.garden! = gardenValue === "true";
                     // Si gardenValue === "true" alors renvoie le boolean true sinon false
             }
     
@@ -219,10 +271,47 @@ function Profil () {
             }
         }
 
+        if (originalDataUser.association?.id) {
+            if (formSubmit.get("representative") !== originalDataUser.association?.representative) {
+                modifiedFields.representative = formSubmit.get("representative") as string;
+            }
+
+            if (formSubmit.get("rna_number") !== originalDataUser.association?.rna_number) {
+                modifiedFields.rna_number = formSubmit.get("rna_number") as string;
+            }
+
+            if (formSubmit.get("address") !== originalDataUser.association?.address) {
+                modifiedFields.address = formSubmit.get("address") as string;
+            }
+    
+            if (formSubmit.get("postal_code") !== originalDataUser.association?.postal_code) {
+                modifiedFields.postal_code = formSubmit.get("postal_code") as string;
+            }
+    
+            if (formSubmit.get("city") !== originalDataUser.association?.city) {
+                modifiedFields.city = formSubmit.get("city") as string;
+            }
+    
+            if (formSubmit.get("phone") !== originalDataUser.association?.phone) {
+                modifiedFields.phone = formSubmit.get("phone") as string;
+            }
+
+            if (formSubmit.get("description") !== originalDataUser.association?.description) {
+                modifiedFields.description = formSubmit.get("description") as string;
+            }
+        }
+
         const sendTextData = async () => {
-            if (modifiedFields) {
+console.log("je suis dans le send TEXT");
+
+            if (Object.entries(modifiedFields).length > 0) {
+console.log(modifiedFields);
+console.log("je suis partie pour faire la requete text");
+
                 try {
-                    const response = originalDataUser.family ? await APIFamily.pathFamily(user?.family?.id!, modifiedFields) : await APIFamily.pathFamily(user?.family?.id!, modifiedFields)
+                    //const response = originalDataUser.family ? await APIFamily.pathFamily(id!, modifiedFields) : await APIAssociation.patchAssociation(id!, modifiedFields)
+                    const response = await (originalDataUser.family ?  APIFamily.pathFamily : APIAssociation.patchAssociation)(id!, modifiedFields);
+console.log(response);
                    return response.data;
                 } catch (err: unknown) {
                     console.log(err)
@@ -236,33 +325,21 @@ function Profil () {
         };
 
         const sendPhoto = async () => {
-            console.log(formDataUser.family?.profile_photo);
-            console.log(typeof formDataUser.family?.profile_photo);
-            console.log(originalDataUser.family?.profile_photo)
-
-            if (formDataUser.family?.profile_photo !== "delete" && formDataUser.family?.profile_photo !== originalDataUser.family?.profile_photo) {
+            if (formDataUser[userType]!.profile_photo !== originalDataUser[userType]?.profile_photo) {
                 const photoFormData = new FormData();
-                photoFormData.append("profile_photo", formDataUser.family?.profile_file!);
-console.log("je suis passé dans send");
+                if (formDataUser[userType]!.profile_photo === "delete") {
+console.log(("je delete"));
 
-                try {
-                    const response = await APIFamily.pathFamilyPhoto(user?.family?.id!, photoFormData);
-                    console.log(response.data);
-                    
-                    return response.data;
-                } catch (error) {
-                    console.log(error);
-                    throw new Error("Une erreur est survenue lors de l'envoi de la photo.");
+                    photoFormData.append("profile_photo", formDataUser[userType]!.profile_photo!);
+                } else {
+console.log("je change");
+console.log(formDataUser[userType]!.profile_file);
+
+                    photoFormData.append("profile_photo", formDataUser[userType]!.profile_file!);
                 }
-            }
 
-            if (formDataUser.family?.profile_photo === "delete" && formDataUser.family?.profile_photo !== originalDataUser.family?.profile_photo) {
-                const photoFormData = new FormData();
-                photoFormData.append("profile_photo", formDataUser.family?.profile_photo!);
                 try {
-                    const response = await APIFamily.pathFamilyPhoto(user?.family?.id!, photoFormData);
-                    console.log(response.data);
-                    
+                    const response = await (originalDataUser.family ? APIFamily.pathFamilyPhoto :  APIAssociation.pathAssociationPhoto)(id!, photoFormData);
                     return response.data;
                 } catch (error) {
                     console.log(error);
@@ -275,17 +352,34 @@ console.log("je suis passé dans send");
             const [textResponse, photoResponse] = await Promise.all([sendTextData(), sendPhoto()]);
             if(textResponse || photoResponse) {
                 setIsInfoEditMode(false);
-                if (formDataUser.family?.profile_photo?.startsWith('blob:')) {
-                    URL.revokeObjectURL(formDataUser.family?.profile_photo);
+
+                if (formDataUser[userType]?.profile_photo?.startsWith('blob:')) {
+                    URL.revokeObjectURL(formDataUser[userType]?.profile_photo!);
                 }
-                const updatedUser = {
-                    ...formDataUser,
-                    family: {
-                        ...formDataUser.family,
-                        profile_photo: photoResponse?.profile_photo,
-                        profile_file: undefined,
-                    },
-                };
+
+                let updatedUser = {...formDataUser};
+                if(textResponse) {
+                    updatedUser = {
+                        ...updatedUser,
+                        ...textResponse[userType],
+                        [userType]: {
+                            ...updatedUser[userType],
+                            ...textResponse,
+                        },
+                    };
+                }
+                if (photoResponse) {
+                    updatedUser = {
+                        ...updatedUser,
+                        [userType]: {
+                            ...updatedUser[userType],
+                            profile_photo: photoResponse?.profile_photo,
+                            profile_file: undefined,
+                        },
+                    };
+                }
+console.log(updatedUser);
+                
                 setFormDataUser(updatedUser);
                 setUser(updatedUser);
                 setSuccessMessage("Modifications enregistrées avec succès !");
@@ -300,14 +394,21 @@ console.log("je suis passé dans send");
     };
 
     const handleDele = async () => {
+console.log("je suis dans la supp du compte");
+
         try {
-            await APIFamily.deleteFamily(user?.family?.id!);
+            await (user.role === "family" ? APIFamily.deleteFamily: APIAssociation.deleteAssociations)(id!);
             logout();
             setUser(null);
             navigate("/");
-        } catch (error) {
-            console.log(error);
-            
+        } catch (error: unknown) {
+
+            if(axios.isAxiosError(error)) {
+                console.log(error);
+                if (error.response?.data.error === 'Deletion impossible, you are still hosting animals') {
+                   return setErrorMessage("Suppression imposible, des animaux sont rataché à votre profil. merci de les supprimer avant de pouvoir supprimer votre compte");
+                }
+            }
         }
     };
 
@@ -316,7 +417,7 @@ console.log("je suis passé dans send");
             <form action="" className="formProfilUser" onSubmit={handleSubmit}>
             <h1 className="headerProfilUser">Mes informations</h1>
                 <div className="profilImgWrap">
-                    <img src={formDataUser.family?.profile_photo || userIcon} alt="Photo de profil" onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+                    <img src={formDataUser[userType]?.profile_photo || userIcon} alt="Photo de profil" onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
                         const target = e.target as HTMLImageElement;
                         target.onerror = null;
                         target.src = userIcon;
@@ -330,55 +431,10 @@ console.log("je suis passé dans send");
                         <button className="deleteProfilImg" type="button" onClick={handleClickDeletePhoto}>Supprimer ma photo</button>
                     </div>
                 )}
-                <div className="fieldsWrap">
-                    <label htmlFor="lastname" className="infoLabel" id="labelLastname">Nom</label>
-                    <input type="text" name="lastname" id="lastname" className="infoInput" value={formDataUser?.lastname} onChange={handleChangeInput} disabled={!isInfoEditMode} />
+                
+                {user.role === "family" && <InputsProfilesFa formDataUser={formDataUser} handleChangeInput={handleChangeInput} isInfoEditMode={isInfoEditMode} />}
+                {user.role === "association" && <InputsProfilesAsso formDataUser={formDataUser} handleChangeInput={handleChangeInput} isInfoEditMode={isInfoEditMode} />}
 
-                    <label htmlFor="firstname" className="infoLabel" id="labelFirstname">Prénom</label>
-                    <input type="text" name="firstname" id="firstname" className="infoInput" value={formDataUser?.firstname} onChange={handleChangeInput} disabled={!isInfoEditMode} />
-
-                    <label htmlFor="addess" className="infoLabel" id="labelAddess">Adresse</label>
-                    <input type="text" name="address" id="addess" className="infoInput" value={formDataUser?.family?.address} onChange={handleChangeInput} disabled={!isInfoEditMode} />
-
-                    <label htmlFor="postal_code" className="infoLabel" id="labelPostal_code">Code Postal</label>
-                    <input type="text" name="postal_code" id="postal_code" className="infoInput" value={formDataUser?.family?.postal_code} onChange={handleChangeInput} disabled={!isInfoEditMode} />
-
-                    <label htmlFor="city" className="infoLabel" id="labelCity">Ville</label>
-                    <input type="text" name="city" id="city" className="infoInput" value={formDataUser?.family?.city} onChange={handleChangeInput} disabled={!isInfoEditMode} />
-
-                    <label htmlFor="phone" className="infoLabel" id="labelPhone">Téléphone</label>
-                    <input type="text" name="phone" id="phone" className="infoInput" value={formDataUser?.family?.phone} onChange={handleChangeInput} disabled={!isInfoEditMode} />
-
-                    <label htmlFor="email" className="infoLabel" id="labelEmail">Mail</label>
-                    <input type="text" name="email" id="email" className="infoInput" value={formDataUser?.email} onChange={handleChangeInput} disabled={!isInfoEditMode} />
-
-                    <h2>Situation de mon foyer</h2>
-
-                    <div className="garden" id="garden">
-                        <p>Avez-vous un jardin ?</p>
-                        <div>
-                            <input type="radio" name="garden" id="gardenTrue" className="infoInput" value={"true"} onChange={handleChangeInput} checked={formDataUser.family?.garden === true} disabled={!isInfoEditMode} />
-                            <label htmlFor="gardenTrue" className="infoLabel">Oui</label>
-                        </div>
-                        <div>
-                            <input type="radio" name="garden" id="gardenFalse" className="infoInput" value={"false"} onChange={handleChangeInput} checked={formDataUser.family?.garden === false} disabled={!isInfoEditMode} />
-                            <label htmlFor="gardenFalse" className="infoLabel">Non</label>
-                        </div>
-                    </div>
-
-                    <div className="children" id="children">
-                        <label htmlFor="number_of_children" className="infoLabel">Combien d'enfants avez-vous ?</label>
-                        <input type="number" name="number_of_children" id="number_of_children" className="infoInput" min={0} value={formDataUser?.family?.number_of_children} onChange={handleChangeInput} disabled={!isInfoEditMode} />    
-                    </div>
-
-                    <div className="animals" id="animals">
-                        <label htmlFor="number_of_animals" className="infoLabel">Combien d'animaux avez-vous ?</label>
-                        <input type="number" name="number_of_animals" id="number_of_animals" className="infoInput" min={0} value={formDataUser?.family?.number_of_animals} onChange={handleChangeInput} disabled={!isInfoEditMode} />
-                    </div>
-
-                    <label htmlFor="description" className="infoLabel" id="labelDescription">Description</label>
-                    <textarea name="description" id="description" className="infoInput" value={formDataUser?.family?.description ?? ""} onChange={handleChangeInput} disabled={!isInfoEditMode} />
-                </div>
                 {isInfoEditMode &&
                     <div className="buttonsWrap">
                         <button type="submit" className="btnModifProfile first" >
