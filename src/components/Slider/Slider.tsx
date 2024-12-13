@@ -34,7 +34,7 @@ function Slider({entity, idEntity}: ISliderProps) {
             }
             
             imageUrls = imageUrls.filter((photo) => photo)
-            .map((photo) => `${import.meta.env.VITE_BASE_URL_PUBLIC}/${photo}`);
+            .map((photo) => (photo.startsWith("http") ? photo :`${import.meta.env.VITE_BASE_URL_PUBLIC}/${photo}`));
 
             const validUrls = await Promise.all(
             imageUrls.map(async (url) =>

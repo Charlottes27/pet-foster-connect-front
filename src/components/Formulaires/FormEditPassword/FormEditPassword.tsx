@@ -70,6 +70,7 @@ function FormEditPassword ({isPasswordEditMode, setIsPasswordEditMode, userData}
             console.log(response);
             if(response.status === 201) {
                 setSuccessMessage("Votre mot de passe à été changé avec succés ! ")
+                setTimeout(()=>{setIsPasswordEditMode(false)}, 2000)
             }
             
         } catch (error) {

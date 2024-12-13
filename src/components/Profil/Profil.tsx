@@ -7,6 +7,7 @@ import axios from "axios";
 import "./Profil.css";
 import userIcon from "../../asset/logo/user.svg";
 import ConfirmModal from "../ConfirmModal/ConfirmModal";
+import Toast from "../Toast/Toast";
 import InputsProfilesFa from "./InputsProfile/InputsProfileFa";
 import InputsProfilesAsso from "./InputsProfile/InputsProfileAss";
 import FormEditPassword from "../Formulaires/FormEditPassword/FormEditPassword";
@@ -16,6 +17,7 @@ import { IAssociationUser } from "../../@types/association";
 import APIFamily from "../../services/api/family";
 import APIAssociation from "../../services/api/associations";
 import { useAuth } from "../AuthContext/AuthContext";
+import validForm from "../../utils/validForm";
 
 type UserFields = "lastname" | "firstname" | "email";
 
@@ -23,8 +25,9 @@ function Profil () {
     const [isInfoEditMode, setIsInfoEditMode] = useState(false);
     const [isPasswordEditMode, setIsPasswordEditMode] = useState(false);
     const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
-    const [successMessage, setSuccessMessage] = useState<string>();
-    const [errorMessage, setErrorMessage] = useState<string>();
+    const [successMessage, setSuccessMessage] = useState<string | null>(null);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const [errorFields, setErrorFields] = useState<string[]>([])
     const [originalDataUser, setOriginalDataUser] =useState< IUser>({
         lastname: '',
         firstname: '',
@@ -86,19 +89,11 @@ function Profil () {
     const id = user.family?.id || user.association?.id;
     const userType = user.role === "family" ? "family" : "association";
 
-console.log(user);
-console.log(originalDataUser);
-console.log(formDataUser);
-console.log(id);
-console.log(userType);
-
     useEffect(() => {
         if (user) {
             let profileFile: File | null;
             const updatedUser = {...user};
             const photo = user[userType]?.profile_photo;
-console.log(photo);
-
 
             if (photo && photo !== "delete") {
                 const urlPhoto = ((photo?.startsWith("http") || photo?.startsWith("blob")) ? photo : `${import.meta.env.VITE_BASE_URL_PUBLIC}/${photo}`);
@@ -149,10 +144,8 @@ console.log(photo);
                 if (formDataUser[userType]!.profile_photo?.startsWith("blob:")) {
                     URL.revokeObjectURL(formDataUser[userType]!.profile_photo!);
                 }
-console.log(formDataUser[userType]!.profile_photo!);
 
                 const previewUrl = URL.createObjectURL(file);
-console.log(previewUrl);
 
                 setFormDataUser((prevData)=> ({
                     ...prevData,
@@ -210,6 +203,7 @@ console.log(previewUrl);
                 }
             });
         }
+        setErrorFields((prevFields) => prevFields.filter(field => field !== name && field !== `user.${name}`));
     };
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -301,17 +295,30 @@ console.log(previewUrl);
             }
         }
 
+        const fieldFormatsError = validForm.validateFieldFormatForUpdate(modifiedFields);
+        if (fieldFormatsError && (fieldFormatsError.fileds.length! >0 || fieldFormatsError.message.length! >0)) {
+            const message = fieldFormatsError.message;
+            const fields = fieldFormatsError.fileds;
+            
+            if (userType === "family" && (message.includes("Merci de renseigner un numéro RNA valide") || fields.includes("rna_number"))) {
+                console.log("je suis une famille");
+                const goodMessage = message.filter( item => item !== "Merci de renseigner un numéro RNA valide").join(", ")
+                const goodFields = fields.filter( item => item !== "rna_number");
+
+                setErrorMessage(goodMessage);
+                setErrorFields(goodFields);
+            } else {
+                const messageString = message.join(", ");
+                setErrorMessage(messageString);
+                setErrorFields(fields);
+            }
+            return
+        }
+
         const sendTextData = async () => {
-console.log("je suis dans le send TEXT");
-
             if (Object.entries(modifiedFields).length > 0) {
-console.log(modifiedFields);
-console.log("je suis partie pour faire la requete text");
-
                 try {
-                    //const response = originalDataUser.family ? await APIFamily.pathFamily(id!, modifiedFields) : await APIAssociation.patchAssociation(id!, modifiedFields)
                     const response = await (originalDataUser.family ?  APIFamily.pathFamily : APIAssociation.patchAssociation)(id!, modifiedFields);
-console.log(response);
                    return response.data;
                 } catch (err: unknown) {
                     console.log(err)
@@ -328,13 +335,8 @@ console.log(response);
             if (formDataUser[userType]!.profile_photo !== originalDataUser[userType]?.profile_photo) {
                 const photoFormData = new FormData();
                 if (formDataUser[userType]!.profile_photo === "delete") {
-console.log(("je delete"));
-
                     photoFormData.append("profile_photo", formDataUser[userType]!.profile_photo!);
                 } else {
-console.log("je change");
-console.log(formDataUser[userType]!.profile_file);
-
                     photoFormData.append("profile_photo", formDataUser[userType]!.profile_file!);
                 }
 
@@ -368,6 +370,7 @@ console.log(formDataUser[userType]!.profile_file);
                         },
                     };
                 }
+
                 if (photoResponse) {
                     updatedUser = {
                         ...updatedUser,
@@ -378,7 +381,6 @@ console.log(formDataUser[userType]!.profile_file);
                         },
                     };
                 }
-console.log(updatedUser);
                 
                 setFormDataUser(updatedUser);
                 setUser(updatedUser);
@@ -389,20 +391,16 @@ console.log(updatedUser);
         } catch (error) {
             setErrorMessage("Une erreur est survenue lors de la modification.");
             setSuccessMessage("");
-        }
-        
+        } 
     };
 
     const handleDele = async () => {
-console.log("je suis dans la supp du compte");
-
         try {
             await (user.role === "family" ? APIFamily.deleteFamily: APIAssociation.deleteAssociations)(id!);
             logout();
             setUser(null);
             navigate("/");
         } catch (error: unknown) {
-
             if(axios.isAxiosError(error)) {
                 console.log(error);
                 if (error.response?.data.error === 'Deletion impossible, you are still hosting animals') {
@@ -432,15 +430,15 @@ console.log("je suis dans la supp du compte");
                     </div>
                 )}
                 
-                {user.role === "family" && <InputsProfilesFa formDataUser={formDataUser} handleChangeInput={handleChangeInput} isInfoEditMode={isInfoEditMode} />}
-                {user.role === "association" && <InputsProfilesAsso formDataUser={formDataUser} handleChangeInput={handleChangeInput} isInfoEditMode={isInfoEditMode} />}
+                {user.role === "family" && <InputsProfilesFa formDataUser={formDataUser} handleChangeInput={handleChangeInput} isInfoEditMode={isInfoEditMode} errorFields={errorFields} />}
+                {user.role === "association" && <InputsProfilesAsso formDataUser={formDataUser} handleChangeInput={handleChangeInput} isInfoEditMode={isInfoEditMode} errorFields={errorFields} />}
 
                 {isInfoEditMode &&
                     <div className="buttonsWrap">
                         <button type="submit" className="btnModifProfile first" >
                             <FontAwesomeIcon icon={faCheck} /> Valider la modification
                         </button>
-                        <button type="reset" className="btnModifProfile second" onClick={()=>setIsInfoEditMode(false)}>
+                        <button type="reset" className="btnModifProfile second" onClick={()=>{setIsInfoEditMode(false); setErrorFields([])}}>
                             <FontAwesomeIcon icon={faXmark} /> Annuler la modification
                         </button>
                         <button type="button"className="btnModifProfile last web" onClick={() => setIsConfirmModalOpen(true)} >
@@ -470,6 +468,13 @@ console.log("je suis dans la supp du compte");
 
             <ConfirmModal text="Êtes-vous sûr de vouloir supprimer votre profil ?" opened={isConfirmModalOpen} onConfirm={handleDele} onCancel={()=>setIsConfirmModalOpen(false)} />
 
+            {errorMessage &&
+                <Toast message={errorMessage!} type="error" setToast={setErrorMessage} />
+            }
+
+            {successMessage &&
+                <Toast message={successMessage!} type="success" setToast={setSuccessMessage} />
+            }
         </section>
     );
 };

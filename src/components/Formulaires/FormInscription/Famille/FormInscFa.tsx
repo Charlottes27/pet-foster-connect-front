@@ -59,6 +59,7 @@ function FormInscrFa ({openFormFa, setOpenFormFa, setUser}: IFormInscrFaProps) {
         }
         setErrorFields((prevFields) => prevFields.filter(field => field !== name && field !== `family.${name}`));
     };
+console.log(formData);
 
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -71,17 +72,16 @@ function FormInscrFa ({openFormFa, setOpenFormFa, setUser}: IFormInscrFaProps) {
         }
 
         const fieldFormatsError = validForm.validateFieldFormats(formData);
-        if (fieldFormatsError) {
-            setErrorMessage(fieldFormatsError.message);
+        if (fieldFormatsError && (fieldFormatsError.fileds.length! >0 || fieldFormatsError.messageString !== "")) {
+            setErrorMessage(fieldFormatsError.messageString);
             setErrorFields(fieldFormatsError.fileds)
             return;
         }
 
         const passwordMatchError = validForm.validatePasswordMatch(formData);
-        console.log(passwordMatchError);
-        
         if (passwordMatchError) {
             setErrorMessage(passwordMatchError);
+            setErrorFields(["password", "confirmPassword"])
             return;
         }
 
@@ -166,14 +166,14 @@ function FormInscrFa ({openFormFa, setOpenFormFa, setUser}: IFormInscrFaProps) {
             <input className={errorFields.includes("email")? "errorFields" : ""} type="email" name="email" id="emailFa"  autoComplete="email" value={formData.email} onChange={handleChange}/>
 
             <label className={errorFields.includes("password")? "errorFields" : ""} htmlFor="passwordFa" id="labelPasswordFa">Mot de Passe *</label>
-            <div className="divInputPassword" id="divInputPasswordFa">
-                <input className={errorFields.includes("password")? "errorFields infoInput" : "infoInput"} type={showPassword ? "text" : "password"} name="password" id="passwordFa" autoComplete="off" value={formData.password} onChange={handleChange}/>
+            <div className={errorFields.includes("password")? "errorFields divInputPassword" : "divInputPassword"} id="divInputPasswordFa">
+                <input className="infoInput" type={showPassword ? "text" : "password"} name="password" id="passwordFa" autoComplete="off" value={formData.password} onChange={handleChange}/>
                 <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} onClick={()=>{showPassword ? setShowPassword(false) : setShowPassword(true)}} />
             </div>
 
             <label className={errorFields.includes("confirmPassword")? "errorFields" : ""} htmlFor="confirmPasswordFa" id="labelConfirmPasswordFa">Confirmation du mot de passe *</label>
-            <div className="divInputPassword" id="divInputConfirmPasswordFa">
-                <input className={errorFields.includes("confirmPassword")? "errorFields infoInput" : "infoInput"} type={showConfirmPassword ? "text" : "password"} name="confirmPassword" id="confirmPasswordFa" autoComplete="off" value={formData.confirmPassword} onChange={handleChange}/>
+            <div className={errorFields.includes("confirmPassword")? "errorFields divInputPassword" : "divInputPassword"} id="divInputConfirmPasswordFa">
+                <input className="infoInput" type={showConfirmPassword ? "text" : "password"} name="confirmPassword" id="confirmPasswordFa" autoComplete="off" value={formData.confirmPassword} onChange={handleChange}/>
                 <FontAwesomeIcon icon={showConfirmPassword ? faEyeSlash : faEye} onClick={()=>{showConfirmPassword ? setShowConfirmPassword(false) : setShowConfirmPassword(true)}} />
             </div>
 

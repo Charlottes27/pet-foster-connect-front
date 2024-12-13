@@ -6,7 +6,7 @@ import Slider from "../../components/Slider/Slider.tsx";
 import APIAnimal from "../../services/api/animal.ts";
 import { IAnimal } from "../../@types/animal";
 import APIAssociation from "../../services/api/associations.ts";
-import { IAssociation } from "../../@types/association";
+import { IAssociationUser } from "../../@types/association";
 
 function DetailPage () {
     const location = useLocation();
@@ -19,7 +19,7 @@ function DetailPage () {
     const idEntity = parseInt(id!, 10);
 
     const [animal, setAnimal] = useState<IAnimal | null>(null);
-    const [association, setAssociation] = useState<IAssociation | null>(null);
+    const [association, setAssociation] = useState<IAssociationUser | null>(null);
 
     const navigate = useNavigate();
 
@@ -40,10 +40,9 @@ function DetailPage () {
         }
         entity();
     }, [titleUrl, idEntity]);
-
-
-    const associationId = animal?.id_association;
-
+    
+    const associationId = animal?.id_association || association?.id;
+    
     const navigateDetailAsso = () => {
         setAnimal(null);
         navigate(`/association/${associationId}`);
@@ -75,11 +74,11 @@ function DetailPage () {
 
                 {association &&
                 <>
-                    <p className="pAssociationDetail" id="representativeArticle"><span> Représentant : </span>{association?.user.firstname} {" "} {association?.user.lastname}</p>
+                    <p className="pAssociationDetail" id="representativeArticle"><span> Représentant : </span>{association?.user?.firstname} {" "} {association?.user?.lastname}</p>
                     <p className="pAssociationDetail" id="rnaNumberArticle"><span>Numéro RNA : </span>{association?.rna_number}</p>
                     <p className="pAssociationDetail" id="addressArticle"><span>Adresse : </span>{association?.address} {" "} {association?.postal_code} {" "} {association?.city}</p>
                     <p className="pAssociationDetail" id="phoneArticle"><span>Téléphone : </span>{association?.phone}</p>
-                    <p className="pAssociationDetail" id="emailArticle"><span>Mail : </span>{association?.user.email}</p>
+                    <p className="pAssociationDetail" id="emailArticle"><span>Mail : </span>{association?.user?.email}</p>
                 </>}
 
                 <p id="descriptionArticle"><span>Description : </span>{animal?.description || association?.description}</p>

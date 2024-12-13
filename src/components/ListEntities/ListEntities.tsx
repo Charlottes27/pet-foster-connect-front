@@ -20,8 +20,18 @@ interface IListEntitiesProps {
 function ListEntities ({entityFilter, entityData, setEntityData, user}:IListEntitiesProps) {
     const location = useLocation()!;
     const title = location.pathname.slice(1);
+    console.log(title);
+    console.log(entityData);
+    const idUrl = title.split("/");
+    console.log(idUrl);
+    const id = parseInt(idUrl[1], 10);
+    console.log(id);
+    
 
     useEffect(()=>{
+console.log("je suis dans le useeffect");
+
+    
         if(title === "animaux") {
             const Animals = async () => {
                 try {
@@ -59,12 +69,28 @@ function ListEntities ({entityFilter, entityData, setEntityData, user}:IListEnti
             Animals();
         }
 
-        const associationId = user?.id_association || user?.association?.id;
-    
+        const associationId = user?.id_association || user?.association?.id || id;
         if ((title === "mon-espace/mes-animaux") && (user?.role === "association") && associationId) {
             const Animals = async () => {
                 try {
                     const response = await APIAssociation.getAnimalsOfAsso(associationId);
+                    setEntityData(response.data);
+                } catch (error) {
+                    console.log(error);
+                }
+            }
+            Animals();
+        }
+console.log(user);
+
+console.log(associationId);
+        
+        if ( associationId && title === `association/${associationId}/animaux`) {
+console.log("je suis dans ma condition des animaux asso");
+            const Animals = async () => {
+                try {
+                    const response = await APIAssociation.getAnimalsOfAsso(associationId);
+console.log(response);        
                     setEntityData(response.data);
                 } catch (error) {
                     console.log(error);

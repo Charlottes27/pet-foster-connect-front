@@ -1,5 +1,5 @@
 const regexPatterns = {
-    notNumber: /^[^0-9]+$/,
+    nameRegex: /^[a-zA-Z\s-]+$/,
     frenchPhone: /^(?:\+33|0)[1-9](?:\d{8})$/,
     postalCode: /^\d{5}$/,
     presenceLetters: /^(?=(?:.*[a-zA-Z]){2}).*$/,
@@ -9,9 +9,10 @@ const regexPatterns = {
 };
 type RegexKey = keyof typeof regexPatterns;
 
-const valideInput = (value: string, type: RegexKey) => {
-    const regex = regexPatterns[type]
-    return regex.test(value)
+const valideInput = (value: string | undefined, type: RegexKey) => {
+    if (value === undefined) return false
+    const regex = regexPatterns[type];
+    return regex.test(value);
 };
 
 

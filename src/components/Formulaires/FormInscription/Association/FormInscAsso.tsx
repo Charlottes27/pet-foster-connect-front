@@ -73,10 +73,8 @@ function FormInscAsso ({openFormAsso, setOpenFormAsso, setUser}: IFormInscrAssoP
         }
 
         const fieldFormatsError = validForm.validateFieldFormats(formData);
-        if (fieldFormatsError) {
-            console.log(fieldFormatsError.fileds);
-            
-            setErrorMessage(fieldFormatsError.message);
+        if (fieldFormatsError&& (fieldFormatsError.fileds.length! >0 || fieldFormatsError.messageString !== "")) {
+            setErrorMessage(fieldFormatsError.messageString);
             setErrorFields(fieldFormatsError.fileds)
             return;
         }
@@ -91,7 +89,6 @@ function FormInscAsso ({openFormAsso, setOpenFormAsso, setUser}: IFormInscrAssoP
 
         try {
             const response = await APIUser.createUser(dataToSubmit)
-console.log(response.data);
 
             if (response.data.token) {
                 login(response.data.token);

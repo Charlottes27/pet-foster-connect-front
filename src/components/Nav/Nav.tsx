@@ -41,10 +41,12 @@ function Nav ({openMenuBurger, setOpenMenuBurger, setEntityFilter, setFilterAnim
             ""}
             
             <div className="containerLink">
-                {isAuthenticated && <NavLink to={"/mon-espace/mon-profil"} className="navLink" onClick={()=>setOpenMenuBurger(false)}>
-                                        <FontAwesomeIcon icon={faUser} />
-                                        <p>Profil</p>
-                                    </NavLink>}
+                {isAuthenticated && mobile &&
+                <NavLink to={"/mon-espace/mon-profil"} className="navLink" onClick={()=>setOpenMenuBurger(false)}>
+                    <FontAwesomeIcon icon={faUser} />
+                    <p>Profil</p>
+                </NavLink>
+                }
                 <NavLink to={"/"} className="navLink" onClick={()=>setOpenMenuBurger(false)}>
                     <FontAwesomeIcon icon={faHouse} />
                     Accueil

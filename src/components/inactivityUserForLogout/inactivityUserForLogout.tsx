@@ -1,5 +1,6 @@
-import { useRef, useEffect, useCallback } from "react";
+import { useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../AuthContext/AuthContext.tsx";
 
 const inactivityUserForLogout = (inactivityTime = 3600000) => {
         //inactivityTime est une valeur pas défaut qui pourrait être changé lors de son appelle dans App
@@ -7,6 +8,7 @@ const inactivityUserForLogout = (inactivityTime = 3600000) => {
     const lastActivity = useRef(Date.now());
 
     const navigate = useNavigate();
+    const {logout} = useAuth();
 
     const resetTimerOfLastActivity = () => {
         lastActivity.current = Date.now();
@@ -15,6 +17,7 @@ const inactivityUserForLogout = (inactivityTime = 3600000) => {
     const checkInactivity = () => {
         const currentTime = Date.now();
         if (currentTime - lastActivity.current > inactivityTime) {
+            logout();
             localStorage.removeItem("token");
             localStorage.removeItem("user_id");
             navigate("/");

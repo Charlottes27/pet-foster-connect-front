@@ -9,7 +9,7 @@ import Filter from "../../components/Filter/Filter.tsx"
 import ScrollToTopButton from "../../components/ScrollToTopButton/ScrollToTopButton.tsx";
 import ListEntities from "../../components/ListEntities/ListEntities.tsx";
 import { IAnimal } from "../../@types/animal.ts";
-import { IAssociation } from '../../@types/association.ts'
+import { IAssociation, IAssociationUser } from '../../@types/association.ts'
 import { IFilterAnimal } from "../../@types/filter";
 import { IFilterAssociation } from "../../@types/filter";
 import { IUser } from "../../@types/user";
@@ -29,14 +29,40 @@ interface IListPageProps {
 }
 
 function ListPage ({entityData, setEntityData, entityFilter, setEntityFilter, filterAnimal, setFilterAnimal, filterAssociation, setFilterAssociation, user}: IListPageProps) {
-    const location = useLocation()!;
-    const title = location.pathname.slice(1);
-    const upperTitle = title?.charAt(0).toUpperCase() + title?.slice(1);
+    const [association, setAssociation] = useState<IAssociationUser | null>(null);
+    const [openFilter, setOpenFilter] = useState(false);
 
     const mobile = useMediaQuery({query: "(max-width: 740px)"});
 
-    const [openFilter, setOpenFilter] = useState(false);
-             
+    const location = useLocation()!;
+    const title = location.pathname.slice(1);
+    let upperTitle;
+
+    const tableTitle = location.pathname.split("/");
+    const id = parseInt(tableTitle[2], 10);
+
+    useEffect(()=> {
+        setAssociation(null);
+        if (id && title === `association/${id}/animaux`) {
+            const associationData = async () => {
+                try {
+                    const response = await APIAssociation.getAssociation(id);
+                    setAssociation(response.data)
+                } catch (error) {
+                    console.log(error);
+                    throw error;
+                }
+            };
+            associationData();
+        }
+       }, [title]) 
+
+    if (association) {
+        upperTitle =`animaux de l'association ${association.representative}`
+    } else {
+        upperTitle = title?.charAt(0).toUpperCase() + title?.slice(1);
+    }
+        
     return (
         <main className={mobile ? "mainMobile" : "mainDestop"}>
 

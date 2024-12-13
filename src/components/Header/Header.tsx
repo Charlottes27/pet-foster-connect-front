@@ -47,6 +47,7 @@ function Header ({setEntityFilter, setFilterAnimal, setFilterAssociation, user, 
                     </button>
                     : 
                     <div className="buttonsHeaderApp">
+                        
                         {isAuthenticated &&
                             <NavLink to={"/mon-espace/mon-profil"} className="headerConnectionLink">
                                 <img src={profilePhoto || logoUser} alt="photo de profil" onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {

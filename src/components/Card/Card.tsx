@@ -10,6 +10,7 @@ interface ICardProps {
 }
 
 function Card ({entity, title}: ICardProps) {
+    
     const pathMap = {
         "animaux" : "animal",
         "associations" : "association",
@@ -28,11 +29,13 @@ function Card ({entity, title}: ICardProps) {
         return result;
     };
 
+    const photo = entity.profile_photo;
+
     return (
         <NavLink to={`/${title in pathMap && pathMap[title as keyof typeof pathMap]}/${entity.id}`} className="LinkToDetail">
             <article className="card" style={{border: "3px solid var(--blue-color)"}}>
                 <div className="sectionCardImg">
-                    <img src={`${import.meta.env.VITE_BASE_URL_PUBLIC}/${entity.profile_photo}`} alt={isAnimal(entity) ? entity.name : (isAssociation(entity) ? entity.representative : '')} className="animalPhoto"/>
+                    <img src={photo?.startsWith("http") ? photo : `${import.meta.env.VITE_BASE_URL_PUBLIC}/${photo}`} alt={isAnimal(entity) ? entity.name : (isAssociation(entity) ? entity.representative : '')} className="animalPhoto"/>
                 </div>
                 <div className="sectionCardText">
 

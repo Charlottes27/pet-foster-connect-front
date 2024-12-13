@@ -43,7 +43,7 @@ function FormConnexion ({setUser}: IFormConnexionProps) {
 
             navigate("/mon-espace/mon-profil")
         } catch (error) {
-            setErrorMessage("Erreur lors de la connexion. Vérifiez vos identifiants.");
+            setErrorMessage("Erreur lors de la connexion. Veuillez vérifier vos identifiants.");
             console.error("Erreur lors de la connexion :", error);
         }
     };

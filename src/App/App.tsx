@@ -33,6 +33,8 @@ function App() {
         // Donne, avant le useEffect, les premières infos de qui est connecté (si connexion il y a) (email, id, role, id_family, id_asso)
         //Ensuite les infos complètes
 console.log(user);
+console.log(entityData);
+
 
     useEffect(() => {
         const userId = localStorage.getItem("user_id");

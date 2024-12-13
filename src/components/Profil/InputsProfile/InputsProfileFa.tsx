@@ -4,31 +4,32 @@ interface IInputsProfilesFaProps {
     formDataUser: IUser
     handleChangeInput: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void
     isInfoEditMode: boolean
+    errorFields: string[]
 }
 
-function InputsProfilesFa ({formDataUser, handleChangeInput, isInfoEditMode}: IInputsProfilesFaProps) {
+function InputsProfilesFa ({formDataUser, handleChangeInput, isInfoEditMode, errorFields}: IInputsProfilesFaProps) {
     return (
         <div className="fieldsWrap">
-                    <label htmlFor="lastname" className="infoLabel" id="labelLastname">Nom</label>
-                    <input type="text" name="lastname" id="lastname" className="infoInput" value={formDataUser?.lastname} onChange={handleChangeInput} disabled={!isInfoEditMode} />
+                    <label htmlFor="lastname" className={errorFields.includes("user.lastname")? "errorFields infoLabel" : "infoLabel"} id="labelLastname">Nom</label>
+                    <input type="text" name="lastname" id="lastname" className={errorFields.includes("user.lastname")? "errorFields infoInput" : "infoInput"} value={formDataUser?.lastname} onChange={handleChangeInput} disabled={!isInfoEditMode} />
 
-                    <label htmlFor="firstname" className="infoLabel" id="labelFirstname">Prénom</label>
-                    <input type="text" name="firstname" id="firstname" className="infoInput" value={formDataUser?.firstname} onChange={handleChangeInput} disabled={!isInfoEditMode} />
+                    <label htmlFor="firstname" className={errorFields.includes("user.firstname")? "errorFields infoLabel" : "infoLabel"} id="labelFirstname">Prénom</label>
+                    <input type="text" name="firstname" id="firstname" className={errorFields.includes("user.firstname")? "errorFields infoInput" : "infoInput"} value={formDataUser?.firstname} onChange={handleChangeInput} disabled={!isInfoEditMode} />
 
-                    <label htmlFor="addess" className="infoLabel" id="labelAddess">Adresse</label>
-                    <input type="text" name="address" id="addess" className="infoInput" value={formDataUser?.family?.address} onChange={handleChangeInput} disabled={!isInfoEditMode} />
+                    <label htmlFor="addess" className={errorFields.includes("address")? "errorFields infoLabel" : "infoLabel"} id="labelAddess">Adresse</label>
+                    <input type="text" name="address" id="addess" className={errorFields.includes("address")? "errorFields infoInput" : "infoInput"} value={formDataUser?.family?.address} onChange={handleChangeInput} disabled={!isInfoEditMode} />
 
-                    <label htmlFor="postal_code" className="infoLabel" id="labelPostal_code">Code Postal</label>
-                    <input type="text" name="postal_code" id="postal_code" className="infoInput" value={formDataUser?.family?.postal_code} onChange={handleChangeInput} disabled={!isInfoEditMode} />
+                    <label htmlFor="postal_code" className={errorFields.includes("postal_code")? "errorFields infoLabel" : "infoLabel"} id="labelPostal_code">Code Postal</label>
+                    <input type="text" name="postal_code" id="postal_code" className={errorFields.includes("postal_code")? "errorFields infoInput" : "infoInput"} value={formDataUser?.family?.postal_code} onChange={handleChangeInput} disabled={!isInfoEditMode} />
 
                     <label htmlFor="city" className="infoLabel" id="labelCity">Ville</label>
                     <input type="text" name="city" id="city" className="infoInput" value={formDataUser?.family?.city} onChange={handleChangeInput} disabled={!isInfoEditMode} />
 
-                    <label htmlFor="phone" className="infoLabel" id="labelPhone">Téléphone</label>
-                    <input type="text" name="phone" id="phone" className="infoInput" value={formDataUser?.family?.phone} onChange={handleChangeInput} disabled={!isInfoEditMode} />
+                    <label htmlFor="phone" className={errorFields.includes("phone")? "errorFields infoLabel" : "infoLabel"} id="labelPhone">Téléphone</label>
+                    <input type="text" name="phone" id="phone" className={errorFields.includes("phone")? "errorFields infoInput" : "infoInput"} value={formDataUser?.family?.phone} onChange={handleChangeInput} disabled={!isInfoEditMode} />
 
-                    <label htmlFor="email" className="infoLabel" id="labelEmail">Mail</label>
-                    <input type="text" name="email" id="email" className="infoInput" value={formDataUser?.email} onChange={handleChangeInput} disabled={!isInfoEditMode} />
+                    <label htmlFor="email" className={errorFields.includes("user.email")? "errorFields infoLabel" : "infoLabel"} id="labelEmail">Mail</label>
+                    <input type="text" name="email" id="email" className={errorFields.includes("user.email")? "errorFields infoInput" : "infoInput"} value={formDataUser?.email} onChange={handleChangeInput} disabled={!isInfoEditMode} />
 
                     <h2>Situation de mon foyer</h2>
 
