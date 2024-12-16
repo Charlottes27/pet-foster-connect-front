@@ -1,0 +1,64 @@
+.asksByAnimal {
+    width: 80%;
+    margin: 3em auto;
+    border: 2px solid rgb(110, 108, 108);
+
+    div {
+    border-bottom: 1px solid rgb(110, 108, 108);
+    }
+
+    .nbForAsks {
+margin-inline: 1em auto;
+    }
+}
+
+summary {
+    display: flex;
+    align-items: center;
+
+}
+
+summary::before {
+        content: '▶';
+        margin-right: 0.5em;
+        transition: transform 0.2s;
+}
+  
+details[open] > summary::before {
+    transform: rotate(90deg);
+}
+
+.summaryHeaderTable {
+    background-color: rgb(167, 163, 163);
+}
+
+
+.headerTable {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: rgb(167, 163, 163);
+    width: 100%;
+
+    .img {
+        height: 4em;
+        width: 4em;
+        margin: 0.5em 0 0.5em 2em;
+        border-bottom: none;
+        
+        img {
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
+            object-position: center;
+            border-radius: 50%;
+        }
+    }
+
+    p {
+        font-weight: bold;
+        font-size: 1.5em;
+        margin-left: 3em;
+    }
+}
+

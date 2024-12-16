@@ -17,8 +17,10 @@ import DetailPage from "../pages/DetailPage/DetailPage.tsx"
 import ConnexionPage from "../pages/ConnexionPage/ConnexionPage.tsx"
 import MySpacePage from "../pages/MySpacePage/MySpacePage.tsx";
 import Profil from "../components/Profil/Profil.tsx";
-import APIUser from "../services/api/user.ts";
 import ListEntities from "../components/ListEntities/ListEntities.tsx";
+import ListAsks from "../components/ListAsks/ListAsks.tsx";
+import Page404 from "../pages/Page404/Page404.tsx";
+import APIUser from "../services/api/user.ts";
 
 function App() {
     inactivityUserForLogout();
@@ -91,18 +93,19 @@ console.log(entityData);
                     {user?.role === "family" &&
                     <>
                         <Route path="mon-profil" element={<Profil />} />
-                        <Route path="mes-animaux" element={<ListEntities entityData={entityData} setEntityData={setEntityData} user={user}/>}
-                        />
+                        <Route path="mes-animaux" element={<ListEntities entityData={entityData} setEntityData={setEntityData} user={user}/>} />
                     </>
                     }
                     { user?.role === "association" &&
                         <>
                             <Route path="mon-profil" element={<Profil />} />
-                            <Route path="mes-animaux" element={<ListEntities entityData={entityData} setEntityData={setEntityData} user={user}/>}
-                            />
+                            <Route path="mes-animaux" element={<ListEntities entityData={entityData} setEntityData={setEntityData} user={user}/>} />
+                            <Route path="les-demandes-d'accueil" element={<ListAsks user={user} />} />
                         </>
                     }
                 </Route>
+
+                <Route path="*" element={<Page404 />} />
             </Routes>
             <Footer />
         </>

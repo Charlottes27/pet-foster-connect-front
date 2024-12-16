@@ -59,7 +59,6 @@ function FormInscrFa ({openFormFa, setOpenFormFa, setUser}: IFormInscrFaProps) {
         }
         setErrorFields((prevFields) => prevFields.filter(field => field !== name && field !== `family.${name}`));
     };
-console.log(formData);
 
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();

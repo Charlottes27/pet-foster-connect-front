@@ -10,11 +10,14 @@ interface ICardProps {
 }
 
 function Card ({entity, title}: ICardProps) {
+    const idUrl = title.split("/");
+    const id = parseInt(idUrl[1], 10);
     
     const pathMap = {
         "animaux" : "animal",
         "associations" : "association",
-        "mon-espace/mes-animaux" : "animal"
+        "mon-espace/mes-animaux" : "animal",
+        [`association/${id}/animaux`] : "animal"
     }
 
     const isAnimal = (entity: IAnimal | IAssociation): entity is IAnimal => {

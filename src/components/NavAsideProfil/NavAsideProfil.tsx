@@ -1,6 +1,6 @@
 import { useMediaQuery } from "react-responsive";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronDown, faChevronUp, faAddressCard, faPaw, faEnvelope, faXmark} from "@fortawesome/free-solid-svg-icons";
+import { faChevronDown, faChevronUp, faCommentDots, faAddressCard, faPaw, faEnvelope, faXmark} from "@fortawesome/free-solid-svg-icons";
 import { NavLink, useNavigate } from "react-router-dom";
 
 import "./NavAsideProfil.css";
@@ -17,7 +17,7 @@ function NavAsideProfil ({openNavProfil, setOpenNavProfil}: INavAsideProfil) {
     const linksFa = [
         { name: "Mes informations", href: "/mon-espace/mon-profil", icon: faAddressCard },
         { name: "Voir mes animaux", href: "/mon-espace/mes-animaux", icon: faPaw },
-        // { name: "Voir mes animaux", href: `/${familyId}/mes-animaux`, icon: faPaw },
+        { name: "Voir les demandes d'accueil", href: "/mon-espace/les-demandes-d'accueil", icon: faCommentDots},
         { name: "Ma messagerie", href: "#", icon: faEnvelope}
     ];
 
