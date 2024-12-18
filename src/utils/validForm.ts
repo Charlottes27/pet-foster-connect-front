@@ -35,6 +35,12 @@ interface IFormDataUpdate {
         lastname?: string,
         email?: string,
     },
+    name?: string,
+    species?: string,
+    breed?: string,
+    gender?: string,
+    age?: number,
+    size?: string,
 }
 
 const validForm = {

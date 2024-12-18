@@ -1,5 +1,7 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 import "./ListEntities.css";
 import Card from "../../components/Card/Card.tsx";
@@ -9,6 +11,8 @@ import { IUser } from "../../@types/user";
 import APIAnimal from "../../services/api/animal.ts";
 import APIAssociation from "../../services/api/associations.ts";
 import APIFamily from "../../services/api/family.ts";
+import Toast from "../Toast/Toast.tsx";
+import FormAnimal from "../Formulaires/FormAnimal/FormAnimal.tsx";
 
 interface IListEntitiesProps {
     entityFilter?: IAnimal[] | IAssociation[]
@@ -18,6 +22,25 @@ interface IListEntitiesProps {
 }
 
 function ListEntities ({entityFilter, entityData, setEntityData, user}:IListEntitiesProps) {
+    const [isCardAnimalCRUD, setIsCardAnimalCRUD] = useState(false);
+    const [modalModifiedAnimal, setModalModifiedAnimal] = useState(false);
+    const [successMessage, setSuccessMessage] = useState<string | null>(null);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const [detailOfOneAnimal, setDetailOfOneAnimal] = useState <IAnimal>({
+        name: '',
+        species: '',
+        breed: '',
+        gender: '',
+        age: 0,
+        size: '',
+        description: '',
+        profile_photo: '',
+        photo1: '',
+        photo2: '',
+        photo3: '',
+    })
+
+
     const location = useLocation()!;
     const title = location.pathname.slice(1);
     const idUrl = title.split("/");
@@ -67,6 +90,7 @@ function ListEntities ({entityFilter, entityData, setEntityData, user}:IListEnti
                 try {
                     const response = await APIAssociation.getAnimalsOfAsso(associationId);
                     setEntityData(response.data);
+                    setIsCardAnimalCRUD(true);
                 } catch (error) {
                     console.log(error);
                 }
@@ -88,19 +112,54 @@ function ListEntities ({entityFilter, entityData, setEntityData, user}:IListEnti
 
     },[title, user]);
     
+    const AddAnimal = () => {
+        setModalModifiedAnimal(true);
+        setDetailOfOneAnimal({
+            name: '',
+            species: '',
+            breed: '',
+            gender: '',
+            age: 0,
+            size: '',
+            description: '',
+            profile_photo: '',
+            photo1: '',
+            photo2: '',
+            photo3: '',
+        })
+    };
+    
+
+console.log(modalModifiedAnimal);
+
     return (
         <section className="listEntities">
+            {isCardAnimalCRUD && 
+                <button type="button" className="card cardAnimalCRUD" style={{border: "3px solid var(--green-color)"}} onClick={AddAnimal}>
+                    <div className="sectionCardAdd">
+                        <FontAwesomeIcon icon={faPlus} />
+                    </div>
+                    <div className="sectionCardText">
+                        <p className="pAddAnimal">Ajouter un animal</p>
+                    </div>
+                </button>
+            }
             {entityFilter?.length! > 0 ? (
                 entityFilter?.map((entity)=>(
-                    <Card key={entity.id} entity={entity} title={title!}/>
+                    <Card key={entity.id} entity={entity} title={title!} />
                 )) 
             ) : entityData?.length! >0 ? (
                 entityData?.map((entity)=>(
-                    <Card key={entity.id} entity={entity} title={title!}/>
+                    <Card key={entity.id} entity={entity} title={title!} isCardAnimalCRUD={isCardAnimalCRUD} setModalModifiedAnimal={setModalModifiedAnimal} setSuccessMessage={setSuccessMessage} setErrorMessage={setErrorMessage} entityData={entityData as IAnimal[]} setEntityData={setEntityData as React.Dispatch<React.SetStateAction<IAnimal[]>>} setDetailOfOneAnimal={setDetailOfOneAnimal} />
                 ))
             ) : (
                 <p className="errorSearch">Aucun résultat pour votre recherche</p>
             )}
+
+            {modalModifiedAnimal && <FormAnimal setSuccessMessage={setSuccessMessage} setErrorMessage={setErrorMessage} detailOfOneAnimal={detailOfOneAnimal} setModalModifiedAnimal={setModalModifiedAnimal} />}
+
+            {successMessage && <Toast setToast={setSuccessMessage} message={successMessage} type="success" />}
+            {errorMessage && <Toast setToast={setErrorMessage} message={errorMessage} type="error" />}
         </section>
     )
 };

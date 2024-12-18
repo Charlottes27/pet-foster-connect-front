@@ -438,7 +438,7 @@ function Profil () {
                         <button type="submit" className="btnModifProfile first" >
                             <FontAwesomeIcon icon={faCheck} /> Valider la modification
                         </button>
-                        <button type="reset" className="btnModifProfile second" onClick={()=>{setIsInfoEditMode(false); setErrorFields([])}}>
+                        <button type="reset" className="btnModifProfile second" onClick={()=>{setIsInfoEditMode(false); setFormDataUser(originalDataUser) ; setErrorFields([])}}>
                             <FontAwesomeIcon icon={faXmark} /> Annuler la modification
                         </button>
                         <button type="button"className="btnModifProfile last web" onClick={() => setIsConfirmModalOpen(true)} >

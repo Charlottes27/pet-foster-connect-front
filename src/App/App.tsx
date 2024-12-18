@@ -105,6 +105,8 @@ console.log(entityData);
                     }
                 </Route>
 
+                <Route path="/famille/:id" element={<DetailPage />} />
+
                 <Route path="*" element={<Page404 />} />
             </Routes>
             <Footer />
