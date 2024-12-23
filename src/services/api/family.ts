@@ -12,7 +12,7 @@ const APIFamily = {
 
     async pathFamilyPhoto(id: number, data: FormData) {
         return await axiosInstance.patch(`/family/${id}`, data, {
-            headers : {"Content-Type": "miltipart/form-data"}
+            headers : {"Content-Type": "multipart/form-data"}
         })
     },
 

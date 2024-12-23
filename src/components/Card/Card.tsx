@@ -53,8 +53,6 @@ function Card ({entity, title, isCardAnimalCRUD, setModalModifiedAnimal, setSucc
         } catch (error) {
             console.log(error);
             setErrorMessage!("Problème lors de la suppression")
-            console.log("il y a une erreur quand je supp");
-            
         }
     };
 

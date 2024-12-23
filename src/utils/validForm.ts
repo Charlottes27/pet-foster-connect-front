@@ -44,6 +44,7 @@ interface IFormDataUpdate {
 }
 
 const validForm = {
+    // Méthodes pour profile Fa ou Asso
     validateRequiredFields (formData: IFormData, formType: "family" | "association" ) {
         const commonFields = [
             { key: 'lastname', label: 'Nom' },
@@ -178,6 +179,54 @@ const validForm = {
         }
         return null;
     },
+
+    // Méthodes pour Animaux
+    validateRequiredFieldsForAnimal (formData: IFormData) {
+        const requiredFields = [
+            { key: 'name', label: 'Nom' },
+            { key: 'species', label: 'Espèce' },
+            { key: 'breed', label: 'Race' },
+            { key: 'gender', label: 'Genre' },
+            { key: 'age', label: 'Age' },
+            { key: 'size', label: 'Taille'},
+        ];
+
+        const missingFields = requiredFields.filter(field => !_.get(formData, field.key).trim());
+    
+        if (missingFields.length > 0) {
+            const labels = missingFields.map(field => field.label);
+            const keys = missingFields.map(field => field.key);
+            return {
+                message: `Le(s) champ(s) ${labels.join(', ')} sont obligatoires pour la création d'un animal`,
+                fields: keys,
+            }
+        }
+        return null;
+    },
+
+    validateFieldFormatForAnimal (formData: IFormDataUpdate) {
+        const fileds: string[] = [];
+        const message: string[] = [];
+
+        if (formData.species !== undefined && !valideInput(formData.species, "species")) {
+            message.push("Merci de renseigner une race valide : 'Chien' ou 'Chat'");
+            fileds.push("species");
+        }
+        if (formData.gender !== undefined && !valideInput(formData.gender, "gender")) {
+            message.push("Merci de reseigner un genre valide : M ou F");
+            fileds.push("gender");
+        }
+        if (formData.size !== undefined && !valideInput(formData.size!, "size")) {
+            message.push("Merci de reseigner une Taille valide : 'Petit', 'Moyen', 'Grand', ou 'Très Grand'");
+            fileds.push("size");
+        }
+        if (fileds && message) {
+            return {fileds, message};
+        }
+        return null;
+    },
+
+    
 };
 
 export default validForm;

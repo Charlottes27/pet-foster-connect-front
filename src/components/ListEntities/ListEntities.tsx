@@ -22,6 +22,8 @@ interface IListEntitiesProps {
 }
 
 function ListEntities ({entityFilter, entityData, setEntityData, user}:IListEntitiesProps) {
+    const [isInfoEditMode, setIsInfoEditMode] = useState(false);
+    const [createdAnimal, setCreatedAnimal] = useState(false)
     const [isCardAnimalCRUD, setIsCardAnimalCRUD] = useState(false);
     const [modalModifiedAnimal, setModalModifiedAnimal] = useState(false);
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
@@ -39,7 +41,6 @@ function ListEntities ({entityFilter, entityData, setEntityData, user}:IListEnti
         photo2: '',
         photo3: '',
     })
-
 
     const location = useLocation()!;
     const title = location.pathname.slice(1);
@@ -110,7 +111,7 @@ function ListEntities ({entityFilter, entityData, setEntityData, user}:IListEnti
             Animals();
         }
 
-    },[title, user]);
+    },[title, user, detailOfOneAnimal]);
     
     const AddAnimal = () => {
         setModalModifiedAnimal(true);
@@ -126,11 +127,11 @@ function ListEntities ({entityFilter, entityData, setEntityData, user}:IListEnti
             photo1: '',
             photo2: '',
             photo3: '',
-        })
+        });
+        setIsInfoEditMode(true);
+        setCreatedAnimal(true);
     };
     
-
-console.log(modalModifiedAnimal);
 
     return (
         <section className="listEntities">
@@ -156,7 +157,7 @@ console.log(modalModifiedAnimal);
                 <p className="errorSearch">Aucun résultat pour votre recherche</p>
             )}
 
-            {modalModifiedAnimal && <FormAnimal setSuccessMessage={setSuccessMessage} setErrorMessage={setErrorMessage} detailOfOneAnimal={detailOfOneAnimal} setModalModifiedAnimal={setModalModifiedAnimal} />}
+            {modalModifiedAnimal && <FormAnimal detailOfOneAnimal={detailOfOneAnimal} setModalModifiedAnimal={setModalModifiedAnimal} createdAnimal={createdAnimal} setCreatedAnimal={setCreatedAnimal} isInfoEditMode={isInfoEditMode} setIsInfoEditMode={setIsInfoEditMode} setDetailOfOneAnimal={setDetailOfOneAnimal} />}
 
             {successMessage && <Toast setToast={setSuccessMessage} message={successMessage} type="success" />}
             {errorMessage && <Toast setToast={setErrorMessage} message={errorMessage} type="error" />}

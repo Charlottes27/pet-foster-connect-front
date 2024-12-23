@@ -413,7 +413,7 @@ function Profil () {
     return (
         <section className="ProfilUser">
             <form action="" className="formProfilUser" onSubmit={handleSubmit}>
-            <h1 className="headerProfilUser">Mes informations</h1>
+                <h1 className="headerProfilUser">Mes informations</h1>
                 <div className="profilImgWrap">
                     <img src={formDataUser[userType]?.profile_photo || userIcon} alt="Photo de profil" onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
                         const target = e.target as HTMLImageElement;

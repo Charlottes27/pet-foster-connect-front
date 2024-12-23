@@ -1,9 +1,10 @@
-
 .container {
     overflow: hidden;
 }
 
 .modalAddPatchAnimal {
+    display: flex;
+    flex-direction: column;
     background-color:rgb(223, 222, 222);
     border-radius: 8px;
     border: 5px solid var(--green-color);
@@ -19,9 +20,12 @@
 }
 
 .modal-body {
-    display: flex;
-    flex-direction: column;
     
+    border: 3px solid var(--green-color);
+    width: 90%;
+    padding: 1em;
+    border-radius: 18px;
+    margin-inline: auto;
 }
 
 .closeButton {
@@ -39,24 +43,28 @@ h3 {
 }
 
 .formAnimal {
-    width: 90%;
-    padding: 1em;
-    border: 3px solid var(--green-color);
-    display: flex;
-    flex-direction: row;
+    border: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
 
     .previewPhotos {
+        grid-column: 1/2;
+        grid-row: 1;
         height: 100%;
-        width: 50%;
+        width: 100%;
         display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-rows: repeat(6, 10em);
 
         #animalProfile_photo {
-            grid-column: 1/6;
+            grid-column: 1/5;
             grid-row: 1/3;
-            margin-left: 1em;
+            font-size: 15em;
+            background-color: white;
+            border-radius: 50%;
             img {
-                height: 30em;
-                width: 30em;
+                height: 100%;
+                width: 100%;
                 border-radius: 50%;
                 object-fit: cover;
                 object-position: center;
@@ -64,12 +72,14 @@ h3 {
         }
 
         #animalPhoto1 {
-            grid-column: 4/6;
-            grid-row: 3/5;
-            margin: 1em 1em 0 1em;
+            grid-column: 3/5;
+            grid-row: 3/4;
+            font-size: 7.5em;
+            background-color: white;
+            border-radius: 50%;
             img {
-                height: 20em;
-                width: 20em;
+                height: 100%;
+                width: 100%;
                 border-radius: 50%;
                 object-fit: cover;
                 object-position: center;
@@ -78,11 +88,13 @@ h3 {
 
         #animalPhoto2 {
             grid-column: 1/3;
-            grid-row: 4/6;
-            margin: 2em 0 0 1em;
+            grid-row: 4/5;
+            font-size: 7.5em;
+            background-color: white;
+            border-radius: 50%;
             img {
-                height: 20em;
-                width: 20em;
+                height: 100%;
+                width: 100%;
                 border-radius: 50%;
                 object-fit: cover;
                 object-position: center;
@@ -90,24 +102,47 @@ h3 {
         }
 
         #animalPhoto3 {
-            grid-column: 3/6;
-            grid-row: 5/7;
-            margin: 2em 0 0 4em;
+            grid-column: 3/5;
+            grid-row: 5/6;
+            font-size: 7.5em;
+            background-color: white;
+            border-radius: 50%;
             img {
-                height: 20em;
-                width: 20em;
+                height: 100%;
+                width: 100%;
                 border-radius: 50%;
                 object-fit: cover;
                 object-position: center;
             }
         }
 
+        .editProfilImgWrap {
+            grid-column: 1/5;
+            grid-row: 6/7;
+
+
+            .dashboardPhoto {
+                width: 100%;
+                font-size: 0.8em;
+                
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+
+                label,
+                button {
+                    padding: 0;
+                    width: 70%;
+                }
+            }
+        }
     }
 
     .containerInput {
+        grid-column: 2/3;
+        grid-row: 1;
         padding-inline: 5%;
-        width: 48%;
-        margin-inline: auto;
+        width: 100%;
+        margin-left: 0.5em;
         display: flex;
         flex-direction: column;
         border: 1px solid black;
@@ -124,7 +159,12 @@ h3 {
         }
     }
 
-    
+    .buttonsWrapAnimal{
+        grid-column: 1/3;
+        grid-row: 2;
+        display: flex;
+        flex-direction: row;
+    }
     /* #photo-container {
         border: 2px dashed #ccc;
         padding: 20px;
@@ -149,11 +189,13 @@ h3 {
     flex-direction: row;
 }
 
-.btnModifAnimal {
+.btnModifAnimal,
+.btnCreatedAnimal {
     display: block;
-    width: 30%;
-    background-color: var(--green-color);
-    border-radius: 18px;
+    width: max-content;
+    padding: 0.5em;
     margin: 1em auto 0;
     font-size: 1.3em;
+    background-color: var(--green-color);
+    border-radius: 18px;
 }

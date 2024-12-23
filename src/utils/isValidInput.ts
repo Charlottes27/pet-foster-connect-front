@@ -6,6 +6,9 @@ const regexPatterns = {
     validEmail: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
     rnaNumber: /^W\d{9}$/,
     strongPassword: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+[\]{};':"\\|,.<>?]).{8,}$/,
+    species: /^(Chien|Chat)$/i,
+    gender: /^(M|F)$/,
+    size: /^(Très Petit|Petit|Moyen|Grand|Très Grand)$/i,
 };
 type RegexKey = keyof typeof regexPatterns;
 

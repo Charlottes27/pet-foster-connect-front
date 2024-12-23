@@ -16,8 +16,8 @@ function NavAsideProfil ({openNavProfil, setOpenNavProfil}: INavAsideProfil) {
     const mobile = useMediaQuery({query: "(max-width:740px"});
     const linksFa = [
         { name: "Mes informations", href: "/mon-espace/mon-profil", icon: faAddressCard },
-        { name: "Voir mes animaux", href: "/mon-espace/mes-animaux", icon: faPaw },
-        { name: "Voir les demandes d'accueil", href: "/mon-espace/les-demandes-d'accueil", icon: faCommentDots},
+        { name: "Mes animaux", href: "/mon-espace/mes-animaux", icon: faPaw },
+        { name: "Les demandes d'accueil", href: "/mon-espace/les-demandes-d'accueil", icon: faCommentDots},
         { name: "Ma messagerie", href: "#", icon: faEnvelope}
     ];
 
