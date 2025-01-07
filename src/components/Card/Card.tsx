@@ -19,7 +19,7 @@ interface ICardProps {
     setDetailOfOneAnimal?: React.Dispatch<React.SetStateAction<IAnimal>>
 }
 
-function Card ({entity, title, isCardAnimalCRUD, setModalModifiedAnimal, setSuccessMessage, setErrorMessage, entityData, setEntityData, setDetailOfOneAnimal}: ICardProps) {
+function Card ({entity, title, isCardAnimalCRUD, setModalModifiedAnimal, setSuccessMessage, setErrorMessage, setEntityData, setDetailOfOneAnimal}: ICardProps) {
     const idUrl = title.split("/");
     const id = parseInt(idUrl[1], 10);
     

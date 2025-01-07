@@ -25,8 +25,6 @@ interface IFilterProps {
 }
 
 function Filter ({openFilter, setOpenFilter, entityData, setEntityFilter, title, filterAnimal, setFilterAnimal, filterAssociation, setFilterAssociation}: IFilterProps) {
-    const [isLoading, setIsLoading] = useState(true);
-
     const [species, setSpecies] = useState<string[]>([]);
     const [sizes, setSizes] = useState<string[]>([]);
 
@@ -36,8 +34,6 @@ function Filter ({openFilter, setOpenFilter, entityData, setEntityFilter, title,
     useEffect(()=>{
         const loadEntities = () => {
             try {
-                setIsLoading(true);
-
                 if (title === "animaux" && isAnimal(entityData)) {
                     const uniqueSpecies = Array.from(
                     new Set(entityData.map((animal: IAnimal) => animal.species))
@@ -65,8 +61,6 @@ function Filter ({openFilter, setOpenFilter, entityData, setEntityFilter, title,
                 }
             } catch (error) {
                 console.error(error);
-            } finally {
-                setIsLoading(false);
             }
         }
         loadEntities();

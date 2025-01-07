@@ -11,7 +11,6 @@ import { IAnimal } from "../../@types/animal.ts";
 import { IAssociation, IAssociationUser } from '../../@types/association.ts'
 import { IFilterAnimal } from "../../@types/filter";
 import { IFilterAssociation } from "../../@types/filter";
-import { IUser } from "../../@types/user";
 import APIAssociation from "../../services/api/associations.ts";
 
 interface IListPageProps {
@@ -23,10 +22,9 @@ interface IListPageProps {
     setFilterAnimal?: React.Dispatch<React.SetStateAction<IFilterAnimal>>
     filterAssociation?: IFilterAssociation
     setFilterAssociation?: React.Dispatch<React.SetStateAction<IFilterAssociation>>
-    user?: IUser | null
 }
 
-function ListPage ({entityData, setEntityData, entityFilter, setEntityFilter, filterAnimal, setFilterAnimal, filterAssociation, setFilterAssociation, user}: IListPageProps) {
+function ListPage ({entityData, setEntityData, entityFilter, setEntityFilter, filterAnimal, setFilterAnimal, filterAssociation, setFilterAssociation}: IListPageProps) {
     const [association, setAssociation] = useState<IAssociationUser | null>(null);
     const [openFilter, setOpenFilter] = useState(false);
 
