@@ -9,11 +9,10 @@ import { IAssociation } from "../../@types/association";
 import axiosInstance from "../../services/axios/axios";
 
 interface ISliderProps {
-    entity: IAnimal | IAssociation 
-    idEntity: number
+    entity: IAnimal | IAssociation
 }
 
-function Slider({entity, idEntity}: ISliderProps) {
+function Slider({entity}: ISliderProps) {
     const [validImages, setValidImages] = useState<string[]>([]);
 
     const isAnimal = (entity: IAnimal | IAssociation): entity is IAnimal => {

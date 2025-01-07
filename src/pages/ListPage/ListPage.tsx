@@ -2,7 +2,6 @@ import { useLocation, NavLink } from "react-router-dom";
 import { useMediaQuery } from "react-responsive";
 import { useEffect, useState } from "react";
 
-import APIAnimal from "../../services/api/animal.ts";
 
 import "./ListPage.css"
 import Filter from "../../components/Filter/Filter.tsx"
@@ -14,7 +13,6 @@ import { IFilterAnimal } from "../../@types/filter";
 import { IFilterAssociation } from "../../@types/filter";
 import { IUser } from "../../@types/user";
 import APIAssociation from "../../services/api/associations.ts";
-import APIFamily from "../../services/api/family.ts";
 
 interface IListPageProps {
     entityData: IAnimal[] | IAssociation[]
