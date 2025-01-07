@@ -83,7 +83,7 @@ function DetailPage () {
         <main>
             <article className="entityDetails">
                 <div className="headerArticle">
-                    <Slider entity={animal! || association!} idEntity={idEntity}/>
+                    <Slider entity={animal! || association!}/>
                 </div>
                 
                 <p id="titleArticle">{animal?.name || association?.representative}</p>

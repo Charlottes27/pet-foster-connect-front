@@ -1,6 +1,6 @@
 import { useMediaQuery } from "react-responsive";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHouse, faPaw, faFont, faXmark, faUser, faAddressCard } from "@fortawesome/free-solid-svg-icons";
+import { faHouse, faPaw, faFont, faXmark, faUser } from "@fortawesome/free-solid-svg-icons";
 import { NavLink } from "react-router-dom";
 
 import "./Nav.css";

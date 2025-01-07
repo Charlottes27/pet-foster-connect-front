@@ -2,7 +2,6 @@ import { useLocation, NavLink } from "react-router-dom";
 import { useMediaQuery } from "react-responsive";
 import { useEffect, useState } from "react";
 
-import APIAnimal from "../../services/api/animal.ts";
 
 import "./ListPage.css"
 import Filter from "../../components/Filter/Filter.tsx"
@@ -12,9 +11,7 @@ import { IAnimal } from "../../@types/animal.ts";
 import { IAssociation, IAssociationUser } from '../../@types/association.ts'
 import { IFilterAnimal } from "../../@types/filter";
 import { IFilterAssociation } from "../../@types/filter";
-import { IUser } from "../../@types/user";
 import APIAssociation from "../../services/api/associations.ts";
-import APIFamily from "../../services/api/family.ts";
 
 interface IListPageProps {
     entityData: IAnimal[] | IAssociation[]
@@ -25,10 +22,9 @@ interface IListPageProps {
     setFilterAnimal?: React.Dispatch<React.SetStateAction<IFilterAnimal>>
     filterAssociation?: IFilterAssociation
     setFilterAssociation?: React.Dispatch<React.SetStateAction<IFilterAssociation>>
-    user?: IUser | null
 }
 
-function ListPage ({entityData, setEntityData, entityFilter, setEntityFilter, filterAnimal, setFilterAnimal, filterAssociation, setFilterAssociation, user}: IListPageProps) {
+function ListPage ({entityData, setEntityData, entityFilter, setEntityFilter, filterAnimal, setFilterAnimal, filterAssociation, setFilterAssociation}: IListPageProps) {
     const [association, setAssociation] = useState<IAssociationUser | null>(null);
     const [openFilter, setOpenFilter] = useState(false);
 

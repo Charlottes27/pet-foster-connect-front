@@ -1,7 +1,7 @@
 import { useMediaQuery } from "react-responsive";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronDown, faChevronUp, faCommentDots, faAddressCard, faPaw, faEnvelope, faXmark} from "@fortawesome/free-solid-svg-icons";
-import { NavLink, useNavigate } from "react-router-dom";
+import { faCommentDots, faAddressCard, faPaw, faEnvelope, faXmark} from "@fortawesome/free-solid-svg-icons";
+import { NavLink} from "react-router-dom";
 
 import "./NavAsideProfil.css";
 
@@ -12,7 +12,6 @@ interface INavAsideProfil {
 
 function NavAsideProfil ({openNavProfil, setOpenNavProfil}: INavAsideProfil) {
 
-    const navigate = useNavigate();
     const mobile = useMediaQuery({query: "(max-width:740px"});
     const linksFa = [
         { name: "Mes informations", href: "/mon-espace/mon-profil", icon: faAddressCard },

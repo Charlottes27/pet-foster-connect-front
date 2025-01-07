@@ -4,19 +4,18 @@ import { useState } from "react";
 import axios from "axios";
 
 import "./FormEditPassword.css";
-import { IUser, IUserOnly } from "../../../@types/user";
+import { IUser } from "../../../@types/user";
 import APIFamily from "../../../services/api/family";
 import Toast from "../../Toast/Toast";
 import valideInput from "../../../utils/isValidInput";
 import { IFamilyUser } from "../../../@types/family";
 
 interface IFormEditPasswordProps {
-    isPasswordEditMode: boolean
     setIsPasswordEditMode: React.Dispatch<React.SetStateAction<boolean>>
     userData: IUser
 }
 
-function FormEditPassword ({isPasswordEditMode, setIsPasswordEditMode, userData}: IFormEditPasswordProps) {
+function FormEditPassword ({setIsPasswordEditMode, userData}: IFormEditPasswordProps) {
     const [formDataPassword, setFormDataPassword] = useState( {currentPassword:"", newPassword: "", confirmPassword: ""} );
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
