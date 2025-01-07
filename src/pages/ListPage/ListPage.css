@@ -14,20 +14,6 @@
     font-size: 2em;
 }
 
-.listAnimals {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    gap: 5px;
-    margin-inline: 1px;
-
-    .errorSearch {
-        font-size: 2em;
-    }
-    
-}
-
 @media screen and (min-width: 740px) {
     .mainDestop {
         display: flex;

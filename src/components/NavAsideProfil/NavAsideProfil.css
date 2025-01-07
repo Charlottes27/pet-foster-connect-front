@@ -1,0 +1,73 @@
+.navProfilMobile {
+    background-color: var(--peche-color);
+    font-size: 1.2em;
+    
+    position: fixed;
+    top: 0;
+    height: 100vh;
+    width: 100%;
+    z-index: 100;
+    
+    display: none;
+}
+
+.closeButton {
+    align-self: flex-end;
+    padding-right: 6%;
+    font-size: 1.5em;
+    margin-right: 0.5em;
+}
+
+.containerLinks {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 30%;
+    gap: 2em;
+    width: 100%;
+}
+
+.linkNavProfil {
+    text-decoration: none;
+    color: var(--black-color);
+    margin-top: 1em;
+
+    .iconNavProfil {
+        margin-right: 0.5em;
+    }
+}
+
+.navProfilMobile.active {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+@media screen and (min-width: 741px) {
+    .navProfilDestop {
+        width: 30%;
+        font-family: var(--secondary-police);
+        background-color: var(--orange-color);
+        padding: 1.5em;
+    }    
+
+    .containerLinks {
+        margin-top: 10%;
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+    }   
+}
+
+@media screen and (min-width: 800px) {
+    .navProfilDestop {
+        width: 25%;
+    }
+}
+
+@media screen and (min-width: 1020px) {
+    .navProfilDestop {
+        width: 20%;
+    }
+} 

@@ -17,6 +17,33 @@
         padding-block: 0 1em;
         width: fit-content;
     }
+
+    .errorFields {
+        color: red;
+        font-weight: bold;
+        border-color: red;
+
+    }
+
+    .divInputPassword {
+        -webkit-text-security: disc !important;
+        padding-block: 1px;
+        padding-inline: 2px;
+        border: 1px solid var(--black-color);
+        border-radius: 5px;
+
+        .infoInput {
+            -webkit-text-security: none;
+            padding-block: 0;
+            padding-inline: 0;
+            border: none;
+            width: 90%;
+        }
+    }
+}
+
+#firstnameRepresentativeAsso {
+    margin-top: 0.4em;
 }
 
 .inscriptionFormAsso.active {
@@ -57,73 +84,84 @@
             grid-row: 4;
         }
 
-        #labelNameRepresentativeAsso {
+        #labelNumberRnaAsso {
             grid-column: 2/3;
             grid-row: 3;
         }
 
-        #nameRepresentativeAsso {
+        #numberRnaAsso {
             grid-column: 2/3;
             grid-row: 4;
         }
 
+        #labelLastnameRepresentativeAsso {
+            grid-column: 1/3;
+            grid-row: 5;
+        }
+
+        #lastnameRepresentativeAsso {
+            grid-column: 1/2;
+            grid-row: 6;
+        }
+
+        #labelFirstnameRepresentativeAsso {
+            grid-column: 2/3;
+            grid-row: 5;
+        }
+
+        #firstnameRepresentativeAsso {
+            grid-column: 2/3;
+            grid-row: 6;
+            margin-top: 0;
+        }
+
         #labelAddressAsso {
             grid-column: 1/2;
-            grid-row: 5;
+            grid-row: 7;
         }
 
         #addressAsso {
             grid-column: 1/3;
-            grid-row: 6;
+            grid-row: 8;
         }
 
         #labelPostalCodeAsso {
             grid-column: 1/2;
-            grid-row: 7;
+            grid-row: 9;
         }
 
         #postalCodeAsso {
             grid-column: 1/2;
-            grid-row: 8;
+            grid-row: 10;
         }
 
         #labelCityAsso {
             grid-column: 2/3;
-            grid-row: 7;
+            grid-row: 9;
         }
 
         #cityAsso {
             grid-column: 2/3;
-            grid-row: 8;
+            grid-row: 10;
         }
 
         #labelPhoneAsso {
             grid-column: 1/2;
-            grid-row: 9;
+            grid-row: 11;
         }
 
         #phoneAsso {
             grid-column: 1/2;
-            grid-row: 10;
+            grid-row: 12;
         }
 
         #labelEmailAsso {
             grid-column: 2/3;
-            grid-row: 9;
+            grid-row: 11;
         }
 
         #emailAsso {
             grid-column: 2/3;
-            grid-row: 10;
-        }
-
-        #labelNumberRnaAsso {
-            grid-column: 1/3;
-            grid-row: 11;
-        }
-
-        #numberRnaAsso {
-            grid-column: 1/3;
             grid-row: 12;
         }
 
@@ -132,7 +170,7 @@
             grid-row: 13;
         }
 
-        #passwordAsso {
+        #divInputPasswordAsso {
             grid-column: 1/3;
             grid-row: 14;
         }
@@ -142,7 +180,7 @@
             grid-row: 15;
         }
 
-        #confimPasswordAsso {
+        #divInputConfirmPasswordAsso {
             grid-column: 1/3;
             grid-row: 16;
         }

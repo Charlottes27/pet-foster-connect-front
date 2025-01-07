@@ -2,7 +2,7 @@
     display: none;
     padding: 0 2em 1em 2em;
 
-    #confimPassword{
+    #confirmPassword{
         margin-bottom: 1em;
     }
 
@@ -16,6 +16,28 @@
         margin-right: -0.5em;
         padding-block: 0 1em;
         width: fit-content;
+    }
+
+    .errorFields {
+        color: red;
+        font-weight: bold;
+        border-color: red;
+    }
+
+    .divInputPassword {
+        -webkit-text-security: disc !important;
+        padding-block: 1px;
+        padding-inline: 2px;
+        border: 1px solid var(--black-color);
+        border-radius: 5px;
+
+        .infoInput {
+            -webkit-text-security: none;
+            padding-block: 0;
+            padding-inline: 0;
+            border: none;
+            width: 90%;
+        }
     }
 }
 
@@ -122,17 +144,17 @@
             grid-row: 11;
         }
 
-        #passwordFa {
+        #divInputPasswordFa {
             grid-column: 1/3;
             grid-row: 12;
         }
 
-        #labelConfimPasswordFa{
+        #labelConfirmPasswordFa{
             grid-column: 1/3;
             grid-row: 13;
         }
 
-        #confimPasswordFa{
+        #divInputConfirmPasswordFa{
             grid-column: 1/3;
             grid-row: 14;
         }

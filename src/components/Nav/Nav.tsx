@@ -9,6 +9,8 @@ import { IAnimal } from "../../@types/animal";
 import { IAssociation } from "../../@types/association";
 import { IFilterAnimal } from "../../@types/filter";
 import { IFilterAssociation } from "../../@types/filter";
+import { IUser } from "../../@types/user";
+import { useDeconnexion } from "../../utils/deconnexion";
 
 interface INavProps {
     openMenuBurger: boolean
@@ -16,22 +18,35 @@ interface INavProps {
     setEntityFilter: React.Dispatch<React.SetStateAction<IAnimal[] | IAssociation[]>>
     setFilterAnimal: React.Dispatch<React.SetStateAction<IFilterAnimal>>
     setFilterAssociation: React.Dispatch<React.SetStateAction<IFilterAssociation>>
+    user: IUser | null
+    setUser: React.Dispatch<React.SetStateAction<IUser | null>>
 }
 
-function Nav ({openMenuBurger, setOpenMenuBurger, setEntityFilter, setFilterAnimal, setFilterAssociation}: INavProps) {
+function Nav ({openMenuBurger, setOpenMenuBurger, setEntityFilter, setFilterAnimal, setFilterAssociation, user, setUser}: INavProps) {
     const { isAuthenticated } = useAuth();
     const mobile = useMediaQuery({query: "(max-width: 480px)"});
+
+    const deconnexion = useDeconnexion();
     
     return (
         <nav className={mobile ? (openMenuBurger ? "navMobile active" : "navMobile"): "nav"}>
             {mobile ? 
+            <>
                 <button type="button" className="closeButton" onClick={()=>setOpenMenuBurger(false)}>
                     <FontAwesomeIcon icon={faXmark} />
                 </button>
+                {isAuthenticated && <p className="sayHello">Bonjour {user?.firstname}</p>}
+            </>
             :
             ""}
             
             <div className="containerLink">
+                {isAuthenticated && mobile &&
+                <NavLink to={"/mon-espace/mon-profil"} className="navLink" onClick={()=>setOpenMenuBurger(false)}>
+                    <FontAwesomeIcon icon={faUser} />
+                    <p>Profil</p>
+                </NavLink>
+                }
                 <NavLink to={"/"} className="navLink" onClick={()=>setOpenMenuBurger(false)}>
                     <FontAwesomeIcon icon={faHouse} />
                     Accueil
@@ -64,8 +79,8 @@ function Nav ({openMenuBurger, setOpenMenuBurger, setEntityFilter, setFilterAnim
                 </NavLink>
 
                 {mobile ? 
-                <NavLink to={"/connexion-inscription"} className="navLink" onClick={()=>setOpenMenuBurger(false)}>
-                    Connexion / Inscription
+                <NavLink to={isAuthenticated ? "#" : "/connexion-inscription"} className="navLink" onClick={isAuthenticated ? deconnexion(setUser, setOpenMenuBurger) : (()=>setOpenMenuBurger(false))}>
+                    {isAuthenticated ? "Déconnexion" : "Connexion / Inscription"}
                 </NavLink>
                 :
                 ""}

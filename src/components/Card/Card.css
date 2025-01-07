@@ -1,18 +1,62 @@
-.LinkToDetail {
-    text-decoration: none;
-    color: var(--black-color);
-}
-
 .card {
     box-sizing: border-box;
     width: 300px;
-    height: 20rem;
+    height: 100%;
     border-radius: 10%;
     margin-bottom: 3%;
+    height: 20em;
+}
+
+.LinkToDetail {
+    text-decoration: none;
+    color: var(--black-color);
+    margin-bottom: 0.8em;
+}
+
+.cardAnimalCRUD{
+    height: 25em;
+}
+
+
+.dashboardAsso {
+    margin-top: 0.5em;
+    margin-right: 0.5em;
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+
+    .faPencil,
+    .faTrashCan {
+        margin-inline: 0.5em;
+        width: 2em;
+        height: 2em;
+
+        button {
+            margin-top: 0.3em;
+    
+            svg {
+                font-size: 1.4em;
+            }
+        }
+    }
+
+    .faPencil {
+        background-color: rgb(95, 164, 126);
+        border-radius: 50%;
+    }
+
+    .faTrashCan {
+        background-color: rgba(190, 64, 64, 0.842);
+        border-radius: 50%;
+    }
+
+    button {
+        width: 100%;
+    }
 }
 
 .sectionCardImg {
-    height: 70%;
+    height: 65%;
 }
 
 .animalPhoto {

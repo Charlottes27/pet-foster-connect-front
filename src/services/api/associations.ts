@@ -1,4 +1,5 @@
-import axiosInstance from "../axios/axios"
+import axiosInstance from "../axios/axios";
+import { IAssociationUser } from "../../@types/association";
 
 const APIAssociation = {
     async getAssociations() {
@@ -9,28 +10,22 @@ const APIAssociation = {
         return await axiosInstance.get(`/association/${id}`)
     },
 
-    async patchAssociations(id: number, data: {
-        representative?: string;
-        rna_number?: string;
-        address?: string;
-        postal_code?: string;
-        city?: string;
-        phone?: string;
-        description?: string;
-        profile_photo?: string;
-        profile_file?: File;
-        user?: {
-            firstname?: string;
-            lastname?: string;
-            email?: string;
-            password?: string;
-        };
-    }) {
+    async patchAssociation(id: number, data: IAssociationUser) {
         return await axiosInstance.patch(`/association/${id}`, data)
+    },
+
+    async pathAssociationPhoto(id: number, data: FormData) {
+        return await axiosInstance.patch(`/association/${id}`, data, {
+            headers : {"Content-Type": "miltipart/form-data"}
+        })
     },
 
     async deleteAssociations(id: number) {
        return await axiosInstance.delete(`/association/${id}`)
+    },
+
+    async getAnimalsOfAsso(id: number) {
+        return await axiosInstance.get(`/association/${id}/animal`)
     },
 };
 

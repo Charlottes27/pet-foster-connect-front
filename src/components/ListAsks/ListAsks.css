@@ -1,0 +1,137 @@
+summary {
+    display: flex;
+    align-items: center;
+    margin-left: 3em;
+}
+
+summary::before {
+        content: '▶';
+        margin-right: 0.5em;
+        transition: transform 0.2s;
+}
+  
+details[open] > summary::before {
+    transform: rotate(90deg);
+}
+
+.tableAsksByAnimal {
+    width: 80%;
+    margin: 3em auto;
+    border: 2px solid rgb(110, 108, 108);
+    border-radius: 18px;
+
+    .table {
+    border-bottom: 1px solid rgb(110, 108, 108);
+    }
+
+    .table:last-child{
+        border-bottom: none;
+    }
+    
+}
+
+.headerTable {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: rgb(167, 163, 163);
+    border-top-right-radius: 16px;
+    border-top-left-radius: 16px;
+    width: 100%;
+
+    
+    p {
+        font-weight: bold;
+        font-size: 1.5em;
+        margin-left: 3em;
+    }
+}
+
+.img {
+    height: 4em;
+    width: 4em;
+    margin: 0.5em 0 0.5em 2em;
+    border-bottom: none;
+    
+    img {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+        object-position: center;
+        border-radius: 50%;
+    }
+}
+
+.bodyTableRow {
+    display: flex;
+    justify-content: space-between;
+    
+    .family,
+    .secondFamilyInfos{
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .titleOfFamily {
+        margin-left: 6em;
+    }
+
+    .firstfamilyInfos, 
+    .secondFamilyInfos {
+        display: flex;
+        flex-direction: row;
+        align-items: center;    
+    }
+
+    .smallImg {
+        height: 2em;
+        width: 2em;
+    }
+
+    .detailAsks{
+        margin-left: 7.5em;
+    }
+
+    .secondFamilyInfos {
+        margin-left: 9em;
+        
+        p {
+            margin-inline: 0.6em;
+
+        }
+    }
+    
+    span {
+        font-weight: 600;
+    }
+
+    .btnAsk {
+        height: max-content;
+        margin-left: 2em;
+        display: flex;
+
+        button {
+            height: 1.5em;
+            padding: 0 0.5em;
+        }
+
+        .profilbtn {
+            border-radius: 18px;
+            background-color: rgb(76, 175, 255);
+            margin: 10px;
+        }
+    }
+
+    .nbForAsks {
+        margin-right: 3em;
+        font-weight: bold;
+    }
+}
+
+.neverAsk {
+    font-size: 4em;
+    padding: 3em;
+    text-align: center;
+}
