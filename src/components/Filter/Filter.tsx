@@ -25,7 +25,6 @@ interface IFilterProps {
 }
 
 function Filter ({openFilter, setOpenFilter, entityData, setEntityFilter, title, filterAnimal, setFilterAnimal, filterAssociation, setFilterAssociation}: IFilterProps) {
-    const [isLoading, setIsLoading] = useState(true);
 
     const [species, setSpecies] = useState<string[]>([]);
     const [sizes, setSizes] = useState<string[]>([]);
@@ -36,7 +35,6 @@ function Filter ({openFilter, setOpenFilter, entityData, setEntityFilter, title,
     useEffect(()=>{
         const loadEntities = () => {
             try {
-                setIsLoading(true);
 
                 if (title === "animaux" && isAnimal(entityData)) {
                     const uniqueSpecies = Array.from(
@@ -65,8 +63,6 @@ function Filter ({openFilter, setOpenFilter, entityData, setEntityFilter, title,
                 }
             } catch (error) {
                 console.error(error);
-            } finally {
-                setIsLoading(false);
             }
         }
         loadEntities();
@@ -91,25 +87,25 @@ function Filter ({openFilter, setOpenFilter, entityData, setEntityFilter, title,
 
             if (filterAnimal.species) {
                 animals = animals.filter((animal) =>
-                animal.species.toLowerCase().includes(filterAnimal.species.toLowerCase())
+                animal.species?.toLowerCase().includes(filterAnimal.species.toLowerCase())
                 );
             }
         
             if (filterAnimal.size) {
                 animals = animals.filter((animal) =>
-                animal.size.toLowerCase().includes(filterAnimal.size.toLowerCase())
+                animal.size?.toLowerCase().includes(filterAnimal.size.toLowerCase())
                 );
             }
         
             if (filterAnimal.ageRange !== "all") {
                 if (filterAnimal.ageRange === "under-2") {
-                animals = animals.filter((animal) => animal.age < 2);
+                animals = animals.filter((animal) => animal.age! < 2);
                 } else if (filterAnimal.ageRange === "2-7") {
                 animals = animals.filter(
-                    (animal) => animal.age >= 2 && animal.age <= 7
+                    (animal) => animal.age! >= 2 && animal.age! <= 7
                 );
                 } else if (filterAnimal.ageRange === "over-7") {
-                animals = animals.filter((animal) => animal.age > 7);
+                animals = animals.filter((animal) => animal.age! > 7);
                 }
             }
         

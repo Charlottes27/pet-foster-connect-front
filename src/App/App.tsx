@@ -69,8 +69,7 @@ console.log(entityData);
                     entityFilter={entityFilter}
                     setEntityFilter={setEntityFilter}
                     filterAnimal={filterAnimal}
-                    setFilterAnimal={setFilterAnimal}
-                    user={user}/>} 
+                    setFilterAnimal={setFilterAnimal}/>} 
                 />
                 <Route path="/animal/:id" element={<DetailPage />} />
                 
@@ -80,8 +79,7 @@ console.log(entityData);
                     entityFilter={entityFilter}
                     setEntityFilter={setEntityFilter}
                     filterAssociation={filterAssociation}
-                    setFilterAssociation={setFilterAssociation}
-                    user={user}/>} 
+                    setFilterAssociation={setFilterAssociation}/>} 
                 />
                 <Route path="/association/:id" element={<DetailPage />} />
                 <Route path="/association/:id/animaux" element={<ListPage entityData={entityData} setEntityData={setEntityData} />} />

@@ -14,12 +14,11 @@ interface ICardProps {
     setModalModifiedAnimal?: React.Dispatch<React.SetStateAction<boolean>>
     setSuccessMessage?: React.Dispatch<React.SetStateAction<string | null>>
     setErrorMessage?: React.Dispatch<React.SetStateAction<string | null>>
-    entityData?: IAnimal[] 
     setEntityData?: React.Dispatch<React.SetStateAction<IAnimal[]>>
     setDetailOfOneAnimal?: React.Dispatch<React.SetStateAction<IAnimal>>
 }
 
-function Card ({entity, title, isCardAnimalCRUD, setModalModifiedAnimal, setSuccessMessage, setErrorMessage, entityData, setEntityData, setDetailOfOneAnimal}: ICardProps) {
+function Card ({entity, title, isCardAnimalCRUD, setModalModifiedAnimal, setSuccessMessage, setErrorMessage, setEntityData, setDetailOfOneAnimal}: ICardProps) {
     const idUrl = title.split("/");
     const id = parseInt(idUrl[1], 10);
     

@@ -151,7 +151,7 @@ function ListEntities ({entityFilter, entityData, setEntityData, user}:IListEnti
                 )) 
             ) : entityData?.length! >0 ? (
                 entityData?.map((entity)=>(
-                    <Card key={entity.id} entity={entity} title={title!} isCardAnimalCRUD={isCardAnimalCRUD} setModalModifiedAnimal={setModalModifiedAnimal} setSuccessMessage={setSuccessMessage} setErrorMessage={setErrorMessage} entityData={entityData as IAnimal[]} setEntityData={setEntityData as React.Dispatch<React.SetStateAction<IAnimal[]>>} setDetailOfOneAnimal={setDetailOfOneAnimal} />
+                    <Card key={entity.id} entity={entity} title={title!} isCardAnimalCRUD={isCardAnimalCRUD} setModalModifiedAnimal={setModalModifiedAnimal} setSuccessMessage={setSuccessMessage} setErrorMessage={setErrorMessage} setEntityData={setEntityData as React.Dispatch<React.SetStateAction<IAnimal[]>>} setDetailOfOneAnimal={setDetailOfOneAnimal} />
                 ))
             ) : (
                 <p className="errorSearch">Aucun résultat pour votre recherche</p>

@@ -449,7 +449,7 @@ function Profil () {
             </form>
 
             {isPasswordEditMode &&
-                <FormEditPassword isPasswordEditMode={isPasswordEditMode} setIsPasswordEditMode={setIsPasswordEditMode} userData={user} />
+                <FormEditPassword setIsPasswordEditMode={setIsPasswordEditMode} userData={user} />
             }
 
             {!isInfoEditMode &&
