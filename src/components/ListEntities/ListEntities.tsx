@@ -53,6 +53,7 @@ function ListEntities ({entityFilter, entityData, setEntityData, user}:IListEnti
                 try {
                     const response = await APIAnimal.getAnimals();
                     setEntityData(response.data)
+                    console.log("je modif entityData animal")
                 } catch (error) {
                     console.log("Erreur lors de la récupération des animaux :", error)
                 }
@@ -65,6 +66,7 @@ function ListEntities ({entityFilter, entityData, setEntityData, user}:IListEnti
                 try {
                     const response = await APIAssociation.getAssociations();
                     setEntityData(response.data);
+                    console.log("je modif entityData association")
                 } catch (error) {
                     console.log("Erreur lors de la récupération des associations :", error)
                 }
@@ -78,6 +80,7 @@ function ListEntities ({entityFilter, entityData, setEntityData, user}:IListEnti
                 try {
                     const response = await APIFamily.getAnimalsOfFamily(familyId);
                     setEntityData(response.data);
+                    console.log("je modif entityData de la famille")
                 } catch (error) {
                     console.log(error);
                 }
@@ -92,6 +95,7 @@ function ListEntities ({entityFilter, entityData, setEntityData, user}:IListEnti
                     const response = await APIAssociation.getAnimalsOfAsso(associationId);
                     setEntityData(response.data);
                     setIsCardAnimalCRUD(true);
+                    console.log("je modif entityData de l'asso")
                 } catch (error) {
                     console.log(error);
                 }
@@ -149,7 +153,7 @@ function ListEntities ({entityFilter, entityData, setEntityData, user}:IListEnti
                 entityFilter?.map((entity)=>(
                     <Card key={entity.id} entity={entity} title={title!} />
                 )) 
-            ) : entityData?.length! >0 ? (
+            ) : entityData?.length! > 0 ? (
                 entityData?.map((entity)=>(
                     <Card key={entity.id} entity={entity} title={title!} isCardAnimalCRUD={isCardAnimalCRUD} setModalModifiedAnimal={setModalModifiedAnimal} setSuccessMessage={setSuccessMessage} setErrorMessage={setErrorMessage} entityData={entityData as IAnimal[]} setEntityData={setEntityData as React.Dispatch<React.SetStateAction<IAnimal[]>>} setDetailOfOneAnimal={setDetailOfOneAnimal} />
                 ))
